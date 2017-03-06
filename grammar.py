@@ -29,7 +29,7 @@ def p_list_index(p):
     '''
 def p_null(p):
     '''
-    null : 
+    null :
     '''
 
 def p_shape(p):
@@ -160,16 +160,110 @@ def p_exp(p):
         | MINUS exp
     '''
 
+def p_term(p):
+    '''
+    term : factor term_loop
+    '''
+
+def p_term_loop(p):
+    '''
+    term_loop : DIV term
+              | MULT term
+              | null
+    '''
+
+def p_factor(p):
+    '''
+    factor : factor_id
+           | factor_exp
+    '''
+
+def p_factor_exp(p):
+    '''
+    factor_exp : L_PAR expression R_PAR
+    '''
+
+def p_factor_exp(p):
+    '''
+    factor_exp : factor_sign VAR_IDENTIFIER list_index
+    '''
+
+def p_factor_sign(p):
+    '''
+    factor_sign : MINUS
+                | PLUS
+                | null
+    '''
 
 
+def p_conditional(p):
+    '''
+    conditional : IF conditional_if conditional_elsif conditional_else
+    '''
 
+def p_conditional_if(p):
+    '''
+    conditional_if : L_PAR expression R_PAR block
+    '''
 
+def p_conditional_elsif(p):
+    '''
+    conditional_elsif : ELSIF conditional_if conditional_elsif
+                      | null
+    '''
 
+def p_conditional_else(p):
+    '''
+    conditional_else : ELSE block
+                     | null
+    '''
 
+def p_print(p):
+    '''
+    print : PRINT L_PAR print_b print_a R_PAR
+    '''
 
+def p_print_a(p):
+    '''
+    print_a : COMMA print_b print_a
+            | null
+    '''
 
+def p_print_b(p):
+    '''
+    print_a : expression
+            | VAR_IDENTIFIER
+    '''
 
+def p_read(p):
+    '''
+    read : READ VAR_IDENTIFIER
+    '''
 
+def p_paint(p):
+    '''
+    paint : PAINT VAR_IDENTIFIER
+    '''
+
+def p_return(p):
+    '''
+    return : RETURN expression
+    '''
+
+def p_for_loop(p):
+    '''
+    for_loop : FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
+    '''
+
+def p_while_loop(p):
+    '''
+    while_loop : WHILE L_PAR expression R_PAR block
+    '''
+
+def p_color(p):
+    '''
+    color : color VAR_IDENTIFIER red EQUALS EXPRESSION green EQUALS EXPRESSION blue EQUALS EXPRESSION
+    '''
 
 def p_expression_plus(p):
     'expression : expression PLUS term'
