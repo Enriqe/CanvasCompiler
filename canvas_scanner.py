@@ -12,6 +12,7 @@ reserved_words = {
     'circle'    : 'CIRCLE',
     'rectangle' : 'RECTANGLE',
     'canvas'    : 'CANVAS',
+    'program'   : 'PROGRAM',
     'center'    : 'CENTER',
     'width'     : 'WIDTH',
     'height'    : 'HEIGHT',
