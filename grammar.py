@@ -5,37 +5,55 @@ import ply.yacc as yacc
 # Get the token map from the lexer.  This is required.
 from calclex import tokens
 
+def p_program_syntax(p):
+    '''
+    program : PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration FINISH
+    '''
+
+def p_globals(p):
+    '''
+    globals : function 
+            | declaration
+    '''
+
+# TODO: define type
+def p_var(p):
+    '''
+    var : type VAR_IDENTIFIER list_index EQUALS expression
+    '''  
+
+def p_list_index(p):
+    '''
+    list_index : L_BRACKET INT_VAL R_BRACKET
+               | null
+    '''
+def p_null(p):
+    '''
+    null : 
+    '''
+
+def p_shape(p):
+    '''
+    shape : shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+    '''
+
+def p_shape_type(p):
+    '''
+    shape_type : CIRCLE | RECTANGLE | TRIANGLE
+    '''
+
+def p_block_with_declaration(p):
+    '''
+    block_with_declaration : L_BRACKET statement R_BRACKET
+                           | L_BRACKET declaration R_BRACKET
+    '''
+
+def p_block(p):
+
 def p_expression_plus(p):
     'expression : expression PLUS term'
     p[0] = p[1] + p[3]
 
-def p_expression_minus(p):
-    'expression : expression MINUS term'
-    p[0] = p[1] - p[3]
-
-def p_expression_term(p):
-    'expression : term'
-    p[0] = p[1]
-
-def p_term_times(p):
-    'term : term TIMES factor'
-    p[0] = p[1] * p[3]
-
-def p_term_div(p):
-    'term : term DIVIDE factor'
-    p[0] = p[1] / p[3]
-
-def p_term_factor(p):
-    'term : factor'
-    p[0] = p[1]
-
-def p_factor_num(p):
-    'factor : NUMBER'
-    p[0] = p[1]
-
-def p_factor_expr(p):
-    'factor : LPAREN expression RPAREN'
-    p[0] = p[2]
 
 # Error rule for syntax errors
 def p_error(p):
