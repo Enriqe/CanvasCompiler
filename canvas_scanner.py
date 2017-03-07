@@ -29,6 +29,7 @@ reserved_words = {
     'color'     : 'COLOR',
 
     #AGREGAR A PROPUESTA
+    'while'     : 'WHILE'
     'finish'    : 'FINISH',
     'main'      : 'MAIN',
     'while'     : 'WHILE',
