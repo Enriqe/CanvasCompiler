@@ -1,6 +1,7 @@
 .DS_Store
 code/ply/
 code/parsetab.*
+code/parselog.*
 code/*.pyc
 code/*.out
 code/*.un~
