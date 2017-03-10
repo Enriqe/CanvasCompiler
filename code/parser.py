@@ -176,6 +176,7 @@ def p_exp_ops(p):
             | NOT_EQUALS
             | G_THAN_EQUALS
             | L_THAN_EQUALS
+            | null
     '''
 
 def p_exp(p):
@@ -183,6 +184,7 @@ def p_exp(p):
     exp : term
         | PLUS exp
         | MINUS exp
+        | null
     '''
 
 def p_term(p):
@@ -210,7 +212,7 @@ def p_factor_id(p):
 
 def p_factor_exp(p):
     '''
-    factor_exp : factor_sign VAR_IDENTIFIER list_index
+    factor_exp : factor_sign factor_value list_index
     '''
 
 def p_factor_sign(p):
@@ -220,6 +222,12 @@ def p_factor_sign(p):
                 | null
     '''
 
+def p_factor_value(p):
+    '''
+    factor_value : VAR_IDENTIFIER
+                 | INT_VAL
+                 | DEC_VAL
+    '''
 
 def p_conditional(p):
     '''

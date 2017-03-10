@@ -1,6 +1,6 @@
 PROGRAM::= 'program' 'id' GLOBALS 'main' BLOCK_WITH_DECLARATION 'finish'
 GLOBALS::= (DECLARATION | FUNCTION)*
-FUNCTION::='function' 'id' '(' TYPE 'id' (',' TYPE 'id')* ')' 'returns' TYPE BLOCK_WITH_DECLARATION
+FUNCTION::='function' 'id' '(' (TYPE 'id' (',' TYPE 'id')*)? ')' 'returns' TYPE BLOCK_WITH_DECLARATION
 VAR::= TYPE 'id' ('[' [0-9]+ ']')? '=' EXPRESSION
 SHAPE::= ('circle' | 'rectangle' | 'triangle') 'id' 'center' '=' POINT 'width' '=' EXPRESSION 'height' '=' EXPRESSION COLOR
 BLOCK_WITH_DECLARATION::= '[' (DECLARATION | STATEMENT)* ']'
@@ -15,9 +15,10 @@ POINT_ASSIGNMENT::= 'id' '=' 'id' | (('x' | 'y') '=' EXPRESSION)+
 CANVAS::= 'canvas' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION COLOR
 CANVAS_ASSIGNMENT::= 'id' ('add' | '=') 'id'  | (('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | ('color' '=' EXPRESSION))+
 EXPRESSION::= EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP 
-EXP::= TERM (('+' | '-') TERM)*
+EXP::= (TERM (('+' | '-') TERM)*)?
 TERM::= FACTOR (('*' | '/') FACTOR)*
-FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* 'id' ('[' [0-9]+ ']')?
+TYPE::= 'int' | 'dec' | 'string' | 'yesno'
+FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* ('id' ('[' [0-9]+ ']')?  | 'int_val' | 'dec_val' )
 CONDITIONAL::= 'if' '(' EXPRESSION ')' BLOCK ('elsif' '(' EXPRESSION ')' BLOCK)* ('else' BLOCK)?
 PRINT::= 'print' '(' (EXPRESSION | 'id') (',' (EXPRESSION | 'id') )* ')' 
 READ::= 'read' 'id'

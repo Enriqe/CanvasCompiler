@@ -1,0 +1,14 @@
+___FEB 26 - MAR 4___
++ Primer implementacion scanner y parser
+
+___MAR 5 - MAR 11___
+~ MODIFICACION DE GRAMATICA: en 'expression' para soportar terminos constantes (ver: 'factor_value' en la gramatica)
++ Agregar nuevos tests
++ Agregar feature para leer tests de archivos separados
++ Implementacion de tabla de variables
+
+___MAR 12 - MAR 18___
+
+___MAR 19 - MAR 25___
+
+___MAR 26 - ABR 1___
