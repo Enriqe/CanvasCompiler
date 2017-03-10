@@ -5,8 +5,8 @@ reserved_words = {
     'dec'       : 'DEC',
     'string'    : 'STRING',
     'yesno'     : 'YESNO',
-    'yes'       : 'YESNO_VAL',
-    'no'        : 'YESNO_VAL',
+    #'yes'       : 'YESNO_VAL',
+    #'no'        : 'YESNO_VAL',
     'point'     : 'POINT',
     'triangle'  : 'TRIANGLE',
     'circle'    : 'CIRCLE',
@@ -64,8 +64,7 @@ tokens = [
     'DEC_VAL', 
     'STRING_VAL', 
     'YESNO_VAL', 
-    'VAR_IDENTIFIER',
-    'POINT'] + list(reserved_words.values())
+    'VAR_IDENTIFIER'] + list(reserved_words.values())
 
 t_ignore  = ' \t'
 
@@ -139,7 +138,7 @@ def t_POINT(t):
 
 # REGULAR EXPRESSIONS
 
-def t_INT_VAL():
+def t_INT_VAL(t):
     r'[0-9]+'
     return t
 
