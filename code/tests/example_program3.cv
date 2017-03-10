@@ -1,0 +1,24 @@
+program hello_world2
+
+function myFunc1 (int arg1, int arg2) returns yesno [
+    point myPoint x = 31.4 y = 32.3
+    color myColor red = 12 green = 11 blue = 12
+    circle myCirc center = myPoint width = 12 height = 13 color = myColor
+    canvas myCanvas width = 50 height = 50 color = myColor
+
+    if ( 1 > 2 ) [
+        myCanvas width = 100
+    ] elsif (3 > 1 ) [
+        myPoint x = myPoint + 10
+    ] else [
+    ]
+
+    paint myCanvas
+]
+
+main [
+    int myVarY [3] = 0
+    print (myVarX)
+]
+
+finish
