@@ -120,8 +120,8 @@ def p_shape_assignment(p):
     '''
     shape_assignment : VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
                      | CENTER EQUALS POINT
-                     | WIDTH EQUALS EXPRESSION
-                     | HEIGHT EQUALS EXPRESSION
+                     | WIDTH EQUALS expression
+                     | HEIGHT EQUALS expression
                      | COLOR EQUALS VAR_IDENTIFIER
     '''
 
@@ -141,8 +141,8 @@ def p_point(p):
 def p_point_assignment(p):
     '''
     point_assignment : VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                     | X EQUALS EXPRESSION
-                     | Y EQUALS EXPRESSION
+                     | X EQUALS expression
+                     | Y EQUALS expression
     '''
 
 def p_canvas(p):
@@ -154,9 +154,9 @@ def p_canvas_assignment(p):
     '''
     canvas_assignment : VAR_IDENTIFIER ADD VAR_IDENTIFIER
                       | VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                      | WIDTH EQUALS EXPRESSION
-                      | HEIGHT EQUALS EXPRESSION
-                      | COLOR EQUALS EXPRESSION
+                      | WIDTH EQUALS expression
+                      | HEIGHT EQUALS expression
+                      | COLOR EQUALS expression
     '''
 
 def p_expression(p):
@@ -199,9 +199,9 @@ def p_factor(p):
            | factor_exp
     '''
 
-def p_factor_exp(p):
+def p_factor_id(p):
     '''
-    factor_exp : L_PAR expression R_PAR
+    factor_id : L_PAR expression R_PAR
     '''
 
 def p_factor_exp(p):
@@ -283,7 +283,7 @@ def p_while_loop(p):
 
 def p_color(p):
     '''
-    color : color VAR_IDENTIFIER red EQUALS EXPRESSION green EQUALS EXPRESSION blue EQUALS EXPRESSION
+    color : color VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
 
 def p_expression_plus(p):
