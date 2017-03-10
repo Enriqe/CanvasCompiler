@@ -3,7 +3,7 @@
 import ply.yacc as yacc
 
 # Get the token map from the lexer.  This is required.
-from calclex import tokens
+from canvas_scanner import tokens
 
 def p_program_syntax(p):
     '''
@@ -16,7 +16,26 @@ def p_globals(p):
             | declaration
     '''
 
-# TODO: define type
+def p_function(p):
+    '''
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+    '''
+
+def p_function_arguments(p):
+    '''
+    function_arguments : type VAR_IDENTIFIER
+                       | type VAR_IDENTIFIER COMMA function_arguments
+                       | null
+    '''
+
+def p_type(p):
+    '''
+    type : INT
+         | DEC
+         | STRING
+         | YESNO
+    '''
+
 def p_var(p):
     '''
     var : type VAR_IDENTIFIER list_index EQUALS expression
@@ -39,7 +58,9 @@ def p_shape(p):
 
 def p_shape_type(p):
     '''
-    shape_type : CIRCLE | RECTANGLE | TRIANGLE
+    shape_type : CIRCLE
+               | RECTANGLE
+               | TRIANGLE
     '''
 
 def p_block_with_declaration(p):
@@ -69,10 +90,10 @@ def p_statement(p):
     statement : assignment
               | conditional
               | print
-              | loop
+              | for_loop
+              | while_loop
               | paint
               | read
-              | comments
               | return
     '''
 

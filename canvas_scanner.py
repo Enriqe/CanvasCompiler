@@ -13,6 +13,7 @@ reserved_words = {
     'rectangle' : 'RECTANGLE',
     'canvas'    : 'CANVAS',
     'program'   : 'PROGRAM',
+    'function'  : 'FUNCTION',
     'center'    : 'CENTER',
     'width'     : 'WIDTH',
     'height'    : 'HEIGHT',
@@ -35,6 +36,7 @@ reserved_words = {
     'while'     : 'WHILE',
     'read'      : 'READ',
     'return'    : 'RETURN',
+    'returns'   : 'RETURNS',
     'red'       : 'RED',
     'green'     : 'GREEN',
     'blue'      : 'BLUE',
@@ -139,7 +141,7 @@ def t_POINT(t):
 
 # REGULAR EXPRESSIONS
 
-def t_INT_VAL():
+def t_INT_VAL(t):
     r'[0-9]+'
     return t
 
