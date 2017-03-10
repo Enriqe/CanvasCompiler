@@ -252,7 +252,7 @@ def p_print_a(p):
 
 def p_print_b(p):
     '''
-    print_a : expression
+    print_b : expression
             | VAR_IDENTIFIER
     '''
 
@@ -283,13 +283,12 @@ def p_while_loop(p):
 
 def p_color(p):
     '''
-    color : color VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+    color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
 
 def p_expression_plus(p):
     'expression : expression PLUS term'
     p[0] = p[1] + p[3]
-
 
 # Error rule for syntax errors
 def p_error(p):
@@ -300,7 +299,7 @@ parser = yacc.yacc()
 
 while True:
    try:
-       s = raw_input('calc > ')
+       s = raw_input('canvas > ')
    except EOFError:
        break
    if not s: continue
