@@ -1,11 +1,16 @@
-# Yacc example
-
 import scanner as scanner
 import ply.yacc as yacc
 import sys
-
+import logging
 # Get the token map from the lexer.  This is required.
 from scanner import tokens
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
 
 def p_program_syntax(p):
     '''
@@ -166,6 +171,7 @@ def p_canvas_assignment(p):
 def p_expression(p):
     '''
     expression : exp exp_ops exp
+               | exp
     '''
 
 def p_exp_ops(p):
@@ -176,7 +182,6 @@ def p_exp_ops(p):
             | NOT_EQUALS
             | G_THAN_EQUALS
             | L_THAN_EQUALS
-            | null
     '''
 
 def p_exp(p):
@@ -309,7 +314,8 @@ def p_error(p):
     sys.exit(0)
 
 # Build the parser
-parser = yacc.yacc()
+log = logging.getLogger()
+parser = yacc.yacc(debug=True, debuglog=log)
 
 if __name__ == '__main__':
 
@@ -320,6 +326,7 @@ if __name__ == '__main__':
     data = f.read()
     # print data
     # print "End of file"
-    parser.parse(data, tracking=True)
+
+    parser.parse(data, debug=log)
 
     print("Successful")

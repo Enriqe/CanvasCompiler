@@ -1,4 +1,12 @@
 import ply.lex as lex
+import logging
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
 
 reserved_words = {
     'int'       : 'INT',
@@ -171,5 +179,5 @@ def t_error(t):
     print "line " + str(t.lexer.lineno) + ": Illegal character " + str(t.value[0])
     t.lexer.skip(1)
     sys.exit(0)
-
-lexer = lex.lex()
+log = logging.getLogger()
+lexer = lex.lex(debug=True, debuglog=log)
