@@ -2,13 +2,10 @@ Created by PLY version 3.10 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    GREEN
     WITH
     DEC_VAL
     STRING_VAL
-    RED
     YESNO_VAL
-    BLUE
 
 Grammar
 
@@ -55,8 +52,8 @@ Rule 39    var_equals -> expression
 Rule 40    var_equals -> VAR_IDENTIFIER
 Rule 41    shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
 Rule 42    shape_assignment -> CENTER EQUALS POINT
-Rule 43    shape_assignment -> WIDTH EQUALS EXPRESSION
-Rule 44    shape_assignment -> HEIGHT EQUALS EXPRESSION
+Rule 43    shape_assignment -> WIDTH EQUALS expression
+Rule 44    shape_assignment -> HEIGHT EQUALS expression
 Rule 45    shape_assignment -> COLOR EQUALS VAR_IDENTIFIER
 Rule 46    declaration -> var
 Rule 47    declaration -> shape
@@ -64,14 +61,14 @@ Rule 48    declaration -> point
 Rule 49    declaration -> canvas
 Rule 50    point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
 Rule 51    point_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-Rule 52    point_assignment -> X EQUALS EXPRESSION
-Rule 53    point_assignment -> Y EQUALS EXPRESSION
+Rule 52    point_assignment -> X EQUALS expression
+Rule 53    point_assignment -> Y EQUALS expression
 Rule 54    canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
 Rule 55    canvas_assignment -> VAR_IDENTIFIER ADD VAR_IDENTIFIER
 Rule 56    canvas_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-Rule 57    canvas_assignment -> WIDTH EQUALS EXPRESSION
-Rule 58    canvas_assignment -> HEIGHT EQUALS EXPRESSION
-Rule 59    canvas_assignment -> COLOR EQUALS EXPRESSION
+Rule 57    canvas_assignment -> WIDTH EQUALS expression
+Rule 58    canvas_assignment -> HEIGHT EQUALS expression
+Rule 59    canvas_assignment -> COLOR EQUALS expression
 Rule 60    expression -> exp exp_ops exp
 Rule 61    exp_ops -> L_THAN
 Rule 62    exp_ops -> G_THAN
@@ -88,82 +85,83 @@ Rule 72    term_loop -> MULT term
 Rule 73    term_loop -> null
 Rule 74    factor -> factor_id
 Rule 75    factor -> factor_exp
-Rule 76    factor_exp -> factor_sign VAR_IDENTIFIER list_index
-Rule 77    factor_sign -> MINUS
-Rule 78    factor_sign -> PLUS
-Rule 79    factor_sign -> null
-Rule 80    conditional -> IF conditional_if conditional_elsif conditional_else
-Rule 81    conditional_if -> L_PAR expression R_PAR block
-Rule 82    conditional_elsif -> ELSIF conditional_if conditional_elsif
-Rule 83    conditional_elsif -> null
-Rule 84    conditional_else -> ELSE block
-Rule 85    conditional_else -> null
-Rule 86    print -> PRINT L_PAR print_b print_a R_PAR
-Rule 87    print_a -> COMMA print_b print_a
-Rule 88    print_a -> null
-Rule 89    print_a -> expression
-Rule 90    print_a -> VAR_IDENTIFIER
-Rule 91    read -> READ VAR_IDENTIFIER
-Rule 92    paint -> PAINT VAR_IDENTIFIER
-Rule 93    return -> RETURN expression
-Rule 94    for_loop -> FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
-Rule 95    while_loop -> WHILE L_PAR expression R_PAR block
-Rule 96    color -> color VAR_IDENTIFIER red EQUALS EXPRESSION green EQUALS EXPRESSION blue EQUALS EXPRESSION
-Rule 97    expression -> expression PLUS term
+Rule 76    factor_id -> L_PAR expression R_PAR
+Rule 77    factor_exp -> factor_sign VAR_IDENTIFIER list_index
+Rule 78    factor_sign -> MINUS
+Rule 79    factor_sign -> PLUS
+Rule 80    factor_sign -> null
+Rule 81    conditional -> IF conditional_if conditional_elsif conditional_else
+Rule 82    conditional_if -> L_PAR expression R_PAR block
+Rule 83    conditional_elsif -> ELSIF conditional_if conditional_elsif
+Rule 84    conditional_elsif -> null
+Rule 85    conditional_else -> ELSE block
+Rule 86    conditional_else -> null
+Rule 87    print -> PRINT L_PAR print_b print_a R_PAR
+Rule 88    print_a -> COMMA print_b print_a
+Rule 89    print_a -> null
+Rule 90    print_b -> expression
+Rule 91    print_b -> VAR_IDENTIFIER
+Rule 92    read -> READ VAR_IDENTIFIER
+Rule 93    paint -> PAINT VAR_IDENTIFIER
+Rule 94    return -> RETURN expression
+Rule 95    for_loop -> FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
+Rule 96    while_loop -> WHILE L_PAR expression R_PAR block
+Rule 97    color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+Rule 98    expression -> expression PLUS term
 
 Terminals, with rules where they appear
 
 ADD                  : 55
-BLUE                 : 
+BLUE                 : 97
 CANVAS               : 54
 CENTER               : 16 42
 CIRCLE               : 17
-COLOR                : 45 59
-COMMA                : 6 87
+COLOR                : 45 59 97
+COMMA                : 6 88
 DEC                  : 9
 DEC_VAL              : 
 DIV                  : 71
-EACH                 : 94
-ELSE                 : 84
-ELSIF                : 82
-EQUALS               : 12 16 16 16 38 41 42 43 44 45 50 50 51 52 53 54 54 56 57 58 59 96 96 96
+EACH                 : 95
+ELSE                 : 85
+ELSIF                : 83
+EQUALS               : 12 16 16 16 38 41 42 43 44 45 50 50 51 52 53 54 54 56 57 58 59 97 97 97
 EQUALS_EQUALS        : 63
 FINISH               : 1
-FOR                  : 94
+FOR                  : 95
 FUNCTION             : 4
-GREEN                : 
+GREEN                : 97
 G_THAN               : 62
 G_THAN_EQUALS        : 65
 HEIGHT               : 16 44 54 58
-IF                   : 80
-IN                   : 94
+IF                   : 81
+IN                   : 95
 INT                  : 8
 INT_VAL              : 13
 L_BRACKET            : 13 20 23
-L_PAR                : 4 81 86 95
+L_PAR                : 4 76 82 87 96
 L_THAN               : 61
 L_THAN_EQUALS        : 66
 MAIN                 : 1
-MINUS                : 69 77
+MINUS                : 69 78
 MULT                 : 72
 NOT_EQUALS           : 64
-PAINT                : 92
-PLUS                 : 68 78 97
+PAINT                : 93
+PLUS                 : 68 79 98
 POINT                : 42 50
-PRINT                : 86
+PRINT                : 87
 PROGRAM              : 1
-READ                 : 91
+READ                 : 92
 RECTANGLE            : 18
-RED                  : 
-RETURN               : 93
+RED                  : 97
+RETURN               : 94
 RETURNS              : 4
 R_BRACKET            : 13 20 23
-R_PAR                : 4 81 86 95
+R_PAR                : 4 76 82 87 96
 STRING               : 10
 STRING_VAL           : 
 TRIANGLE             : 19
-VAR_IDENTIFIER       : 1 4 5 6 12 16 38 40 41 41 45 50 51 51 54 55 55 56 56 76 90 91 92 94 94 96
-WHILE                : 95
+VAR_IDENTIFIER       : 1 4 5 6 12 16 38 40 41 41 45 50 51 51 54 55 55 56 56 77 91 92 93 95 95 97
+WHILE                : 96
 WIDTH                : 16 43 54 57
 WITH                 : 
 X                    : 50 52
@@ -174,50 +172,46 @@ error                :
 
 Nonterminals, with rules where they appear
 
-EXPRESSION           : 43 44 52 53 57 58 59 96 96 96
 assignment           : 26
-block                : 81 84 94 95
+block                : 82 85 95 96
 block_contains       : 23
 block_with_declaration : 1 4
-blue                 : 96
 canvas               : 49
 canvas_assignment    : 37
-color                : 16 54 96
+color                : 16 54
 conditional          : 27
-conditional_else     : 80
-conditional_elsif    : 80 82
-conditional_if       : 80 82
+conditional_else     : 81
+conditional_elsif    : 81 83
+conditional_if       : 81 83
 declaration          : 3 22
 declaration_type     : 20
 exp                  : 60 60 68 69
 exp_ops              : 60
-expression           : 12 16 16 39 50 50 54 54 81 89 93 95 97
+expression           : 12 16 16 39 43 44 50 50 52 53 54 54 57 58 59 76 82 90 94 96 97 97 97 98
 factor               : 70
 factor_exp           : 75
 factor_id            : 74
-factor_sign          : 76
+factor_sign          : 77
 for_loop             : 29
 function             : 2
 function_arguments   : 4 6
 globals              : 1
-green                : 96
-list_index           : 12 38 76
-null                 : 7 14 25 73 79 83 85 88
+list_index           : 12 38 77
+null                 : 7 14 25 73 80 84 86 89
 paint                : 31
 point                : 16 48
 point_assignment     : 36
 print                : 28
-print_a              : 86 87
-print_b              : 86 87
+print_a              : 87 88
+print_b              : 87 88
 program              : 0
 read                 : 32
-red                  : 96
 return               : 33
 shape                : 47
 shape_assignment     : 35
 shape_type           : 16
 statement            : 21 24
-term                 : 67 71 72 97
+term                 : 67 71 72 98
 term_loop            : 70
 type                 : 4 5 6 12
 var                  : 46
@@ -225,3 +219,2922 @@ var_assignment       : 34
 var_equals           : 38
 while_loop           : 30
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration FINISH
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . VAR_IDENTIFIER globals MAIN block_with_declaration FINISH
+
+    VAR_IDENTIFIER  shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM VAR_IDENTIFIER . globals MAIN block_with_declaration FINISH
+    (2) globals -> . function
+    (3) globals -> . declaration
+    (4) function -> . FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+    (46) declaration -> . var
+    (47) declaration -> . shape
+    (48) declaration -> . point
+    (49) declaration -> . canvas
+    (12) var -> . type VAR_IDENTIFIER list_index EQUALS expression
+    (16) shape -> . shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+    (50) point -> . POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
+    (54) canvas -> . CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
+    (8) type -> . INT
+    (9) type -> . DEC
+    (10) type -> . STRING
+    (11) type -> . YESNO
+    (17) shape_type -> . CIRCLE
+    (18) shape_type -> . RECTANGLE
+    (19) shape_type -> . TRIANGLE
+
+    FUNCTION        shift and go to state 4
+    POINT           shift and go to state 20
+    CANVAS          shift and go to state 18
+    INT             shift and go to state 19
+    DEC             shift and go to state 9
+    STRING          shift and go to state 14
+    YESNO           shift and go to state 17
+    CIRCLE          shift and go to state 22
+    RECTANGLE       shift and go to state 16
+    TRIANGLE        shift and go to state 5
+
+    function                       shift and go to state 13
+    canvas                         shift and go to state 10
+    point                          shift and go to state 6
+    shape_type                     shift and go to state 21
+    shape                          shift and go to state 7
+    globals                        shift and go to state 8
+    declaration                    shift and go to state 15
+    var                            shift and go to state 11
+    type                           shift and go to state 12
+
+state 4
+
+    (4) function -> FUNCTION . VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+
+    VAR_IDENTIFIER  shift and go to state 23
+
+
+state 5
+
+    (19) shape_type -> TRIANGLE .
+
+    VAR_IDENTIFIER  reduce using rule 19 (shape_type -> TRIANGLE .)
+
+
+state 6
+
+    (48) declaration -> point .
+
+    MAIN            reduce using rule 48 (declaration -> point .)
+    R_BRACKET       reduce using rule 48 (declaration -> point .)
+
+
+state 7
+
+    (47) declaration -> shape .
+
+    MAIN            reduce using rule 47 (declaration -> shape .)
+    R_BRACKET       reduce using rule 47 (declaration -> shape .)
+
+
+state 8
+
+    (1) program -> PROGRAM VAR_IDENTIFIER globals . MAIN block_with_declaration FINISH
+
+    MAIN            shift and go to state 24
+
+
+state 9
+
+    (9) type -> DEC .
+
+    VAR_IDENTIFIER  reduce using rule 9 (type -> DEC .)
+    L_BRACKET       reduce using rule 9 (type -> DEC .)
+
+
+state 10
+
+    (49) declaration -> canvas .
+
+    MAIN            reduce using rule 49 (declaration -> canvas .)
+    R_BRACKET       reduce using rule 49 (declaration -> canvas .)
+
+
+state 11
+
+    (46) declaration -> var .
+
+    MAIN            reduce using rule 46 (declaration -> var .)
+    R_BRACKET       reduce using rule 46 (declaration -> var .)
+
+
+state 12
+
+    (12) var -> type . VAR_IDENTIFIER list_index EQUALS expression
+
+    VAR_IDENTIFIER  shift and go to state 25
+
+
+state 13
+
+    (2) globals -> function .
+
+    MAIN            reduce using rule 2 (globals -> function .)
+
+
+state 14
+
+    (10) type -> STRING .
+
+    VAR_IDENTIFIER  reduce using rule 10 (type -> STRING .)
+    L_BRACKET       reduce using rule 10 (type -> STRING .)
+
+
+state 15
+
+    (3) globals -> declaration .
+
+    MAIN            reduce using rule 3 (globals -> declaration .)
+
+
+state 16
+
+    (18) shape_type -> RECTANGLE .
+
+    VAR_IDENTIFIER  reduce using rule 18 (shape_type -> RECTANGLE .)
+
+
+state 17
+
+    (11) type -> YESNO .
+
+    VAR_IDENTIFIER  reduce using rule 11 (type -> YESNO .)
+    L_BRACKET       reduce using rule 11 (type -> YESNO .)
+
+
+state 18
+
+    (54) canvas -> CANVAS . VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
+
+    VAR_IDENTIFIER  shift and go to state 26
+
+
+state 19
+
+    (8) type -> INT .
+
+    VAR_IDENTIFIER  reduce using rule 8 (type -> INT .)
+    L_BRACKET       reduce using rule 8 (type -> INT .)
+
+
+state 20
+
+    (50) point -> POINT . VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
+
+    VAR_IDENTIFIER  shift and go to state 27
+
+
+state 21
+
+    (16) shape -> shape_type . VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+
+    VAR_IDENTIFIER  shift and go to state 28
+
+
+state 22
+
+    (17) shape_type -> CIRCLE .
+
+    VAR_IDENTIFIER  reduce using rule 17 (shape_type -> CIRCLE .)
+
+
+state 23
+
+    (4) function -> FUNCTION VAR_IDENTIFIER . L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+
+    L_PAR           shift and go to state 29
+
+
+state 24
+
+    (1) program -> PROGRAM VAR_IDENTIFIER globals MAIN . block_with_declaration FINISH
+    (20) block_with_declaration -> . L_BRACKET declaration_type R_BRACKET
+
+    L_BRACKET       shift and go to state 31
+
+    block_with_declaration         shift and go to state 30
+
+state 25
+
+    (12) var -> type VAR_IDENTIFIER . list_index EQUALS expression
+    (13) list_index -> . L_BRACKET INT_VAL R_BRACKET
+    (14) list_index -> . null
+    (15) null -> .
+
+    L_BRACKET       shift and go to state 33
+    EQUALS          reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 34
+    list_index                     shift and go to state 32
+
+state 26
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER . WIDTH EQUALS expression HEIGHT EQUALS expression color
+
+    WIDTH           shift and go to state 35
+
+
+state 27
+
+    (50) point -> POINT VAR_IDENTIFIER . X EQUALS expression Y EQUALS expression
+
+    X               shift and go to state 36
+
+
+state 28
+
+    (16) shape -> shape_type VAR_IDENTIFIER . CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+
+    CENTER          shift and go to state 37
+
+
+state 29
+
+    (4) function -> FUNCTION VAR_IDENTIFIER L_PAR . function_arguments R_PAR RETURNS type block_with_declaration
+    (5) function_arguments -> . type VAR_IDENTIFIER
+    (6) function_arguments -> . type VAR_IDENTIFIER COMMA function_arguments
+    (7) function_arguments -> . null
+    (8) type -> . INT
+    (9) type -> . DEC
+    (10) type -> . STRING
+    (11) type -> . YESNO
+    (15) null -> .
+
+    INT             shift and go to state 19
+    DEC             shift and go to state 9
+    STRING          shift and go to state 14
+    YESNO           shift and go to state 17
+    R_PAR           reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 39
+    type                           shift and go to state 40
+    function_arguments             shift and go to state 38
+
+state 30
+
+    (1) program -> PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration . FINISH
+
+    FINISH          shift and go to state 41
+
+
+state 31
+
+    (20) block_with_declaration -> L_BRACKET . declaration_type R_BRACKET
+    (21) declaration_type -> . statement
+    (22) declaration_type -> . declaration
+    (26) statement -> . assignment
+    (27) statement -> . conditional
+    (28) statement -> . print
+    (29) statement -> . for_loop
+    (30) statement -> . while_loop
+    (31) statement -> . paint
+    (32) statement -> . read
+    (33) statement -> . return
+    (46) declaration -> . var
+    (47) declaration -> . shape
+    (48) declaration -> . point
+    (49) declaration -> . canvas
+    (34) assignment -> . var_assignment
+    (35) assignment -> . shape_assignment
+    (36) assignment -> . point_assignment
+    (37) assignment -> . canvas_assignment
+    (81) conditional -> . IF conditional_if conditional_elsif conditional_else
+    (87) print -> . PRINT L_PAR print_b print_a R_PAR
+    (95) for_loop -> . FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
+    (96) while_loop -> . WHILE L_PAR expression R_PAR block
+    (93) paint -> . PAINT VAR_IDENTIFIER
+    (92) read -> . READ VAR_IDENTIFIER
+    (94) return -> . RETURN expression
+    (12) var -> . type VAR_IDENTIFIER list_index EQUALS expression
+    (16) shape -> . shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+    (50) point -> . POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
+    (54) canvas -> . CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
+    (38) var_assignment -> . VAR_IDENTIFIER list_index EQUALS var_equals
+    (41) shape_assignment -> . VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+    (42) shape_assignment -> . CENTER EQUALS POINT
+    (43) shape_assignment -> . WIDTH EQUALS expression
+    (44) shape_assignment -> . HEIGHT EQUALS expression
+    (45) shape_assignment -> . COLOR EQUALS VAR_IDENTIFIER
+    (51) point_assignment -> . VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+    (52) point_assignment -> . X EQUALS expression
+    (53) point_assignment -> . Y EQUALS expression
+    (55) canvas_assignment -> . VAR_IDENTIFIER ADD VAR_IDENTIFIER
+    (56) canvas_assignment -> . VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+    (57) canvas_assignment -> . WIDTH EQUALS expression
+    (58) canvas_assignment -> . HEIGHT EQUALS expression
+    (59) canvas_assignment -> . COLOR EQUALS expression
+    (8) type -> . INT
+    (9) type -> . DEC
+    (10) type -> . STRING
+    (11) type -> . YESNO
+    (17) shape_type -> . CIRCLE
+    (18) shape_type -> . RECTANGLE
+    (19) shape_type -> . TRIANGLE
+
+    IF              shift and go to state 67
+    PRINT           shift and go to state 46
+    FOR             shift and go to state 49
+    WHILE           shift and go to state 47
+    PAINT           shift and go to state 68
+    READ            shift and go to state 53
+    RETURN          shift and go to state 42
+    POINT           shift and go to state 20
+    CANVAS          shift and go to state 18
+    VAR_IDENTIFIER  shift and go to state 60
+    CENTER          shift and go to state 66
+    WIDTH           shift and go to state 44
+    HEIGHT          shift and go to state 65
+    COLOR           shift and go to state 50
+    X               shift and go to state 64
+    Y               shift and go to state 63
+    INT             shift and go to state 19
+    DEC             shift and go to state 9
+    STRING          shift and go to state 14
+    YESNO           shift and go to state 17
+    CIRCLE          shift and go to state 22
+    RECTANGLE       shift and go to state 16
+    TRIANGLE        shift and go to state 5
+
+    point                          shift and go to state 6
+    conditional                    shift and go to state 43
+    shape                          shift and go to state 7
+    declaration_type               shift and go to state 45
+    canvas                         shift and go to state 10
+    var_assignment                 shift and go to state 48
+    paint                          shift and go to state 51
+    point_assignment               shift and go to state 52
+    var                            shift and go to state 11
+    type                           shift and go to state 12
+    for_loop                       shift and go to state 54
+    return                         shift and go to state 55
+    statement                      shift and go to state 56
+    while_loop                     shift and go to state 57
+    read                           shift and go to state 58
+    assignment                     shift and go to state 59
+    print                          shift and go to state 61
+    declaration                    shift and go to state 62
+    shape_assignment               shift and go to state 69
+    canvas_assignment              shift and go to state 70
+    shape_type                     shift and go to state 21
+
+state 32
+
+    (12) var -> type VAR_IDENTIFIER list_index . EQUALS expression
+
+    EQUALS          shift and go to state 71
+
+
+state 33
+
+    (13) list_index -> L_BRACKET . INT_VAL R_BRACKET
+
+    INT_VAL         shift and go to state 72
+
+
+state 34
+
+    (14) list_index -> null .
+
+    DIV             reduce using rule 14 (list_index -> null .)
+    MULT            reduce using rule 14 (list_index -> null .)
+    L_THAN          reduce using rule 14 (list_index -> null .)
+    G_THAN          reduce using rule 14 (list_index -> null .)
+    EQUALS_EQUALS   reduce using rule 14 (list_index -> null .)
+    NOT_EQUALS      reduce using rule 14 (list_index -> null .)
+    G_THAN_EQUALS   reduce using rule 14 (list_index -> null .)
+    L_THAN_EQUALS   reduce using rule 14 (list_index -> null .)
+    PLUS            reduce using rule 14 (list_index -> null .)
+    R_BRACKET       reduce using rule 14 (list_index -> null .)
+    MAIN            reduce using rule 14 (list_index -> null .)
+    HEIGHT          reduce using rule 14 (list_index -> null .)
+    Y               reduce using rule 14 (list_index -> null .)
+    R_PAR           reduce using rule 14 (list_index -> null .)
+    COMMA           reduce using rule 14 (list_index -> null .)
+    COLOR           reduce using rule 14 (list_index -> null .)
+    WIDTH           reduce using rule 14 (list_index -> null .)
+    GREEN           reduce using rule 14 (list_index -> null .)
+    BLUE            reduce using rule 14 (list_index -> null .)
+    EQUALS          reduce using rule 14 (list_index -> null .)
+
+
+state 35
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH . EQUALS expression HEIGHT EQUALS expression color
+
+    EQUALS          shift and go to state 73
+
+
+state 36
+
+    (50) point -> POINT VAR_IDENTIFIER X . EQUALS expression Y EQUALS expression
+
+    EQUALS          shift and go to state 74
+
+
+state 37
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER . EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+
+    EQUALS          shift and go to state 75
+
+
+state 38
+
+    (4) function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments . R_PAR RETURNS type block_with_declaration
+
+    R_PAR           shift and go to state 76
+
+
+state 39
+
+    (7) function_arguments -> null .
+
+    R_PAR           reduce using rule 7 (function_arguments -> null .)
+
+
+state 40
+
+    (5) function_arguments -> type . VAR_IDENTIFIER
+    (6) function_arguments -> type . VAR_IDENTIFIER COMMA function_arguments
+
+    VAR_IDENTIFIER  shift and go to state 77
+
+
+state 41
+
+    (1) program -> PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration FINISH .
+
+    $end            reduce using rule 1 (program -> PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration FINISH .)
+
+
+state 42
+
+    (94) return -> RETURN . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 87
+
+state 43
+
+    (27) statement -> conditional .
+
+    R_BRACKET       reduce using rule 27 (statement -> conditional .)
+
+
+state 44
+
+    (43) shape_assignment -> WIDTH . EQUALS expression
+    (57) canvas_assignment -> WIDTH . EQUALS expression
+
+    EQUALS          shift and go to state 89
+
+
+state 45
+
+    (20) block_with_declaration -> L_BRACKET declaration_type . R_BRACKET
+
+    R_BRACKET       shift and go to state 90
+
+
+state 46
+
+    (87) print -> PRINT . L_PAR print_b print_a R_PAR
+
+    L_PAR           shift and go to state 91
+
+
+state 47
+
+    (96) while_loop -> WHILE . L_PAR expression R_PAR block
+
+    L_PAR           shift and go to state 92
+
+
+state 48
+
+    (34) assignment -> var_assignment .
+
+    R_BRACKET       reduce using rule 34 (assignment -> var_assignment .)
+
+
+state 49
+
+    (95) for_loop -> FOR . EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
+
+    EACH            shift and go to state 93
+
+
+state 50
+
+    (45) shape_assignment -> COLOR . EQUALS VAR_IDENTIFIER
+    (59) canvas_assignment -> COLOR . EQUALS expression
+
+    EQUALS          shift and go to state 94
+
+
+state 51
+
+    (31) statement -> paint .
+
+    R_BRACKET       reduce using rule 31 (statement -> paint .)
+
+
+state 52
+
+    (36) assignment -> point_assignment .
+
+    R_BRACKET       reduce using rule 36 (assignment -> point_assignment .)
+
+
+state 53
+
+    (92) read -> READ . VAR_IDENTIFIER
+
+    VAR_IDENTIFIER  shift and go to state 95
+
+
+state 54
+
+    (29) statement -> for_loop .
+
+    R_BRACKET       reduce using rule 29 (statement -> for_loop .)
+
+
+state 55
+
+    (33) statement -> return .
+
+    R_BRACKET       reduce using rule 33 (statement -> return .)
+
+
+state 56
+
+    (21) declaration_type -> statement .
+
+    R_BRACKET       reduce using rule 21 (declaration_type -> statement .)
+
+
+state 57
+
+    (30) statement -> while_loop .
+
+    R_BRACKET       reduce using rule 30 (statement -> while_loop .)
+
+
+state 58
+
+    (32) statement -> read .
+
+    R_BRACKET       reduce using rule 32 (statement -> read .)
+
+
+state 59
+
+    (26) statement -> assignment .
+
+    R_BRACKET       reduce using rule 26 (statement -> assignment .)
+
+
+state 60
+
+    (38) var_assignment -> VAR_IDENTIFIER . list_index EQUALS var_equals
+    (41) shape_assignment -> VAR_IDENTIFIER . EQUALS VAR_IDENTIFIER
+    (51) point_assignment -> VAR_IDENTIFIER . EQUALS VAR_IDENTIFIER
+    (55) canvas_assignment -> VAR_IDENTIFIER . ADD VAR_IDENTIFIER
+    (56) canvas_assignment -> VAR_IDENTIFIER . EQUALS VAR_IDENTIFIER
+    (13) list_index -> . L_BRACKET INT_VAL R_BRACKET
+    (14) list_index -> . null
+    (15) null -> .
+
+  ! shift/reduce conflict for EQUALS resolved as shift
+    EQUALS          shift and go to state 97
+    ADD             shift and go to state 98
+    L_BRACKET       shift and go to state 33
+
+  ! EQUALS          [ reduce using rule 15 (null -> .) ]
+
+    list_index                     shift and go to state 96
+    null                           shift and go to state 34
+
+state 61
+
+    (28) statement -> print .
+
+    R_BRACKET       reduce using rule 28 (statement -> print .)
+
+
+state 62
+
+    (22) declaration_type -> declaration .
+
+    R_BRACKET       reduce using rule 22 (declaration_type -> declaration .)
+
+
+state 63
+
+    (53) point_assignment -> Y . EQUALS expression
+
+    EQUALS          shift and go to state 99
+
+
+state 64
+
+    (52) point_assignment -> X . EQUALS expression
+
+    EQUALS          shift and go to state 100
+
+
+state 65
+
+    (44) shape_assignment -> HEIGHT . EQUALS expression
+    (58) canvas_assignment -> HEIGHT . EQUALS expression
+
+    EQUALS          shift and go to state 101
+
+
+state 66
+
+    (42) shape_assignment -> CENTER . EQUALS POINT
+
+    EQUALS          shift and go to state 102
+
+
+state 67
+
+    (81) conditional -> IF . conditional_if conditional_elsif conditional_else
+    (82) conditional_if -> . L_PAR expression R_PAR block
+
+    L_PAR           shift and go to state 103
+
+    conditional_if                 shift and go to state 104
+
+state 68
+
+    (93) paint -> PAINT . VAR_IDENTIFIER
+
+    VAR_IDENTIFIER  shift and go to state 105
+
+
+state 69
+
+    (35) assignment -> shape_assignment .
+
+    R_BRACKET       reduce using rule 35 (assignment -> shape_assignment .)
+
+
+state 70
+
+    (37) assignment -> canvas_assignment .
+
+    R_BRACKET       reduce using rule 37 (assignment -> canvas_assignment .)
+
+
+state 71
+
+    (12) var -> type VAR_IDENTIFIER list_index EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 106
+
+state 72
+
+    (13) list_index -> L_BRACKET INT_VAL . R_BRACKET
+
+    R_BRACKET       shift and go to state 107
+
+
+state 73
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS . expression HEIGHT EQUALS expression color
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 108
+
+state 74
+
+    (50) point -> POINT VAR_IDENTIFIER X EQUALS . expression Y EQUALS expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 109
+
+state 75
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS . point WIDTH EQUALS expression HEIGHT EQUALS expression color
+    (50) point -> . POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
+
+    POINT           shift and go to state 20
+
+    point                          shift and go to state 110
+
+state 76
+
+    (4) function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR . RETURNS type block_with_declaration
+
+    RETURNS         shift and go to state 111
+
+
+state 77
+
+    (5) function_arguments -> type VAR_IDENTIFIER .
+    (6) function_arguments -> type VAR_IDENTIFIER . COMMA function_arguments
+
+    R_PAR           reduce using rule 5 (function_arguments -> type VAR_IDENTIFIER .)
+    COMMA           shift and go to state 112
+
+
+state 78
+
+    (67) exp -> term .
+
+    L_THAN          reduce using rule 67 (exp -> term .)
+    G_THAN          reduce using rule 67 (exp -> term .)
+    EQUALS_EQUALS   reduce using rule 67 (exp -> term .)
+    NOT_EQUALS      reduce using rule 67 (exp -> term .)
+    G_THAN_EQUALS   reduce using rule 67 (exp -> term .)
+    L_THAN_EQUALS   reduce using rule 67 (exp -> term .)
+    PLUS            reduce using rule 67 (exp -> term .)
+    R_BRACKET       reduce using rule 67 (exp -> term .)
+    MAIN            reduce using rule 67 (exp -> term .)
+    HEIGHT          reduce using rule 67 (exp -> term .)
+    Y               reduce using rule 67 (exp -> term .)
+    R_PAR           reduce using rule 67 (exp -> term .)
+    COMMA           reduce using rule 67 (exp -> term .)
+    COLOR           reduce using rule 67 (exp -> term .)
+    WIDTH           reduce using rule 67 (exp -> term .)
+    GREEN           reduce using rule 67 (exp -> term .)
+    BLUE            reduce using rule 67 (exp -> term .)
+
+
+state 79
+
+    (74) factor -> factor_id .
+
+    DIV             reduce using rule 74 (factor -> factor_id .)
+    MULT            reduce using rule 74 (factor -> factor_id .)
+    L_THAN          reduce using rule 74 (factor -> factor_id .)
+    G_THAN          reduce using rule 74 (factor -> factor_id .)
+    EQUALS_EQUALS   reduce using rule 74 (factor -> factor_id .)
+    NOT_EQUALS      reduce using rule 74 (factor -> factor_id .)
+    G_THAN_EQUALS   reduce using rule 74 (factor -> factor_id .)
+    L_THAN_EQUALS   reduce using rule 74 (factor -> factor_id .)
+    PLUS            reduce using rule 74 (factor -> factor_id .)
+    R_BRACKET       reduce using rule 74 (factor -> factor_id .)
+    MAIN            reduce using rule 74 (factor -> factor_id .)
+    HEIGHT          reduce using rule 74 (factor -> factor_id .)
+    Y               reduce using rule 74 (factor -> factor_id .)
+    R_PAR           reduce using rule 74 (factor -> factor_id .)
+    COMMA           reduce using rule 74 (factor -> factor_id .)
+    COLOR           reduce using rule 74 (factor -> factor_id .)
+    WIDTH           reduce using rule 74 (factor -> factor_id .)
+    GREEN           reduce using rule 74 (factor -> factor_id .)
+    BLUE            reduce using rule 74 (factor -> factor_id .)
+
+
+state 80
+
+    (75) factor -> factor_exp .
+
+    DIV             reduce using rule 75 (factor -> factor_exp .)
+    MULT            reduce using rule 75 (factor -> factor_exp .)
+    L_THAN          reduce using rule 75 (factor -> factor_exp .)
+    G_THAN          reduce using rule 75 (factor -> factor_exp .)
+    EQUALS_EQUALS   reduce using rule 75 (factor -> factor_exp .)
+    NOT_EQUALS      reduce using rule 75 (factor -> factor_exp .)
+    G_THAN_EQUALS   reduce using rule 75 (factor -> factor_exp .)
+    L_THAN_EQUALS   reduce using rule 75 (factor -> factor_exp .)
+    PLUS            reduce using rule 75 (factor -> factor_exp .)
+    R_BRACKET       reduce using rule 75 (factor -> factor_exp .)
+    MAIN            reduce using rule 75 (factor -> factor_exp .)
+    HEIGHT          reduce using rule 75 (factor -> factor_exp .)
+    Y               reduce using rule 75 (factor -> factor_exp .)
+    R_PAR           reduce using rule 75 (factor -> factor_exp .)
+    COMMA           reduce using rule 75 (factor -> factor_exp .)
+    COLOR           reduce using rule 75 (factor -> factor_exp .)
+    WIDTH           reduce using rule 75 (factor -> factor_exp .)
+    GREEN           reduce using rule 75 (factor -> factor_exp .)
+    BLUE            reduce using rule 75 (factor -> factor_exp .)
+
+
+state 81
+
+    (77) factor_exp -> factor_sign . VAR_IDENTIFIER list_index
+
+    VAR_IDENTIFIER  shift and go to state 113
+
+
+state 82
+
+    (76) factor_id -> L_PAR . expression R_PAR
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 114
+
+state 83
+
+    (68) exp -> PLUS . exp
+    (79) factor_sign -> PLUS .
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+  ! reduce/reduce conflict for VAR_IDENTIFIER resolved using rule 15 (null -> .)
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+  ! VAR_IDENTIFIER  [ reduce using rule 79 (factor_sign -> PLUS .) ]
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 115
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+
+state 84
+
+    (60) expression -> exp . exp_ops exp
+    (61) exp_ops -> . L_THAN
+    (62) exp_ops -> . G_THAN
+    (63) exp_ops -> . EQUALS_EQUALS
+    (64) exp_ops -> . NOT_EQUALS
+    (65) exp_ops -> . G_THAN_EQUALS
+    (66) exp_ops -> . L_THAN_EQUALS
+
+    L_THAN          shift and go to state 121
+    G_THAN          shift and go to state 116
+    EQUALS_EQUALS   shift and go to state 120
+    NOT_EQUALS      shift and go to state 118
+    G_THAN_EQUALS   shift and go to state 122
+    L_THAN_EQUALS   shift and go to state 119
+
+    exp_ops                        shift and go to state 117
+
+state 85
+
+    (70) term -> factor . term_loop
+    (71) term_loop -> . DIV term
+    (72) term_loop -> . MULT term
+    (73) term_loop -> . null
+    (15) null -> .
+
+    DIV             shift and go to state 124
+    MULT            shift and go to state 126
+    L_THAN          reduce using rule 15 (null -> .)
+    G_THAN          reduce using rule 15 (null -> .)
+    EQUALS_EQUALS   reduce using rule 15 (null -> .)
+    NOT_EQUALS      reduce using rule 15 (null -> .)
+    G_THAN_EQUALS   reduce using rule 15 (null -> .)
+    L_THAN_EQUALS   reduce using rule 15 (null -> .)
+    PLUS            reduce using rule 15 (null -> .)
+    R_BRACKET       reduce using rule 15 (null -> .)
+    MAIN            reduce using rule 15 (null -> .)
+    HEIGHT          reduce using rule 15 (null -> .)
+    Y               reduce using rule 15 (null -> .)
+    R_PAR           reduce using rule 15 (null -> .)
+    COMMA           reduce using rule 15 (null -> .)
+    COLOR           reduce using rule 15 (null -> .)
+    WIDTH           reduce using rule 15 (null -> .)
+    GREEN           reduce using rule 15 (null -> .)
+    BLUE            reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 125
+    term_loop                      shift and go to state 123
+
+state 86
+
+    (80) factor_sign -> null .
+
+    VAR_IDENTIFIER  reduce using rule 80 (factor_sign -> null .)
+
+
+state 87
+
+    (94) return -> RETURN expression .
+    (98) expression -> expression . PLUS term
+
+    R_BRACKET       reduce using rule 94 (return -> RETURN expression .)
+    PLUS            shift and go to state 127
+
+
+state 88
+
+    (69) exp -> MINUS . exp
+    (78) factor_sign -> MINUS .
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+  ! reduce/reduce conflict for VAR_IDENTIFIER resolved using rule 15 (null -> .)
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+  ! VAR_IDENTIFIER  [ reduce using rule 78 (factor_sign -> MINUS .) ]
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 128
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+
+state 89
+
+    (43) shape_assignment -> WIDTH EQUALS . expression
+    (57) canvas_assignment -> WIDTH EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 129
+
+state 90
+
+    (20) block_with_declaration -> L_BRACKET declaration_type R_BRACKET .
+
+    FINISH          reduce using rule 20 (block_with_declaration -> L_BRACKET declaration_type R_BRACKET .)
+    MAIN            reduce using rule 20 (block_with_declaration -> L_BRACKET declaration_type R_BRACKET .)
+
+
+state 91
+
+    (87) print -> PRINT L_PAR . print_b print_a R_PAR
+    (90) print_b -> . expression
+    (91) print_b -> . VAR_IDENTIFIER
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+  ! shift/reduce conflict for VAR_IDENTIFIER resolved as shift
+    VAR_IDENTIFIER  shift and go to state 130
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+
+  ! VAR_IDENTIFIER  [ reduce using rule 15 (null -> .) ]
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 131
+    print_b                        shift and go to state 132
+
+state 92
+
+    (96) while_loop -> WHILE L_PAR . expression R_PAR block
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 133
+
+state 93
+
+    (95) for_loop -> FOR EACH . VAR_IDENTIFIER IN VAR_IDENTIFIER block
+
+    VAR_IDENTIFIER  shift and go to state 134
+
+
+state 94
+
+    (45) shape_assignment -> COLOR EQUALS . VAR_IDENTIFIER
+    (59) canvas_assignment -> COLOR EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+  ! shift/reduce conflict for VAR_IDENTIFIER resolved as shift
+    VAR_IDENTIFIER  shift and go to state 135
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+
+  ! VAR_IDENTIFIER  [ reduce using rule 15 (null -> .) ]
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 136
+
+state 95
+
+    (92) read -> READ VAR_IDENTIFIER .
+
+    R_BRACKET       reduce using rule 92 (read -> READ VAR_IDENTIFIER .)
+
+
+state 96
+
+    (38) var_assignment -> VAR_IDENTIFIER list_index . EQUALS var_equals
+
+    EQUALS          shift and go to state 137
+
+
+state 97
+
+    (41) shape_assignment -> VAR_IDENTIFIER EQUALS . VAR_IDENTIFIER
+    (51) point_assignment -> VAR_IDENTIFIER EQUALS . VAR_IDENTIFIER
+    (56) canvas_assignment -> VAR_IDENTIFIER EQUALS . VAR_IDENTIFIER
+
+    VAR_IDENTIFIER  shift and go to state 138
+
+
+state 98
+
+    (55) canvas_assignment -> VAR_IDENTIFIER ADD . VAR_IDENTIFIER
+
+    VAR_IDENTIFIER  shift and go to state 139
+
+
+state 99
+
+    (53) point_assignment -> Y EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 140
+
+state 100
+
+    (52) point_assignment -> X EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 141
+
+state 101
+
+    (44) shape_assignment -> HEIGHT EQUALS . expression
+    (58) canvas_assignment -> HEIGHT EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 142
+
+state 102
+
+    (42) shape_assignment -> CENTER EQUALS . POINT
+
+    POINT           shift and go to state 143
+
+
+state 103
+
+    (82) conditional_if -> L_PAR . expression R_PAR block
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 144
+
+state 104
+
+    (81) conditional -> IF conditional_if . conditional_elsif conditional_else
+    (83) conditional_elsif -> . ELSIF conditional_if conditional_elsif
+    (84) conditional_elsif -> . null
+    (15) null -> .
+
+    ELSIF           shift and go to state 146
+    ELSE            reduce using rule 15 (null -> .)
+    R_BRACKET       reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 147
+    conditional_elsif              shift and go to state 145
+
+state 105
+
+    (93) paint -> PAINT VAR_IDENTIFIER .
+
+    R_BRACKET       reduce using rule 93 (paint -> PAINT VAR_IDENTIFIER .)
+
+
+state 106
+
+    (12) var -> type VAR_IDENTIFIER list_index EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+    MAIN            reduce using rule 12 (var -> type VAR_IDENTIFIER list_index EQUALS expression .)
+    R_BRACKET       reduce using rule 12 (var -> type VAR_IDENTIFIER list_index EQUALS expression .)
+    PLUS            shift and go to state 127
+
+
+state 107
+
+    (13) list_index -> L_BRACKET INT_VAL R_BRACKET .
+
+    DIV             reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    MULT            reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    L_THAN          reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    G_THAN          reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    EQUALS_EQUALS   reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    NOT_EQUALS      reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    G_THAN_EQUALS   reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    L_THAN_EQUALS   reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    PLUS            reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    R_BRACKET       reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    MAIN            reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    HEIGHT          reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    Y               reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    R_PAR           reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    COMMA           reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    COLOR           reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    WIDTH           reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    GREEN           reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    BLUE            reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+    EQUALS          reduce using rule 13 (list_index -> L_BRACKET INT_VAL R_BRACKET .)
+
+
+state 108
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression . HEIGHT EQUALS expression color
+    (98) expression -> expression . PLUS term
+
+    HEIGHT          shift and go to state 148
+    PLUS            shift and go to state 127
+
+
+state 109
+
+    (50) point -> POINT VAR_IDENTIFIER X EQUALS expression . Y EQUALS expression
+    (98) expression -> expression . PLUS term
+
+    Y               shift and go to state 149
+    PLUS            shift and go to state 127
+
+
+state 110
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point . WIDTH EQUALS expression HEIGHT EQUALS expression color
+
+    WIDTH           shift and go to state 150
+
+
+state 111
+
+    (4) function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS . type block_with_declaration
+    (8) type -> . INT
+    (9) type -> . DEC
+    (10) type -> . STRING
+    (11) type -> . YESNO
+
+    INT             shift and go to state 19
+    DEC             shift and go to state 9
+    STRING          shift and go to state 14
+    YESNO           shift and go to state 17
+
+    type                           shift and go to state 151
+
+state 112
+
+    (6) function_arguments -> type VAR_IDENTIFIER COMMA . function_arguments
+    (5) function_arguments -> . type VAR_IDENTIFIER
+    (6) function_arguments -> . type VAR_IDENTIFIER COMMA function_arguments
+    (7) function_arguments -> . null
+    (8) type -> . INT
+    (9) type -> . DEC
+    (10) type -> . STRING
+    (11) type -> . YESNO
+    (15) null -> .
+
+    INT             shift and go to state 19
+    DEC             shift and go to state 9
+    STRING          shift and go to state 14
+    YESNO           shift and go to state 17
+    R_PAR           reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 39
+    type                           shift and go to state 40
+    function_arguments             shift and go to state 152
+
+state 113
+
+    (77) factor_exp -> factor_sign VAR_IDENTIFIER . list_index
+    (13) list_index -> . L_BRACKET INT_VAL R_BRACKET
+    (14) list_index -> . null
+    (15) null -> .
+
+    L_BRACKET       shift and go to state 33
+    DIV             reduce using rule 15 (null -> .)
+    MULT            reduce using rule 15 (null -> .)
+    L_THAN          reduce using rule 15 (null -> .)
+    G_THAN          reduce using rule 15 (null -> .)
+    EQUALS_EQUALS   reduce using rule 15 (null -> .)
+    NOT_EQUALS      reduce using rule 15 (null -> .)
+    G_THAN_EQUALS   reduce using rule 15 (null -> .)
+    L_THAN_EQUALS   reduce using rule 15 (null -> .)
+    PLUS            reduce using rule 15 (null -> .)
+    R_BRACKET       reduce using rule 15 (null -> .)
+    MAIN            reduce using rule 15 (null -> .)
+    HEIGHT          reduce using rule 15 (null -> .)
+    Y               reduce using rule 15 (null -> .)
+    R_PAR           reduce using rule 15 (null -> .)
+    COMMA           reduce using rule 15 (null -> .)
+    COLOR           reduce using rule 15 (null -> .)
+    WIDTH           reduce using rule 15 (null -> .)
+    GREEN           reduce using rule 15 (null -> .)
+    BLUE            reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 34
+    list_index                     shift and go to state 153
+
+state 114
+
+    (76) factor_id -> L_PAR expression . R_PAR
+    (98) expression -> expression . PLUS term
+
+    R_PAR           shift and go to state 154
+    PLUS            shift and go to state 127
+
+
+state 115
+
+    (68) exp -> PLUS exp .
+
+    L_THAN          reduce using rule 68 (exp -> PLUS exp .)
+    G_THAN          reduce using rule 68 (exp -> PLUS exp .)
+    EQUALS_EQUALS   reduce using rule 68 (exp -> PLUS exp .)
+    NOT_EQUALS      reduce using rule 68 (exp -> PLUS exp .)
+    G_THAN_EQUALS   reduce using rule 68 (exp -> PLUS exp .)
+    L_THAN_EQUALS   reduce using rule 68 (exp -> PLUS exp .)
+    PLUS            reduce using rule 68 (exp -> PLUS exp .)
+    R_BRACKET       reduce using rule 68 (exp -> PLUS exp .)
+    MAIN            reduce using rule 68 (exp -> PLUS exp .)
+    HEIGHT          reduce using rule 68 (exp -> PLUS exp .)
+    Y               reduce using rule 68 (exp -> PLUS exp .)
+    R_PAR           reduce using rule 68 (exp -> PLUS exp .)
+    COMMA           reduce using rule 68 (exp -> PLUS exp .)
+    COLOR           reduce using rule 68 (exp -> PLUS exp .)
+    WIDTH           reduce using rule 68 (exp -> PLUS exp .)
+    GREEN           reduce using rule 68 (exp -> PLUS exp .)
+    BLUE            reduce using rule 68 (exp -> PLUS exp .)
+
+
+state 116
+
+    (62) exp_ops -> G_THAN .
+
+    PLUS            reduce using rule 62 (exp_ops -> G_THAN .)
+    MINUS           reduce using rule 62 (exp_ops -> G_THAN .)
+    L_PAR           reduce using rule 62 (exp_ops -> G_THAN .)
+    VAR_IDENTIFIER  reduce using rule 62 (exp_ops -> G_THAN .)
+
+
+state 117
+
+    (60) expression -> exp exp_ops . exp
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 155
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+
+state 118
+
+    (64) exp_ops -> NOT_EQUALS .
+
+    PLUS            reduce using rule 64 (exp_ops -> NOT_EQUALS .)
+    MINUS           reduce using rule 64 (exp_ops -> NOT_EQUALS .)
+    L_PAR           reduce using rule 64 (exp_ops -> NOT_EQUALS .)
+    VAR_IDENTIFIER  reduce using rule 64 (exp_ops -> NOT_EQUALS .)
+
+
+state 119
+
+    (66) exp_ops -> L_THAN_EQUALS .
+
+    PLUS            reduce using rule 66 (exp_ops -> L_THAN_EQUALS .)
+    MINUS           reduce using rule 66 (exp_ops -> L_THAN_EQUALS .)
+    L_PAR           reduce using rule 66 (exp_ops -> L_THAN_EQUALS .)
+    VAR_IDENTIFIER  reduce using rule 66 (exp_ops -> L_THAN_EQUALS .)
+
+
+state 120
+
+    (63) exp_ops -> EQUALS_EQUALS .
+
+    PLUS            reduce using rule 63 (exp_ops -> EQUALS_EQUALS .)
+    MINUS           reduce using rule 63 (exp_ops -> EQUALS_EQUALS .)
+    L_PAR           reduce using rule 63 (exp_ops -> EQUALS_EQUALS .)
+    VAR_IDENTIFIER  reduce using rule 63 (exp_ops -> EQUALS_EQUALS .)
+
+
+state 121
+
+    (61) exp_ops -> L_THAN .
+
+    PLUS            reduce using rule 61 (exp_ops -> L_THAN .)
+    MINUS           reduce using rule 61 (exp_ops -> L_THAN .)
+    L_PAR           reduce using rule 61 (exp_ops -> L_THAN .)
+    VAR_IDENTIFIER  reduce using rule 61 (exp_ops -> L_THAN .)
+
+
+state 122
+
+    (65) exp_ops -> G_THAN_EQUALS .
+
+    PLUS            reduce using rule 65 (exp_ops -> G_THAN_EQUALS .)
+    MINUS           reduce using rule 65 (exp_ops -> G_THAN_EQUALS .)
+    L_PAR           reduce using rule 65 (exp_ops -> G_THAN_EQUALS .)
+    VAR_IDENTIFIER  reduce using rule 65 (exp_ops -> G_THAN_EQUALS .)
+
+
+state 123
+
+    (70) term -> factor term_loop .
+
+    L_THAN          reduce using rule 70 (term -> factor term_loop .)
+    G_THAN          reduce using rule 70 (term -> factor term_loop .)
+    EQUALS_EQUALS   reduce using rule 70 (term -> factor term_loop .)
+    NOT_EQUALS      reduce using rule 70 (term -> factor term_loop .)
+    G_THAN_EQUALS   reduce using rule 70 (term -> factor term_loop .)
+    L_THAN_EQUALS   reduce using rule 70 (term -> factor term_loop .)
+    PLUS            reduce using rule 70 (term -> factor term_loop .)
+    R_BRACKET       reduce using rule 70 (term -> factor term_loop .)
+    MAIN            reduce using rule 70 (term -> factor term_loop .)
+    HEIGHT          reduce using rule 70 (term -> factor term_loop .)
+    Y               reduce using rule 70 (term -> factor term_loop .)
+    R_PAR           reduce using rule 70 (term -> factor term_loop .)
+    COMMA           reduce using rule 70 (term -> factor term_loop .)
+    COLOR           reduce using rule 70 (term -> factor term_loop .)
+    WIDTH           reduce using rule 70 (term -> factor term_loop .)
+    GREEN           reduce using rule 70 (term -> factor term_loop .)
+    BLUE            reduce using rule 70 (term -> factor term_loop .)
+
+
+state 124
+
+    (71) term_loop -> DIV . term
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    L_PAR           shift and go to state 82
+    MINUS           shift and go to state 158
+    PLUS            shift and go to state 157
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 156
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+
+state 125
+
+    (73) term_loop -> null .
+
+    L_THAN          reduce using rule 73 (term_loop -> null .)
+    G_THAN          reduce using rule 73 (term_loop -> null .)
+    EQUALS_EQUALS   reduce using rule 73 (term_loop -> null .)
+    NOT_EQUALS      reduce using rule 73 (term_loop -> null .)
+    G_THAN_EQUALS   reduce using rule 73 (term_loop -> null .)
+    L_THAN_EQUALS   reduce using rule 73 (term_loop -> null .)
+    PLUS            reduce using rule 73 (term_loop -> null .)
+    R_BRACKET       reduce using rule 73 (term_loop -> null .)
+    MAIN            reduce using rule 73 (term_loop -> null .)
+    HEIGHT          reduce using rule 73 (term_loop -> null .)
+    Y               reduce using rule 73 (term_loop -> null .)
+    R_PAR           reduce using rule 73 (term_loop -> null .)
+    COMMA           reduce using rule 73 (term_loop -> null .)
+    COLOR           reduce using rule 73 (term_loop -> null .)
+    WIDTH           reduce using rule 73 (term_loop -> null .)
+    GREEN           reduce using rule 73 (term_loop -> null .)
+    BLUE            reduce using rule 73 (term_loop -> null .)
+
+
+state 126
+
+    (72) term_loop -> MULT . term
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    L_PAR           shift and go to state 82
+    MINUS           shift and go to state 158
+    PLUS            shift and go to state 157
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 159
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+
+state 127
+
+    (98) expression -> expression PLUS . term
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    L_PAR           shift and go to state 82
+    MINUS           shift and go to state 158
+    PLUS            shift and go to state 157
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 160
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+
+state 128
+
+    (69) exp -> MINUS exp .
+
+    L_THAN          reduce using rule 69 (exp -> MINUS exp .)
+    G_THAN          reduce using rule 69 (exp -> MINUS exp .)
+    EQUALS_EQUALS   reduce using rule 69 (exp -> MINUS exp .)
+    NOT_EQUALS      reduce using rule 69 (exp -> MINUS exp .)
+    G_THAN_EQUALS   reduce using rule 69 (exp -> MINUS exp .)
+    L_THAN_EQUALS   reduce using rule 69 (exp -> MINUS exp .)
+    PLUS            reduce using rule 69 (exp -> MINUS exp .)
+    R_BRACKET       reduce using rule 69 (exp -> MINUS exp .)
+    MAIN            reduce using rule 69 (exp -> MINUS exp .)
+    HEIGHT          reduce using rule 69 (exp -> MINUS exp .)
+    Y               reduce using rule 69 (exp -> MINUS exp .)
+    R_PAR           reduce using rule 69 (exp -> MINUS exp .)
+    COMMA           reduce using rule 69 (exp -> MINUS exp .)
+    COLOR           reduce using rule 69 (exp -> MINUS exp .)
+    WIDTH           reduce using rule 69 (exp -> MINUS exp .)
+    GREEN           reduce using rule 69 (exp -> MINUS exp .)
+    BLUE            reduce using rule 69 (exp -> MINUS exp .)
+
+
+state 129
+
+    (43) shape_assignment -> WIDTH EQUALS expression .
+    (57) canvas_assignment -> WIDTH EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 43 (shape_assignment -> WIDTH EQUALS expression .)
+    R_BRACKET       reduce using rule 43 (shape_assignment -> WIDTH EQUALS expression .)
+    PLUS            shift and go to state 127
+
+  ! R_BRACKET       [ reduce using rule 57 (canvas_assignment -> WIDTH EQUALS expression .) ]
+
+
+state 130
+
+    (91) print_b -> VAR_IDENTIFIER .
+
+    COMMA           reduce using rule 91 (print_b -> VAR_IDENTIFIER .)
+    R_PAR           reduce using rule 91 (print_b -> VAR_IDENTIFIER .)
+
+
+state 131
+
+    (90) print_b -> expression .
+    (98) expression -> expression . PLUS term
+
+    COMMA           reduce using rule 90 (print_b -> expression .)
+    R_PAR           reduce using rule 90 (print_b -> expression .)
+    PLUS            shift and go to state 127
+
+
+state 132
+
+    (87) print -> PRINT L_PAR print_b . print_a R_PAR
+    (88) print_a -> . COMMA print_b print_a
+    (89) print_a -> . null
+    (15) null -> .
+
+    COMMA           shift and go to state 161
+    R_PAR           reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 162
+    print_a                        shift and go to state 163
+
+state 133
+
+    (96) while_loop -> WHILE L_PAR expression . R_PAR block
+    (98) expression -> expression . PLUS term
+
+    R_PAR           shift and go to state 164
+    PLUS            shift and go to state 127
+
+
+state 134
+
+    (95) for_loop -> FOR EACH VAR_IDENTIFIER . IN VAR_IDENTIFIER block
+
+    IN              shift and go to state 165
+
+
+state 135
+
+    (45) shape_assignment -> COLOR EQUALS VAR_IDENTIFIER .
+
+    R_BRACKET       reduce using rule 45 (shape_assignment -> COLOR EQUALS VAR_IDENTIFIER .)
+
+
+state 136
+
+    (59) canvas_assignment -> COLOR EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+    R_BRACKET       reduce using rule 59 (canvas_assignment -> COLOR EQUALS expression .)
+    PLUS            shift and go to state 127
+
+
+state 137
+
+    (38) var_assignment -> VAR_IDENTIFIER list_index EQUALS . var_equals
+    (39) var_equals -> . expression
+    (40) var_equals -> . VAR_IDENTIFIER
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+  ! shift/reduce conflict for VAR_IDENTIFIER resolved as shift
+    VAR_IDENTIFIER  shift and go to state 167
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+
+  ! VAR_IDENTIFIER  [ reduce using rule 15 (null -> .) ]
+
+    term                           shift and go to state 78
+    var_equals                     shift and go to state 166
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 168
+
+state 138
+
+    (41) shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .
+    (51) point_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .
+    (56) canvas_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .
+
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 41 (shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .)
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 41 (shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .)
+    R_BRACKET       reduce using rule 41 (shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .)
+
+  ! R_BRACKET       [ reduce using rule 51 (point_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .) ]
+  ! R_BRACKET       [ reduce using rule 56 (canvas_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER .) ]
+
+
+state 139
+
+    (55) canvas_assignment -> VAR_IDENTIFIER ADD VAR_IDENTIFIER .
+
+    R_BRACKET       reduce using rule 55 (canvas_assignment -> VAR_IDENTIFIER ADD VAR_IDENTIFIER .)
+
+
+state 140
+
+    (53) point_assignment -> Y EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+    R_BRACKET       reduce using rule 53 (point_assignment -> Y EQUALS expression .)
+    PLUS            shift and go to state 127
+
+
+state 141
+
+    (52) point_assignment -> X EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+    R_BRACKET       reduce using rule 52 (point_assignment -> X EQUALS expression .)
+    PLUS            shift and go to state 127
+
+
+state 142
+
+    (44) shape_assignment -> HEIGHT EQUALS expression .
+    (58) canvas_assignment -> HEIGHT EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 44 (shape_assignment -> HEIGHT EQUALS expression .)
+    R_BRACKET       reduce using rule 44 (shape_assignment -> HEIGHT EQUALS expression .)
+    PLUS            shift and go to state 127
+
+  ! R_BRACKET       [ reduce using rule 58 (canvas_assignment -> HEIGHT EQUALS expression .) ]
+
+
+state 143
+
+    (42) shape_assignment -> CENTER EQUALS POINT .
+
+    R_BRACKET       reduce using rule 42 (shape_assignment -> CENTER EQUALS POINT .)
+
+
+state 144
+
+    (82) conditional_if -> L_PAR expression . R_PAR block
+    (98) expression -> expression . PLUS term
+
+    R_PAR           shift and go to state 169
+    PLUS            shift and go to state 127
+
+
+state 145
+
+    (81) conditional -> IF conditional_if conditional_elsif . conditional_else
+    (85) conditional_else -> . ELSE block
+    (86) conditional_else -> . null
+    (15) null -> .
+
+    ELSE            shift and go to state 171
+    R_BRACKET       reduce using rule 15 (null -> .)
+
+    conditional_else               shift and go to state 170
+    null                           shift and go to state 172
+
+state 146
+
+    (83) conditional_elsif -> ELSIF . conditional_if conditional_elsif
+    (82) conditional_if -> . L_PAR expression R_PAR block
+
+    L_PAR           shift and go to state 103
+
+    conditional_if                 shift and go to state 173
+
+state 147
+
+    (84) conditional_elsif -> null .
+
+    ELSE            reduce using rule 84 (conditional_elsif -> null .)
+    R_BRACKET       reduce using rule 84 (conditional_elsif -> null .)
+
+
+state 148
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT . EQUALS expression color
+
+    EQUALS          shift and go to state 174
+
+
+state 149
+
+    (50) point -> POINT VAR_IDENTIFIER X EQUALS expression Y . EQUALS expression
+
+    EQUALS          shift and go to state 175
+
+
+state 150
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH . EQUALS expression HEIGHT EQUALS expression color
+
+    EQUALS          shift and go to state 176
+
+
+state 151
+
+    (4) function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type . block_with_declaration
+    (20) block_with_declaration -> . L_BRACKET declaration_type R_BRACKET
+
+    L_BRACKET       shift and go to state 31
+
+    block_with_declaration         shift and go to state 177
+
+state 152
+
+    (6) function_arguments -> type VAR_IDENTIFIER COMMA function_arguments .
+
+    R_PAR           reduce using rule 6 (function_arguments -> type VAR_IDENTIFIER COMMA function_arguments .)
+
+
+state 153
+
+    (77) factor_exp -> factor_sign VAR_IDENTIFIER list_index .
+
+    DIV             reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    MULT            reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    L_THAN          reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    G_THAN          reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    EQUALS_EQUALS   reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    NOT_EQUALS      reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    G_THAN_EQUALS   reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    L_THAN_EQUALS   reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    PLUS            reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    R_BRACKET       reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    MAIN            reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    HEIGHT          reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    Y               reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    R_PAR           reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    COMMA           reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    COLOR           reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    WIDTH           reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    GREEN           reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+    BLUE            reduce using rule 77 (factor_exp -> factor_sign VAR_IDENTIFIER list_index .)
+
+
+state 154
+
+    (76) factor_id -> L_PAR expression R_PAR .
+
+    DIV             reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    MULT            reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    L_THAN          reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    G_THAN          reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    EQUALS_EQUALS   reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    NOT_EQUALS      reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    G_THAN_EQUALS   reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    L_THAN_EQUALS   reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    PLUS            reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    R_BRACKET       reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    MAIN            reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    HEIGHT          reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    Y               reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    R_PAR           reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    COMMA           reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    COLOR           reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    WIDTH           reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    GREEN           reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+    BLUE            reduce using rule 76 (factor_id -> L_PAR expression R_PAR .)
+
+
+state 155
+
+    (60) expression -> exp exp_ops exp .
+
+    PLUS            reduce using rule 60 (expression -> exp exp_ops exp .)
+    R_BRACKET       reduce using rule 60 (expression -> exp exp_ops exp .)
+    MAIN            reduce using rule 60 (expression -> exp exp_ops exp .)
+    R_PAR           reduce using rule 60 (expression -> exp exp_ops exp .)
+    WIDTH           reduce using rule 60 (expression -> exp exp_ops exp .)
+    COMMA           reduce using rule 60 (expression -> exp exp_ops exp .)
+    COLOR           reduce using rule 60 (expression -> exp exp_ops exp .)
+    Y               reduce using rule 60 (expression -> exp exp_ops exp .)
+    HEIGHT          reduce using rule 60 (expression -> exp exp_ops exp .)
+    BLUE            reduce using rule 60 (expression -> exp exp_ops exp .)
+    GREEN           reduce using rule 60 (expression -> exp exp_ops exp .)
+
+
+state 156
+
+    (71) term_loop -> DIV term .
+
+    L_THAN          reduce using rule 71 (term_loop -> DIV term .)
+    G_THAN          reduce using rule 71 (term_loop -> DIV term .)
+    EQUALS_EQUALS   reduce using rule 71 (term_loop -> DIV term .)
+    NOT_EQUALS      reduce using rule 71 (term_loop -> DIV term .)
+    G_THAN_EQUALS   reduce using rule 71 (term_loop -> DIV term .)
+    L_THAN_EQUALS   reduce using rule 71 (term_loop -> DIV term .)
+    PLUS            reduce using rule 71 (term_loop -> DIV term .)
+    R_BRACKET       reduce using rule 71 (term_loop -> DIV term .)
+    MAIN            reduce using rule 71 (term_loop -> DIV term .)
+    HEIGHT          reduce using rule 71 (term_loop -> DIV term .)
+    Y               reduce using rule 71 (term_loop -> DIV term .)
+    R_PAR           reduce using rule 71 (term_loop -> DIV term .)
+    COMMA           reduce using rule 71 (term_loop -> DIV term .)
+    COLOR           reduce using rule 71 (term_loop -> DIV term .)
+    WIDTH           reduce using rule 71 (term_loop -> DIV term .)
+    GREEN           reduce using rule 71 (term_loop -> DIV term .)
+    BLUE            reduce using rule 71 (term_loop -> DIV term .)
+
+
+state 157
+
+    (79) factor_sign -> PLUS .
+
+    VAR_IDENTIFIER  reduce using rule 79 (factor_sign -> PLUS .)
+
+
+state 158
+
+    (78) factor_sign -> MINUS .
+
+    VAR_IDENTIFIER  reduce using rule 78 (factor_sign -> MINUS .)
+
+
+state 159
+
+    (72) term_loop -> MULT term .
+
+    L_THAN          reduce using rule 72 (term_loop -> MULT term .)
+    G_THAN          reduce using rule 72 (term_loop -> MULT term .)
+    EQUALS_EQUALS   reduce using rule 72 (term_loop -> MULT term .)
+    NOT_EQUALS      reduce using rule 72 (term_loop -> MULT term .)
+    G_THAN_EQUALS   reduce using rule 72 (term_loop -> MULT term .)
+    L_THAN_EQUALS   reduce using rule 72 (term_loop -> MULT term .)
+    PLUS            reduce using rule 72 (term_loop -> MULT term .)
+    R_BRACKET       reduce using rule 72 (term_loop -> MULT term .)
+    MAIN            reduce using rule 72 (term_loop -> MULT term .)
+    HEIGHT          reduce using rule 72 (term_loop -> MULT term .)
+    Y               reduce using rule 72 (term_loop -> MULT term .)
+    R_PAR           reduce using rule 72 (term_loop -> MULT term .)
+    COMMA           reduce using rule 72 (term_loop -> MULT term .)
+    COLOR           reduce using rule 72 (term_loop -> MULT term .)
+    WIDTH           reduce using rule 72 (term_loop -> MULT term .)
+    GREEN           reduce using rule 72 (term_loop -> MULT term .)
+    BLUE            reduce using rule 72 (term_loop -> MULT term .)
+
+
+state 160
+
+    (98) expression -> expression PLUS term .
+
+    PLUS            reduce using rule 98 (expression -> expression PLUS term .)
+    R_BRACKET       reduce using rule 98 (expression -> expression PLUS term .)
+    MAIN            reduce using rule 98 (expression -> expression PLUS term .)
+    R_PAR           reduce using rule 98 (expression -> expression PLUS term .)
+    WIDTH           reduce using rule 98 (expression -> expression PLUS term .)
+    COMMA           reduce using rule 98 (expression -> expression PLUS term .)
+    COLOR           reduce using rule 98 (expression -> expression PLUS term .)
+    Y               reduce using rule 98 (expression -> expression PLUS term .)
+    HEIGHT          reduce using rule 98 (expression -> expression PLUS term .)
+    BLUE            reduce using rule 98 (expression -> expression PLUS term .)
+    GREEN           reduce using rule 98 (expression -> expression PLUS term .)
+
+
+state 161
+
+    (88) print_a -> COMMA . print_b print_a
+    (90) print_b -> . expression
+    (91) print_b -> . VAR_IDENTIFIER
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+  ! shift/reduce conflict for VAR_IDENTIFIER resolved as shift
+    VAR_IDENTIFIER  shift and go to state 130
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+
+  ! VAR_IDENTIFIER  [ reduce using rule 15 (null -> .) ]
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 131
+    print_b                        shift and go to state 178
+
+state 162
+
+    (89) print_a -> null .
+
+    R_PAR           reduce using rule 89 (print_a -> null .)
+
+
+state 163
+
+    (87) print -> PRINT L_PAR print_b print_a . R_PAR
+
+    R_PAR           shift and go to state 179
+
+
+state 164
+
+    (96) while_loop -> WHILE L_PAR expression R_PAR . block
+    (23) block -> . L_BRACKET block_contains R_BRACKET
+
+    L_BRACKET       shift and go to state 180
+
+    block                          shift and go to state 181
+
+state 165
+
+    (95) for_loop -> FOR EACH VAR_IDENTIFIER IN . VAR_IDENTIFIER block
+
+    VAR_IDENTIFIER  shift and go to state 182
+
+
+state 166
+
+    (38) var_assignment -> VAR_IDENTIFIER list_index EQUALS var_equals .
+
+    R_BRACKET       reduce using rule 38 (var_assignment -> VAR_IDENTIFIER list_index EQUALS var_equals .)
+
+
+state 167
+
+    (40) var_equals -> VAR_IDENTIFIER .
+
+    R_BRACKET       reduce using rule 40 (var_equals -> VAR_IDENTIFIER .)
+
+
+state 168
+
+    (39) var_equals -> expression .
+    (98) expression -> expression . PLUS term
+
+    R_BRACKET       reduce using rule 39 (var_equals -> expression .)
+    PLUS            shift and go to state 127
+
+
+state 169
+
+    (82) conditional_if -> L_PAR expression R_PAR . block
+    (23) block -> . L_BRACKET block_contains R_BRACKET
+
+    L_BRACKET       shift and go to state 180
+
+    block                          shift and go to state 183
+
+state 170
+
+    (81) conditional -> IF conditional_if conditional_elsif conditional_else .
+
+    R_BRACKET       reduce using rule 81 (conditional -> IF conditional_if conditional_elsif conditional_else .)
+
+
+state 171
+
+    (85) conditional_else -> ELSE . block
+    (23) block -> . L_BRACKET block_contains R_BRACKET
+
+    L_BRACKET       shift and go to state 180
+
+    block                          shift and go to state 184
+
+state 172
+
+    (86) conditional_else -> null .
+
+    R_BRACKET       reduce using rule 86 (conditional_else -> null .)
+
+
+state 173
+
+    (83) conditional_elsif -> ELSIF conditional_if . conditional_elsif
+    (83) conditional_elsif -> . ELSIF conditional_if conditional_elsif
+    (84) conditional_elsif -> . null
+    (15) null -> .
+
+    ELSIF           shift and go to state 146
+    ELSE            reduce using rule 15 (null -> .)
+    R_BRACKET       reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 147
+    conditional_elsif              shift and go to state 185
+
+state 174
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS . expression color
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 186
+
+state 175
+
+    (50) point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 187
+
+state 176
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS . expression HEIGHT EQUALS expression color
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 188
+
+state 177
+
+    (4) function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration .
+
+    MAIN            reduce using rule 4 (function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration .)
+
+
+state 178
+
+    (88) print_a -> COMMA print_b . print_a
+    (88) print_a -> . COMMA print_b print_a
+    (89) print_a -> . null
+    (15) null -> .
+
+    COMMA           shift and go to state 161
+    R_PAR           reduce using rule 15 (null -> .)
+
+    null                           shift and go to state 162
+    print_a                        shift and go to state 189
+
+state 179
+
+    (87) print -> PRINT L_PAR print_b print_a R_PAR .
+
+    R_BRACKET       reduce using rule 87 (print -> PRINT L_PAR print_b print_a R_PAR .)
+
+
+state 180
+
+    (23) block -> L_BRACKET . block_contains R_BRACKET
+    (24) block_contains -> . statement
+    (25) block_contains -> . null
+    (26) statement -> . assignment
+    (27) statement -> . conditional
+    (28) statement -> . print
+    (29) statement -> . for_loop
+    (30) statement -> . while_loop
+    (31) statement -> . paint
+    (32) statement -> . read
+    (33) statement -> . return
+    (15) null -> .
+    (34) assignment -> . var_assignment
+    (35) assignment -> . shape_assignment
+    (36) assignment -> . point_assignment
+    (37) assignment -> . canvas_assignment
+    (81) conditional -> . IF conditional_if conditional_elsif conditional_else
+    (87) print -> . PRINT L_PAR print_b print_a R_PAR
+    (95) for_loop -> . FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
+    (96) while_loop -> . WHILE L_PAR expression R_PAR block
+    (93) paint -> . PAINT VAR_IDENTIFIER
+    (92) read -> . READ VAR_IDENTIFIER
+    (94) return -> . RETURN expression
+    (38) var_assignment -> . VAR_IDENTIFIER list_index EQUALS var_equals
+    (41) shape_assignment -> . VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+    (42) shape_assignment -> . CENTER EQUALS POINT
+    (43) shape_assignment -> . WIDTH EQUALS expression
+    (44) shape_assignment -> . HEIGHT EQUALS expression
+    (45) shape_assignment -> . COLOR EQUALS VAR_IDENTIFIER
+    (51) point_assignment -> . VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+    (52) point_assignment -> . X EQUALS expression
+    (53) point_assignment -> . Y EQUALS expression
+    (55) canvas_assignment -> . VAR_IDENTIFIER ADD VAR_IDENTIFIER
+    (56) canvas_assignment -> . VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+    (57) canvas_assignment -> . WIDTH EQUALS expression
+    (58) canvas_assignment -> . HEIGHT EQUALS expression
+    (59) canvas_assignment -> . COLOR EQUALS expression
+
+    R_BRACKET       reduce using rule 15 (null -> .)
+    IF              shift and go to state 67
+    PRINT           shift and go to state 46
+    FOR             shift and go to state 49
+    WHILE           shift and go to state 47
+    PAINT           shift and go to state 68
+    READ            shift and go to state 53
+    RETURN          shift and go to state 42
+    VAR_IDENTIFIER  shift and go to state 60
+    CENTER          shift and go to state 66
+    WIDTH           shift and go to state 44
+    HEIGHT          shift and go to state 65
+    COLOR           shift and go to state 50
+    X               shift and go to state 64
+    Y               shift and go to state 63
+
+    conditional                    shift and go to state 43
+    block_contains                 shift and go to state 190
+    null                           shift and go to state 191
+    var_assignment                 shift and go to state 48
+    paint                          shift and go to state 51
+    point_assignment               shift and go to state 52
+    print                          shift and go to state 61
+    for_loop                       shift and go to state 54
+    return                         shift and go to state 55
+    statement                      shift and go to state 192
+    while_loop                     shift and go to state 57
+    read                           shift and go to state 58
+    assignment                     shift and go to state 59
+    shape_assignment               shift and go to state 69
+    canvas_assignment              shift and go to state 70
+
+state 181
+
+    (96) while_loop -> WHILE L_PAR expression R_PAR block .
+
+    R_BRACKET       reduce using rule 96 (while_loop -> WHILE L_PAR expression R_PAR block .)
+
+
+state 182
+
+    (95) for_loop -> FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER . block
+    (23) block -> . L_BRACKET block_contains R_BRACKET
+
+    L_BRACKET       shift and go to state 180
+
+    block                          shift and go to state 193
+
+state 183
+
+    (82) conditional_if -> L_PAR expression R_PAR block .
+
+    ELSIF           reduce using rule 82 (conditional_if -> L_PAR expression R_PAR block .)
+    ELSE            reduce using rule 82 (conditional_if -> L_PAR expression R_PAR block .)
+    R_BRACKET       reduce using rule 82 (conditional_if -> L_PAR expression R_PAR block .)
+
+
+state 184
+
+    (85) conditional_else -> ELSE block .
+
+    R_BRACKET       reduce using rule 85 (conditional_else -> ELSE block .)
+
+
+state 185
+
+    (83) conditional_elsif -> ELSIF conditional_if conditional_elsif .
+
+    ELSE            reduce using rule 83 (conditional_elsif -> ELSIF conditional_if conditional_elsif .)
+    R_BRACKET       reduce using rule 83 (conditional_elsif -> ELSIF conditional_if conditional_elsif .)
+
+
+state 186
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression . color
+    (98) expression -> expression . PLUS term
+    (97) color -> . COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+
+    PLUS            shift and go to state 127
+    COLOR           shift and go to state 195
+
+    color                          shift and go to state 194
+
+state 187
+
+    (50) point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+    R_BRACKET       reduce using rule 50 (point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression .)
+    WIDTH           reduce using rule 50 (point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression .)
+    MAIN            reduce using rule 50 (point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression .)
+    PLUS            shift and go to state 127
+
+
+state 188
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression . HEIGHT EQUALS expression color
+    (98) expression -> expression . PLUS term
+
+    HEIGHT          shift and go to state 196
+    PLUS            shift and go to state 127
+
+
+state 189
+
+    (88) print_a -> COMMA print_b print_a .
+
+    R_PAR           reduce using rule 88 (print_a -> COMMA print_b print_a .)
+
+
+state 190
+
+    (23) block -> L_BRACKET block_contains . R_BRACKET
+
+    R_BRACKET       shift and go to state 197
+
+
+state 191
+
+    (25) block_contains -> null .
+
+    R_BRACKET       reduce using rule 25 (block_contains -> null .)
+
+
+state 192
+
+    (24) block_contains -> statement .
+
+    R_BRACKET       reduce using rule 24 (block_contains -> statement .)
+
+
+state 193
+
+    (95) for_loop -> FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block .
+
+    R_BRACKET       reduce using rule 95 (for_loop -> FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block .)
+
+
+state 194
+
+    (54) canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color .
+
+    R_BRACKET       reduce using rule 54 (canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color .)
+    MAIN            reduce using rule 54 (canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color .)
+
+
+state 195
+
+    (97) color -> COLOR . VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+
+    VAR_IDENTIFIER  shift and go to state 198
+
+
+state 196
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT . EQUALS expression color
+
+    EQUALS          shift and go to state 199
+
+
+state 197
+
+    (23) block -> L_BRACKET block_contains R_BRACKET .
+
+    R_BRACKET       reduce using rule 23 (block -> L_BRACKET block_contains R_BRACKET .)
+    ELSIF           reduce using rule 23 (block -> L_BRACKET block_contains R_BRACKET .)
+    ELSE            reduce using rule 23 (block -> L_BRACKET block_contains R_BRACKET .)
+
+
+state 198
+
+    (97) color -> COLOR VAR_IDENTIFIER . RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+
+    RED             shift and go to state 200
+
+
+state 199
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS . expression color
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    exp                            shift and go to state 84
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 201
+
+state 200
+
+    (97) color -> COLOR VAR_IDENTIFIER RED . EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+
+    EQUALS          shift and go to state 202
+
+
+state 201
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression . color
+    (98) expression -> expression . PLUS term
+    (97) color -> . COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
+
+    PLUS            shift and go to state 127
+    COLOR           shift and go to state 195
+
+    color                          shift and go to state 203
+
+state 202
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS . expression GREEN EQUALS expression BLUE EQUALS expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 204
+
+state 203
+
+    (16) shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color .
+
+    MAIN            reduce using rule 16 (shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color .)
+    R_BRACKET       reduce using rule 16 (shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color .)
+
+
+state 204
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression . GREEN EQUALS expression BLUE EQUALS expression
+    (98) expression -> expression . PLUS term
+
+    GREEN           shift and go to state 205
+    PLUS            shift and go to state 127
+
+
+state 205
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN . EQUALS expression BLUE EQUALS expression
+
+    EQUALS          shift and go to state 206
+
+
+state 206
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS . expression BLUE EQUALS expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 207
+
+state 207
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression . BLUE EQUALS expression
+    (98) expression -> expression . PLUS term
+
+    BLUE            shift and go to state 208
+    PLUS            shift and go to state 127
+
+
+state 208
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE . EQUALS expression
+
+    EQUALS          shift and go to state 209
+
+
+state 209
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS . expression
+    (60) expression -> . exp exp_ops exp
+    (98) expression -> . expression PLUS term
+    (67) exp -> . term
+    (68) exp -> . PLUS exp
+    (69) exp -> . MINUS exp
+    (70) term -> . factor term_loop
+    (74) factor -> . factor_id
+    (75) factor -> . factor_exp
+    (76) factor_id -> . L_PAR expression R_PAR
+    (77) factor_exp -> . factor_sign VAR_IDENTIFIER list_index
+    (78) factor_sign -> . MINUS
+    (79) factor_sign -> . PLUS
+    (80) factor_sign -> . null
+    (15) null -> .
+
+    PLUS            shift and go to state 83
+    MINUS           shift and go to state 88
+    L_PAR           shift and go to state 82
+    VAR_IDENTIFIER  reduce using rule 15 (null -> .)
+
+    term                           shift and go to state 78
+    exp                            shift and go to state 84
+    factor_id                      shift and go to state 79
+    factor_exp                     shift and go to state 80
+    factor_sign                    shift and go to state 81
+    factor                         shift and go to state 85
+    null                           shift and go to state 86
+    expression                     shift and go to state 210
+
+state 210
+
+    (97) color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression .
+    (98) expression -> expression . PLUS term
+
+    MAIN            reduce using rule 97 (color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression .)
+    R_BRACKET       reduce using rule 97 (color -> COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression .)
+    PLUS            shift and go to state 127
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for EQUALS in state 60 resolved as shift
+WARNING: shift/reduce conflict for VAR_IDENTIFIER in state 91 resolved as shift
+WARNING: shift/reduce conflict for VAR_IDENTIFIER in state 94 resolved as shift
+WARNING: shift/reduce conflict for VAR_IDENTIFIER in state 137 resolved as shift
+WARNING: shift/reduce conflict for VAR_IDENTIFIER in state 161 resolved as shift
+WARNING: reduce/reduce conflict in state 83 resolved using rule (null -> <empty>)
+WARNING: rejected rule (factor_sign -> PLUS) in state 83
+WARNING: reduce/reduce conflict in state 88 resolved using rule (null -> <empty>)
+WARNING: rejected rule (factor_sign -> MINUS) in state 88
+WARNING: reduce/reduce conflict in state 129 resolved using rule (shape_assignment -> WIDTH EQUALS expression)
+WARNING: rejected rule (canvas_assignment -> WIDTH EQUALS expression) in state 129
+WARNING: reduce/reduce conflict in state 138 resolved using rule (shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER)
+WARNING: rejected rule (point_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER) in state 138
+WARNING: reduce/reduce conflict in state 138 resolved using rule (shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER)
+WARNING: rejected rule (canvas_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER) in state 138
+WARNING: reduce/reduce conflict in state 142 resolved using rule (shape_assignment -> HEIGHT EQUALS expression)
+WARNING: rejected rule (canvas_assignment -> HEIGHT EQUALS expression) in state 142
+WARNING: Rule (canvas_assignment -> WIDTH EQUALS expression) is never reduced
+WARNING: Rule (point_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER) is never reduced
+WARNING: Rule (canvas_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER) is never reduced
+WARNING: Rule (canvas_assignment -> HEIGHT EQUALS expression) is never reduced
