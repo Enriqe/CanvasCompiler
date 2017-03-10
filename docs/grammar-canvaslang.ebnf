@@ -14,7 +14,7 @@ POINT::= 'point' 'id' 'x' '=' EXPRESSION 'y' '=' EXPRESSION
 POINT_ASSIGNMENT::= 'id' '=' 'id' | (('x' | 'y') '=' EXPRESSION)+
 CANVAS::= 'canvas' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION COLOR
 CANVAS_ASSIGNMENT::= 'id' ('add' | '=') 'id'  | (('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | ('color' '=' EXPRESSION))+
-EXPRESSION::= EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP 
+EXPRESSION::= (EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP) | EXP
 EXP::= (TERM (('+' | '-') TERM)*)?
 TERM::= FACTOR (('*' | '/') FACTOR)*
 TYPE::= 'int' | 'dec' | 'string' | 'yesno'
