@@ -12,8 +12,9 @@ def p_program_syntax(p):
 
 def p_globals(p):
     '''
-    globals : function 
-            | declaration
+    globals : function globals
+            | declaration globals
+            | null
     '''
 
 def p_function(p):
@@ -65,13 +66,14 @@ def p_shape_type(p):
 
 def p_block_with_declaration(p):
     '''
-    block_with_declaration : L_BRACKET declaration_type R_BRACKET
+    block_with_declaration : L_BRACKET statement_type R_BRACKET
     '''
 
-def p_declaration_type(p):
+def p_statement_type(p):
     '''
-    declaration_type : statement
-                     | declaration
+    statement_type : statement statement_type
+                     | declaration statement_type
+                     | null
     '''
 
 def p_block(p):
