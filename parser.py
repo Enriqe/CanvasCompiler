@@ -3,7 +3,7 @@
 import ply.yacc as yacc
 
 # Get the token map from the lexer.  This is required.
-from canvas_scanner import tokens
+from scanner import tokens
 
 def p_program_syntax(p):
     '''
