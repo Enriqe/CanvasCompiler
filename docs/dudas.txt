@@ -1,3 +1,4 @@
 1. Deberiamos de poner las delcaraciones antes de los statements en el
    "block_with_declarations"
 2. Por que en la gramatica tenemos que 'factor' puede ser un arreglo
+3. Creo que nos falta tipo de datos de archivo para poder leer
