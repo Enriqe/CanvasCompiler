@@ -29,7 +29,7 @@ reserved_words = {
     'color'     : 'COLOR',
 
     #AGREGAR A PROPUESTA
-    'while'     : 'WHILE'
+    'while'     : 'WHILE',
     'finish'    : 'FINISH',
     'main'      : 'MAIN',
     'while'     : 'WHILE',
@@ -42,15 +42,36 @@ reserved_words = {
     'y'         : 'Y',
 }
 
-tokens = ['EQUALS', 'L_BRACKET', 'R_BRACKET', 'G_THAN', 'L_THAN', 'NOT_EQUALS',
-        'EQUALS_EQUALS', 'G_THAN_EQUALS', 'L_THAN_EQUALS', 'PLUS', 'MINUS',
-        'DIV', 'MULT', 'L_PAR', 'R_PAR', 'COMMA',
-        # ADD to TOKENS
-
-        'INT_VAL', 'DEC_VAL', 'STRING_VAL', 'YESNO_VAL', 'VAR_IDENTIFIER',
-        'POINT'] + list(reserved_words.values())
+tokens = [
+    'EQUALS', 
+    'L_BRACKET', 
+    'R_BRACKET', 
+    'G_THAN', 
+    'L_THAN', 
+    'NOT_EQUALS',
+    'EQUALS_EQUALS', 
+    'G_THAN_EQUALS', 
+    'L_THAN_EQUALS', 
+    'PLUS', 
+    'MINUS',
+    'DIV', 
+    'MULT', 
+    'L_PAR', 
+    'R_PAR', 
+    'COMMA',
+    # ADD to TOKENS
+    'INT_VAL', 
+    'DEC_VAL', 
+    'STRING_VAL', 
+    'YESNO_VAL', 
+    'VAR_IDENTIFIER',
+    'POINT'] + list(reserved_words.values())
 
 t_ignore  = ' \t'
+
+def t_EQUALS_EQUALS(t):
+    r'=='
+    return t
 
 def t_EQUALS(t):
     r'\='
@@ -72,20 +93,8 @@ def t_R_BRACKET(t):
     r'\]'
     return t
 
-def t_G_THAN(t):
-    r'>'
-    return t
-
-def t_L_THAN(t):
-    r'<'
-    return t
-
 def t_NOT_EQUALS(t):
     r'!='
-    return t
-
-def t_EQUALS_EQUALS(t):
-    r'<'
     return t
 
 def t_G_THAN_EQUALS(t):
@@ -94,6 +103,14 @@ def t_G_THAN_EQUALS(t):
 
 def t_L_THAN_EQUALS(t):
     r'<='
+    return t
+
+def t_G_THAN(t):
+    r'>'
+    return t
+
+def t_L_THAN(t):
+    r'<'
     return t
 
 def t_PLUS(t):
