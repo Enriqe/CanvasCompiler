@@ -1,0 +1,10 @@
+program hello_world
+
+int myVarX = 0
+
+main [
+    int myVarY = 1
+    print (myVarX, myVarY)
+]
+
+finish

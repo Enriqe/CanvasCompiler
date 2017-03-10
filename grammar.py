@@ -298,10 +298,11 @@ def p_error(p):
 parser = yacc.yacc()
 
 while True:
-   try:
-       s = raw_input('canvas > ')
-   except EOFError:
-       break
-   if not s: continue
-   result = parser.parse(s)
+#    try:
+#        s = raw_input('canvas > ')
+#    except EOFError:
+#        break
+#    if not s: continue
+   inputFile = open("tests/example_program1.cv")
+   result = parser.parse(inputFile)
    print(result)
