@@ -3,6 +3,7 @@ ___FEB 26 - MAR 4___
 
 ___MAR 5 - MAR 11___
 ~ MODIFICACION DE GRAMATICA: en 'expression' para soportar terminos constantes (ver: 'factor_value' en la gramatica)
+~ MODIFICACION DE GRAMATICA: en 'expression' para soportar solo un 'exp'
 + Agregar nuevos tests
 + Agregar feature para leer tests de archivos separados
 + Implementacion de tabla de variables

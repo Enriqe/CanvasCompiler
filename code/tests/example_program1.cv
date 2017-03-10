@@ -3,7 +3,7 @@ program hello_world
 int myVarX = 1
 
 main [
-    int myVarY = 1
+    int myVarY = 0
     print (myVarX, myVarY)
 ]
 
