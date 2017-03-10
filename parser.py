@@ -1,6 +1,8 @@
 # Yacc example
 
+import scanner as scanner
 import ply.yacc as yacc
+import sys
 
 # Get the token map from the lexer.  This is required.
 from scanner import tokens
@@ -294,16 +296,22 @@ def p_expression_plus(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    print "Syntax error in input line: " + str(p.lexer.lineno)
+    print "Unexpected token: " + str(p.value)
+    sys.exit(0)
 
 # Build the parser
 parser = yacc.yacc()
 
-while True:
-   try:
-       s = raw_input('canvas > ')
-   except EOFError:
-       break
-   if not s: continue
-   result = parser.parse(s)
-   print(result)
+if __name__ == '__main__':
+
+    if (len(sys.argv) > 1) : fin = sys.argv[1]
+    else : fin = 'input.in'
+
+    f = open(fin, 'r')
+    data = f.read()
+    # print data
+    # print "End of file"
+    parser.parse(data, tracking=True)
+
+    print("Successful")

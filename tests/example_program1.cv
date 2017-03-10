@@ -1,6 +1,6 @@
 program hello_world
 
-int myVarX = 0
+int myVarX = 1
 
 main [
     int myVarY = 1
