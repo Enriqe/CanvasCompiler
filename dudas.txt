@@ -1,0 +1,2 @@
+1. Deberiamos de poner las delcaraciones antes de los statements en el
+   "block_with_declarations"

@@ -5,8 +5,8 @@ reserved_words = {
     'dec'       : 'DEC',
     'string'    : 'STRING',
     'yesno'     : 'YESNO',
-    'yes'       : 'YESNO_VAL',
-    'no'        : 'YESNO_VAL',
+    #'yes'       : 'YESNO_VAL',
+    #'no'        : 'YESNO_VAL',
     'point'     : 'POINT',
     'triangle'  : 'TRIANGLE',
     'circle'    : 'CIRCLE',
@@ -29,7 +29,7 @@ reserved_words = {
     'color'     : 'COLOR',
 
     #AGREGAR A PROPUESTA
-    'while'     : 'WHILE'
+    'while'     : 'WHILE',
     'finish'    : 'FINISH',
     'main'      : 'MAIN',
     'while'     : 'WHILE',
@@ -42,10 +42,29 @@ reserved_words = {
     'y'         : 'Y',
 }
 
-tokens = ['EQUALS', 'L_BRACKET', 'R_BRACKET', 'G_THAN', 'L_THAN', 'NOT_EQUALS',
-        'EQUALS_EQUALS', 'G_THAN_EQUALS', 'L_THAN_EQUALS', 'PLUS', 'MINUS',
-        'DIV', 'MULT', 'L_PAR', 'R_PAR', 'COMMA',
-        # ADD to TOKENS
+tokens = [
+    'EQUALS', 
+    'L_BRACKET', 
+    'R_BRACKET', 
+    'G_THAN', 
+    'L_THAN', 
+    'NOT_EQUALS',
+    'EQUALS_EQUALS', 
+    'G_THAN_EQUALS', 
+    'L_THAN_EQUALS', 
+    'PLUS', 
+    'MINUS',
+    'DIV', 
+    'MULT', 
+    'L_PAR', 
+    'R_PAR', 
+    'COMMA',
+    # ADD to TOKENS
+    'INT_VAL', 
+    'DEC_VAL', 
+    'STRING_VAL', 
+    'YESNO_VAL', 
+    'VAR_IDENTIFIER'] + list(reserved_words.values())
 
         'INT_VAL', 'DEC_VAL', 'STRING_VAL', 'YESNO_VAL', 'VAR_IDENTIFIER',
         'POINT'] + list(reserved_words.values())
@@ -122,7 +141,7 @@ def t_POINT(t):
 
 # REGULAR EXPRESSIONS
 
-def t_INT_VAL():
+def t_INT_VAL(t):
     r'[0-9]+'
     return t
 
