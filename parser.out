@@ -1,0 +1,227 @@
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    GREEN
+    WITH
+    DEC_VAL
+    STRING_VAL
+    RED
+    YESNO_VAL
+    BLUE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration FINISH
+Rule 2     globals -> function
+Rule 3     globals -> declaration
+Rule 4     function -> FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+Rule 5     function_arguments -> type VAR_IDENTIFIER
+Rule 6     function_arguments -> type VAR_IDENTIFIER COMMA function_arguments
+Rule 7     function_arguments -> null
+Rule 8     type -> INT
+Rule 9     type -> DEC
+Rule 10    type -> STRING
+Rule 11    type -> YESNO
+Rule 12    var -> type VAR_IDENTIFIER list_index EQUALS expression
+Rule 13    list_index -> L_BRACKET INT_VAL R_BRACKET
+Rule 14    list_index -> null
+Rule 15    null -> <empty>
+Rule 16    shape -> shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+Rule 17    shape_type -> CIRCLE
+Rule 18    shape_type -> RECTANGLE
+Rule 19    shape_type -> TRIANGLE
+Rule 20    block_with_declaration -> L_BRACKET declaration_type R_BRACKET
+Rule 21    declaration_type -> statement
+Rule 22    declaration_type -> declaration
+Rule 23    block -> L_BRACKET block_contains R_BRACKET
+Rule 24    block_contains -> statement
+Rule 25    block_contains -> null
+Rule 26    statement -> assignment
+Rule 27    statement -> conditional
+Rule 28    statement -> print
+Rule 29    statement -> for_loop
+Rule 30    statement -> while_loop
+Rule 31    statement -> paint
+Rule 32    statement -> read
+Rule 33    statement -> return
+Rule 34    assignment -> var_assignment
+Rule 35    assignment -> shape_assignment
+Rule 36    assignment -> point_assignment
+Rule 37    assignment -> canvas_assignment
+Rule 38    var_assignment -> VAR_IDENTIFIER list_index EQUALS var_equals
+Rule 39    var_equals -> expression
+Rule 40    var_equals -> VAR_IDENTIFIER
+Rule 41    shape_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+Rule 42    shape_assignment -> CENTER EQUALS POINT
+Rule 43    shape_assignment -> WIDTH EQUALS EXPRESSION
+Rule 44    shape_assignment -> HEIGHT EQUALS EXPRESSION
+Rule 45    shape_assignment -> COLOR EQUALS VAR_IDENTIFIER
+Rule 46    declaration -> var
+Rule 47    declaration -> shape
+Rule 48    declaration -> point
+Rule 49    declaration -> canvas
+Rule 50    point -> POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
+Rule 51    point_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+Rule 52    point_assignment -> X EQUALS EXPRESSION
+Rule 53    point_assignment -> Y EQUALS EXPRESSION
+Rule 54    canvas -> CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
+Rule 55    canvas_assignment -> VAR_IDENTIFIER ADD VAR_IDENTIFIER
+Rule 56    canvas_assignment -> VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
+Rule 57    canvas_assignment -> WIDTH EQUALS EXPRESSION
+Rule 58    canvas_assignment -> HEIGHT EQUALS EXPRESSION
+Rule 59    canvas_assignment -> COLOR EQUALS EXPRESSION
+Rule 60    expression -> exp exp_ops exp
+Rule 61    exp_ops -> L_THAN
+Rule 62    exp_ops -> G_THAN
+Rule 63    exp_ops -> EQUALS_EQUALS
+Rule 64    exp_ops -> NOT_EQUALS
+Rule 65    exp_ops -> G_THAN_EQUALS
+Rule 66    exp_ops -> L_THAN_EQUALS
+Rule 67    exp -> term
+Rule 68    exp -> PLUS exp
+Rule 69    exp -> MINUS exp
+Rule 70    term -> factor term_loop
+Rule 71    term_loop -> DIV term
+Rule 72    term_loop -> MULT term
+Rule 73    term_loop -> null
+Rule 74    factor -> factor_id
+Rule 75    factor -> factor_exp
+Rule 76    factor_exp -> factor_sign VAR_IDENTIFIER list_index
+Rule 77    factor_sign -> MINUS
+Rule 78    factor_sign -> PLUS
+Rule 79    factor_sign -> null
+Rule 80    conditional -> IF conditional_if conditional_elsif conditional_else
+Rule 81    conditional_if -> L_PAR expression R_PAR block
+Rule 82    conditional_elsif -> ELSIF conditional_if conditional_elsif
+Rule 83    conditional_elsif -> null
+Rule 84    conditional_else -> ELSE block
+Rule 85    conditional_else -> null
+Rule 86    print -> PRINT L_PAR print_b print_a R_PAR
+Rule 87    print_a -> COMMA print_b print_a
+Rule 88    print_a -> null
+Rule 89    print_a -> expression
+Rule 90    print_a -> VAR_IDENTIFIER
+Rule 91    read -> READ VAR_IDENTIFIER
+Rule 92    paint -> PAINT VAR_IDENTIFIER
+Rule 93    return -> RETURN expression
+Rule 94    for_loop -> FOR EACH VAR_IDENTIFIER IN VAR_IDENTIFIER block
+Rule 95    while_loop -> WHILE L_PAR expression R_PAR block
+Rule 96    color -> color VAR_IDENTIFIER red EQUALS EXPRESSION green EQUALS EXPRESSION blue EQUALS EXPRESSION
+Rule 97    expression -> expression PLUS term
+
+Terminals, with rules where they appear
+
+ADD                  : 55
+BLUE                 : 
+CANVAS               : 54
+CENTER               : 16 42
+CIRCLE               : 17
+COLOR                : 45 59
+COMMA                : 6 87
+DEC                  : 9
+DEC_VAL              : 
+DIV                  : 71
+EACH                 : 94
+ELSE                 : 84
+ELSIF                : 82
+EQUALS               : 12 16 16 16 38 41 42 43 44 45 50 50 51 52 53 54 54 56 57 58 59 96 96 96
+EQUALS_EQUALS        : 63
+FINISH               : 1
+FOR                  : 94
+FUNCTION             : 4
+GREEN                : 
+G_THAN               : 62
+G_THAN_EQUALS        : 65
+HEIGHT               : 16 44 54 58
+IF                   : 80
+IN                   : 94
+INT                  : 8
+INT_VAL              : 13
+L_BRACKET            : 13 20 23
+L_PAR                : 4 81 86 95
+L_THAN               : 61
+L_THAN_EQUALS        : 66
+MAIN                 : 1
+MINUS                : 69 77
+MULT                 : 72
+NOT_EQUALS           : 64
+PAINT                : 92
+PLUS                 : 68 78 97
+POINT                : 42 50
+PRINT                : 86
+PROGRAM              : 1
+READ                 : 91
+RECTANGLE            : 18
+RED                  : 
+RETURN               : 93
+RETURNS              : 4
+R_BRACKET            : 13 20 23
+R_PAR                : 4 81 86 95
+STRING               : 10
+STRING_VAL           : 
+TRIANGLE             : 19
+VAR_IDENTIFIER       : 1 4 5 6 12 16 38 40 41 41 45 50 51 51 54 55 55 56 56 76 90 91 92 94 94 96
+WHILE                : 95
+WIDTH                : 16 43 54 57
+WITH                 : 
+X                    : 50 52
+Y                    : 50 53
+YESNO                : 11
+YESNO_VAL            : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+EXPRESSION           : 43 44 52 53 57 58 59 96 96 96
+assignment           : 26
+block                : 81 84 94 95
+block_contains       : 23
+block_with_declaration : 1 4
+blue                 : 96
+canvas               : 49
+canvas_assignment    : 37
+color                : 16 54 96
+conditional          : 27
+conditional_else     : 80
+conditional_elsif    : 80 82
+conditional_if       : 80 82
+declaration          : 3 22
+declaration_type     : 20
+exp                  : 60 60 68 69
+exp_ops              : 60
+expression           : 12 16 16 39 50 50 54 54 81 89 93 95 97
+factor               : 70
+factor_exp           : 75
+factor_id            : 74
+factor_sign          : 76
+for_loop             : 29
+function             : 2
+function_arguments   : 4 6
+globals              : 1
+green                : 96
+list_index           : 12 38 76
+null                 : 7 14 25 73 79 83 85 88
+paint                : 31
+point                : 16 48
+point_assignment     : 36
+print                : 28
+print_a              : 86 87
+print_b              : 86 87
+program              : 0
+read                 : 32
+red                  : 96
+return               : 33
+shape                : 47
+shape_assignment     : 35
+shape_type           : 16
+statement            : 21 24
+term                 : 67 71 72 97
+term_loop            : 70
+type                 : 4 5 6 12
+var                  : 46
+var_assignment       : 34
+var_equals           : 38
+while_loop           : 30
+

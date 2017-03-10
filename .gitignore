@@ -1,1 +1,4 @@
 .DS_Store
+parser.out
+ply/
+canvas_scanner.pyc
