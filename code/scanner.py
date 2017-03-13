@@ -165,7 +165,7 @@ def t_YESNO(t):
     return t
 
 def t_YESNO_VAL(t):
-    r'(no|yes)'
+    r'("no"|"yes")'
     return t
 
 def t_VAR_IDENTIFIER (t):

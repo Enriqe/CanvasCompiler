@@ -24,6 +24,6 @@ PRINT::= 'print' '(' (EXPRESSION | 'id') (',' (EXPRESSION | 'id') )* ')'
 READ::= 'read' 'id'
 PAINT::= 'paint' 'id'
 RETURN::= 'return' EXPRESSION
-FOR_LOOP::= 'for' 'each' 'id' 'in' RANGE ('by' ('integer' | 'decimal'))? BLOCK
+FOR_LOOP::= 'for' 'each' 'id' 'in' 'id' BLOCK
 WHILE_LOOP::= 'while' '(' EXPRESSION ')' BLOCK
 COLOR::= 'color' 'id' 'red' '=' EXPRESSION 'green' '=' EXPRESSION 'blue' '=' EXPRESSION

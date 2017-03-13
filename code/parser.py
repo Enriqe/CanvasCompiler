@@ -123,6 +123,7 @@ def p_var_equals(p):
     '''
     var_equals : expression
               | VAR_IDENTIFIER
+              | YESNO_VAL
     '''
 
 def p_shape_assignment(p):

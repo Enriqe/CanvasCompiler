@@ -5,15 +5,23 @@ function myFunc1 (int arg1, int arg2) returns yesno [
     color myColor red = 12 green = 11 blue = 12
     circle myCirc center = myPoint width = 12 height = 13 color = myColor
     canvas myCanvas width = 50 height = 50 color = myColor
-
+    int myList [3] = 0
+    yesno flag = no
+    
     if ( 1 > 2 ) [
         myCanvas width = 100
     ] elsif (3 > 1 ) [
         myPoint x = myPoint + 10
     ] else [
+        for each elem in myList [
+            elem = elem + 1
+        ]
     ]
 
-    paint myCanvas
+    while ( flag == no )[
+        paint myCanvas
+    ]
+
 ]
 
 main [
