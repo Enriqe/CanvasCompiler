@@ -2,18 +2,18 @@ PROGRAM::= 'program' 'id' GLOBALS 'main' BLOCK_WITH_DECLARATION 'finish'
 GLOBALS::= (DECLARATION | FUNCTION)*
 FUNCTION::='function' 'id' '(' (TYPE 'id' (',' TYPE 'id')*)? ')' 'returns' TYPE BLOCK_WITH_DECLARATION
 VAR::= TYPE 'id' ('[' [0-9]+ ']')? '=' EXPRESSION
-SHAPE::= ('circle' | 'rectangle' | 'triangle') 'id' 'center' '=' POINT 'width' '=' EXPRESSION 'height' '=' EXPRESSION COLOR
+SHAPE::= ('circle' | 'rectangle' | 'triangle') 'id' 'center' '=' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION 'color' '=' 'id' /*center must be assigned a point*/
 BLOCK_WITH_DECLARATION::= '[' (DECLARATION | STATEMENT)* ']'
 BLOCK::= '[' STATEMENT* ']'
 STATEMENT::= (ASSIGNMENT  | CONDITIONAL | PRINT | LOOP | PAINT | READ | COMMENTS | RETURN)
 ASSIGNMENT::= (VAR_ASSIGNMENT | SHAPE_ASSIGNMENT | POINT_ASSIGNMENT | CANVAS_ASSIGNMENT)
 VAR_ASSIGNMENT::= 'id' ('[' [0-9]+ ']')? '=' (EXPRESSION | 'id')
-SHAPE_ASSIGNMENT::= 'id' '=' 'id' | (('center' '=' POINT) | ('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | COLOR)+
-DECLARATION::= VAR | SHAPE | POINT | CANVAS
+SHAPE_ASSIGNMENT::= 'id' '=' 'id' | 'id' (('center' '=' POINT) | ('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | 'color' '=' 'id')+
+DECLARATION::= VAR | SHAPE | POINT | CANVAS | COLOR
 POINT::= 'point' 'id' 'x' '=' EXPRESSION 'y' '=' EXPRESSION
-POINT_ASSIGNMENT::= 'id' '=' 'id' | (('x' | 'y') '=' EXPRESSION)+
-CANVAS::= 'canvas' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION COLOR
-CANVAS_ASSIGNMENT::= 'id' ('add' | '=') 'id'  | (('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | ('color' '=' EXPRESSION))+
+POINT_ASSIGNMENT::= 'id' '=' 'id' | 'id' (('x' | 'y') '=' EXPRESSION)+
+CANVAS::= 'canvas' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION 'color' '=' 'id'
+CANVAS_ASSIGNMENT::= 'id' ('add' | '=') 'id'  | 'id' (('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | ('color' '=' EXPRESSION))+
 EXPRESSION::= (EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP) | EXP
 EXP::= (TERM (('+' | '-') TERM)*)?
 TERM::= FACTOR (('*' | '/') FACTOR)*
@@ -24,6 +24,6 @@ PRINT::= 'print' '(' (EXPRESSION | 'id') (',' (EXPRESSION | 'id') )* ')'
 READ::= 'read' 'id'
 PAINT::= 'paint' 'id'
 RETURN::= 'return' EXPRESSION
-FOR_LOOP::= 'for' 'each' 'id' 'in' RANGE ('by' ('integer' | 'decimal'))? BLOCK
+FOR_LOOP::= 'for' 'each' 'id' 'in' 'id' BLOCK
 WHILE_LOOP::= 'while' '(' EXPRESSION ')' BLOCK
 COLOR::= 'color' 'id' 'red' '=' EXPRESSION 'green' '=' EXPRESSION 'blue' '=' EXPRESSION

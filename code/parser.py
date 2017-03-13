@@ -61,7 +61,7 @@ def p_null(p):
 
 def p_shape(p):
     '''
-    shape : shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+    shape : shape_type VAR_IDENTIFIER CENTER EQUALS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_shape_type(p):
@@ -123,15 +123,21 @@ def p_var_equals(p):
     '''
     var_equals : expression
               | VAR_IDENTIFIER
+              | YESNO_VAL
     '''
 
 def p_shape_assignment(p):
     '''
-    shape_assignment : VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                     | CENTER EQUALS POINT
-                     | WIDTH EQUALS expression
-                     | HEIGHT EQUALS expression
-                     | COLOR EQUALS VAR_IDENTIFIER
+    shape_assignment : VAR_IDENTIFIER EQUALS shape_assignment_b 
+    '''
+
+def p_shape_assignment_b(p):
+    '''
+    shape_assignment_b : VAR_IDENTIFIER
+                       | CENTER EQUALS POINT
+                       | WIDTH EQUALS expression
+                       | HEIGHT EQUALS expression
+                       | COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_declaration(p):
@@ -140,6 +146,7 @@ def p_declaration(p):
                 | shape
                 | point
                 | canvas
+                | color
     '''
 
 def p_point(p):
@@ -149,23 +156,33 @@ def p_point(p):
 
 def p_point_assignment(p):
     '''
-    point_assignment : VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                     | X EQUALS expression
-                     | Y EQUALS expression
+    point_assignment : VAR_IDENTIFIER EQUALS point_assignment_b 
+    '''
+
+def p_point_assignment_b(p):
+    '''
+    point_assignment_b : VAR_IDENTIFIER
+                       | X EQUALS expression
+                       | Y EQUALS expression
     '''
 
 def p_canvas(p):
     '''
-    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
+    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_canvas_assignment(p):
     '''
     canvas_assignment : VAR_IDENTIFIER ADD VAR_IDENTIFIER
-                      | VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                      | WIDTH EQUALS expression
-                      | HEIGHT EQUALS expression
-                      | COLOR EQUALS expression
+                      | VAR_IDENTIFIER EQUALS canvas_assignment_b
+    '''
+
+def p_canvas_assignment_b(p):
+    '''
+    canvas_assignment_b : VAR_IDENTIFIER
+                        | WIDTH EQUALS expression
+                        | HEIGHT EQUALS expression
+                        | COLOR EQUALS expression
     '''
 
 def p_expression(p):
@@ -328,5 +345,6 @@ if __name__ == '__main__':
     # print "End of file"
 
     parser.parse(data, debug=log)
+    # parser.parse(data, tracking=True)
 
     print("Successful")
