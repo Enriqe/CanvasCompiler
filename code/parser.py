@@ -28,6 +28,7 @@ def p_function(p):
     '''
     function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
     '''
+    #todo: add name and type to function table
 
 def p_function_arguments(p):
     '''
@@ -48,6 +49,7 @@ def p_var(p):
     '''
     var : type VAR_IDENTIFIER list_index EQUALS expression
     '''  
+    #todo: add type, name, and value of var to var table
 
 def p_list_index(p):
     '''
@@ -63,6 +65,7 @@ def p_shape(p):
     '''
     shape : shape_type VAR_IDENTIFIER CENTER EQUALS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
+    #todo: add type, name, and value of var to var table
 
 def p_shape_type(p):
     '''
@@ -152,6 +155,7 @@ def p_point(p):
     '''
     point : POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
     '''
+    #todo: add type, name, and value of var to var table
 
 def p_point_assignment(p):
     '''
@@ -169,6 +173,7 @@ def p_canvas(p):
     '''
     canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
+    #todo: add type, name, and value of var to var table
 
 def p_canvas_assignment(p):
     '''
@@ -318,6 +323,7 @@ def p_color(p):
     '''
     color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
+    #todo: add type, name, and value of var to var table
 
 # Error rule for syntax errors
 def p_error(p):

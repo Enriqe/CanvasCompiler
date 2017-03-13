@@ -18,6 +18,7 @@ ___MAR 5 - MAR 11___
 + Implementacion de tabla de variables
 
 ___MAR 12 - MAR 18___
++ Implementacion de clases Var, Function y Table
 
 ___MAR 19 - MAR 25___
 
