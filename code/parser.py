@@ -249,6 +249,7 @@ def p_factor_value(p):
     factor_value : VAR_IDENTIFIER
                  | INT_VAL
                  | DEC_VAL
+                 | YESNO_VAL
     '''
 
 def p_conditional(p):

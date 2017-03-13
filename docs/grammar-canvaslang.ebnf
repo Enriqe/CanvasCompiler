@@ -18,7 +18,7 @@ EXPRESSION::= (EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP) | EXP
 EXP::= (TERM (('+' | '-') TERM)*)?
 TERM::= FACTOR (('*' | '/') FACTOR)*
 TYPE::= 'int' | 'dec' | 'string' | 'yesno'
-FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* ('id' ('[' [0-9]+ ']')?  | 'int_val' | 'dec_val' )
+FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* ('id' ('[' [0-9]+ ']')?  | 'int_val' | 'dec_val' | 'yesno_val' )
 CONDITIONAL::= 'if' '(' EXPRESSION ')' BLOCK ('elsif' '(' EXPRESSION ')' BLOCK)* ('else' BLOCK)?
 PRINT::= 'print' '(' (EXPRESSION | 'id') (',' (EXPRESSION | 'id') )* ')' 
 READ::= 'read' 'id'
