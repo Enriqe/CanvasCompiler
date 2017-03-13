@@ -123,17 +123,16 @@ def p_var_equals(p):
     '''
     var_equals : expression
               | VAR_IDENTIFIER
-              | YESNO_VAL
     '''
 
 def p_shape_assignment(p):
     '''
-    shape_assignment : VAR_IDENTIFIER EQUALS shape_assignment_b 
+    shape_assignment : VAR_IDENTIFIER shape_assignment_b 
     '''
 
 def p_shape_assignment_b(p):
     '''
-    shape_assignment_b : VAR_IDENTIFIER
+    shape_assignment_b : EQUALS VAR_IDENTIFIER
                        | CENTER EQUALS POINT
                        | WIDTH EQUALS expression
                        | HEIGHT EQUALS expression
@@ -156,12 +155,12 @@ def p_point(p):
 
 def p_point_assignment(p):
     '''
-    point_assignment : VAR_IDENTIFIER EQUALS point_assignment_b 
+    point_assignment : VAR_IDENTIFIER point_assignment_b 
     '''
 
 def p_point_assignment_b(p):
     '''
-    point_assignment_b : VAR_IDENTIFIER
+    point_assignment_b : EQUALS VAR_IDENTIFIER
                        | X EQUALS expression
                        | Y EQUALS expression
     '''
@@ -173,13 +172,13 @@ def p_canvas(p):
 
 def p_canvas_assignment(p):
     '''
-    canvas_assignment : VAR_IDENTIFIER ADD VAR_IDENTIFIER
-                      | VAR_IDENTIFIER EQUALS canvas_assignment_b
+    canvas_assignment : VAR_IDENTIFIER canvas_assignemnt_b 
     '''
 
-def p_canvas_assignment_b(p):
+def p_canvas_assignemnt_b(p):
     '''
-    canvas_assignment_b : VAR_IDENTIFIER
+    canvas_assignemnt_b : ADD VAR_IDENTIFIER
+                        | EQUALS VAR_IDENTIFIER
                         | WIDTH EQUALS expression
                         | HEIGHT EQUALS expression
                         | COLOR EQUALS expression
@@ -320,10 +319,6 @@ def p_color(p):
     '''
     color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
-
-def p_expression_plus(p):
-    'expression : expression PLUS term'
-    p[0] = p[1] + p[3]
 
 # Error rule for syntax errors
 def p_error(p):
