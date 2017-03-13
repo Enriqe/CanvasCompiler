@@ -205,7 +205,6 @@ def p_exp(p):
     exp : term
         | PLUS exp
         | MINUS exp
-        | null
     '''
 
 def p_term(p):
