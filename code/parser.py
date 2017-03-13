@@ -61,7 +61,7 @@ def p_null(p):
 
 def p_shape(p):
     '''
-    shape : shape_type VAR_IDENTIFIER CENTER EQUALS point WIDTH EQUALS expression HEIGHT EQUALS expression color
+    shape : shape_type VAR_IDENTIFIER CENTER EQUALS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_shape_type(p):
@@ -127,11 +127,16 @@ def p_var_equals(p):
 
 def p_shape_assignment(p):
     '''
-    shape_assignment : VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                     | CENTER EQUALS POINT
-                     | WIDTH EQUALS expression
-                     | HEIGHT EQUALS expression
-                     | COLOR EQUALS VAR_IDENTIFIER
+    shape_assignment : VAR_IDENTIFIER shape_assignment_b 
+    '''
+
+def p_shape_assignment_b(p):
+    '''
+    shape_assignment_b : EQUALS VAR_IDENTIFIER
+                       | CENTER EQUALS POINT
+                       | WIDTH EQUALS expression
+                       | HEIGHT EQUALS expression
+                       | COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_declaration(p):
@@ -140,6 +145,7 @@ def p_declaration(p):
                 | shape
                 | point
                 | canvas
+                | color
     '''
 
 def p_point(p):
@@ -149,23 +155,33 @@ def p_point(p):
 
 def p_point_assignment(p):
     '''
-    point_assignment : VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                     | X EQUALS expression
-                     | Y EQUALS expression
+    point_assignment : VAR_IDENTIFIER point_assignment_b 
+    '''
+
+def p_point_assignment_b(p):
+    '''
+    point_assignment_b : EQUALS VAR_IDENTIFIER
+                       | X EQUALS expression
+                       | Y EQUALS expression
     '''
 
 def p_canvas(p):
     '''
-    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression color
+    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_canvas_assignment(p):
     '''
-    canvas_assignment : VAR_IDENTIFIER ADD VAR_IDENTIFIER
-                      | VAR_IDENTIFIER EQUALS VAR_IDENTIFIER
-                      | WIDTH EQUALS expression
-                      | HEIGHT EQUALS expression
-                      | COLOR EQUALS expression
+    canvas_assignment : VAR_IDENTIFIER canvas_assignemnt_b 
+    '''
+
+def p_canvas_assignemnt_b(p):
+    '''
+    canvas_assignemnt_b : ADD VAR_IDENTIFIER
+                        | EQUALS VAR_IDENTIFIER
+                        | WIDTH EQUALS expression
+                        | HEIGHT EQUALS expression
+                        | COLOR EQUALS expression
     '''
 
 def p_expression(p):
@@ -189,7 +205,6 @@ def p_exp(p):
     exp : term
         | PLUS exp
         | MINUS exp
-        | null
     '''
 
 def p_term(p):
@@ -232,6 +247,7 @@ def p_factor_value(p):
     factor_value : VAR_IDENTIFIER
                  | INT_VAL
                  | DEC_VAL
+                 | YESNO_VAL
     '''
 
 def p_conditional(p):
@@ -303,10 +319,6 @@ def p_color(p):
     color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
 
-def p_expression_plus(p):
-    'expression : expression PLUS term'
-    p[0] = p[1] + p[3]
-
 # Error rule for syntax errors
 def p_error(p):
     print "Syntax error in input line: " + str(p.lexer.lineno)
@@ -328,5 +340,6 @@ if __name__ == '__main__':
     # print "End of file"
 
     parser.parse(data, debug=log)
+    # parser.parse(data, tracking=True)
 
     print("Successful")

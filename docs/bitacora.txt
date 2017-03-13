@@ -4,6 +4,15 @@ ___FEB 26 - MAR 4___
 ___MAR 5 - MAR 11___
 ~ MODIFICACION DE GRAMATICA: en 'expression' para soportar terminos constantes (ver: 'factor_value' en la gramatica)
 ~ MODIFICACION DE GRAMATICA: en 'expression' para soportar solo un 'exp'
+~ MODIFICACION DE GRAMATICA: en 'shape', al especificar center, deberia ser un id de un point, en lugar de definir un point
+~ MODIFICACION DE GRAMATICA: en 'shape', al especificar color, deberia ser un id de un color, en lugar de definir un color
+~ MODIFICACION DE LEXICO: cambiar a 'yesno' de posicion, para que este arriba de 'yes' y 'no'
+~ MODIFICACION DE LEXICO: cambiar a 'double' de posicion, para que este arriba de 'int'
+~ MODIFICACION DE GRAMATICA: en 'declaration', para soportar declaracion de 'color'
+~ MODIFICACION DE GRAMATICA: en 'los *_assignment', que pidiera un id antes de hacer un assignment corto
+~ MODIFICACION DE GRAMATICA: en 'for-loop' para que soporte listas
+~ MODIFICACION DE GRAMATICA: en 'var_assignment' para que soporte asignacion de yes/no
+~ MODIFICACION DE GRAMATICA: en 'exp' quitar el null 
 + Agregar nuevos tests
 + Agregar feature para leer tests de archivos separados
 + Implementacion de tabla de variables
