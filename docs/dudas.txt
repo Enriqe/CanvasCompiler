@@ -4,4 +4,3 @@
 3. Creo que nos falta tipo de datos de archivo para poder leer
 4. Cuando borrar tabla de variables?
 5. Podemos poner objetos como valor de una variable?
-
