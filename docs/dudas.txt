@@ -2,3 +2,6 @@
    "block_with_declarations"
 2. Por que en la gramatica tenemos que 'factor' puede ser un arreglo
 3. Creo que nos falta tipo de datos de archivo para poder leer
+4. Cuando borrar tabla de variables?
+5. Podemos poner objetos como valor de una variable?
+
