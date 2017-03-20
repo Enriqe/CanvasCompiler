@@ -1,9 +1,24 @@
-program programa_a
+program hello_world2
+
+int globalVar = 0
+
+function uno() returns int [
+  int unoVar = 1
+
+]
+
+function dos() returns int [
+  int dosVar = 2
+  
+]
+
+function tres() returns int [
+  int tresVar = 3
+  
+]
 
 main [
-  if (5 < 6) [
-    
-  ]
+  int exVar = 1
 ]
 
 finish

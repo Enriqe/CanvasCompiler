@@ -4,6 +4,12 @@ import sys
 import logging
 # Get the token map from the lexer.  This is required.
 from scanner import tokens
+from classes.var_class import Var
+from classes.function_class import Function
+from classes.function_directory_class import FunctionDirectory
+
+function_dir = FunctionDirectory()
+temp_function = function_dir.global_function
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -14,20 +20,44 @@ logging.basicConfig(
 
 def p_program_syntax(p):
     '''
-    program : PROGRAM VAR_IDENTIFIER globals MAIN block_with_declaration FINISH
+    program : PROGRAM VAR_IDENTIFIER globals functions MAIN block_with_declaration FINISH
     '''
+    function_dir.print_dir()
+    print("hello")
 
 def p_globals(p):
     '''
-    globals : function globals
-            | declaration globals
+    globals : declaration globals
             | null
     '''
+    print("P_GLOBALS")
+    if(p[1] == None):
+        temp_function = Function()
+    else:
+        temp_function.add_variable(p[1])
+
+def p_functions(p):
+    '''
+    functions : function functions
+              | null
+    '''
+    print("P_FUNCTIONS")
+    temp_function = Function()
+    if(p[1] == None):
+        temp_function.name = "main"
+    else:
+        temp_function.name = p[1]
+
+    function_dir.add_function(temp_function)
+
 
 def p_function(p):
     '''
     function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
     '''
+    print("P_FUNCTION")
+    # todo: check what to return here
+    p[0] = p[2]
     #todo: add name and type to function table
 
 def p_function_arguments(p):
@@ -44,11 +74,15 @@ def p_type(p):
          | STRING
          | YESNO
     '''
+    p[0] = p[1]
 
 def p_var(p):
     '''
     var : type VAR_IDENTIFIER list_index EQUALS expression
     '''  
+    tempVar = Var(p[2], p[1], p[5])
+    p[0] = tempVar
+
     #todo: add type, name, and value of var to var table
 
 def p_list_index(p):
@@ -60,6 +94,7 @@ def p_null(p):
     '''
     null :
     '''
+    p[0] = None
 
 def p_shape(p):
     '''
@@ -85,6 +120,7 @@ def p_statement_type(p):
                      | declaration statement_type
                      | null
     '''
+    
 
 def p_block(p):
     '''
@@ -150,6 +186,7 @@ def p_declaration(p):
                 | canvas
                 | color
     '''
+    p[0] =  p[1]
 
 def p_point(p):
     '''
@@ -194,6 +231,10 @@ def p_expression(p):
     expression : exp exp_ops exp
                | exp
     '''
+    if(len(p) == 2):
+        p[0] = p[1]
+    else:
+        print("else of p_expression")
 
 def p_exp_ops(p):
     '''
@@ -211,11 +252,13 @@ def p_exp(p):
         | PLUS exp
         | MINUS exp
     '''
-
+    p[0] = p[1]
+    
 def p_term(p):
     '''
     term : factor term_loop
     '''
+    p[0] = p[1]
 
 def p_term_loop(p):
     '''
@@ -229,6 +272,7 @@ def p_factor(p):
     factor : factor_id
            | factor_exp
     '''
+    p[0] = p[1]
 
 def p_factor_id(p):
     '''
@@ -239,6 +283,12 @@ def p_factor_exp(p):
     '''
     factor_exp : factor_sign factor_value list_index
     '''
+    if(p[1] == None):
+        p[0] = p[2]
+    else:
+        print "in"
+        p[0] = p[2] * -1
+
 
 def p_factor_sign(p):
     '''
@@ -246,6 +296,7 @@ def p_factor_sign(p):
                 | PLUS
                 | null
     '''
+    p[0] = p[1]
 
 def p_factor_value(p):
     '''
@@ -254,6 +305,7 @@ def p_factor_value(p):
                  | DEC_VAL
                  | YESNO_VAL
     '''
+    p[0] = p[1]
 
 def p_conditional(p):
     '''

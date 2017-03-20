@@ -1,5 +1,6 @@
-PROGRAM::= 'program' 'id' GLOBALS 'main' BLOCK_WITH_DECLARATION 'finish'
-GLOBALS::= (DECLARATION | FUNCTION)*
+PROGRAM::= 'program' 'id' GLOBALS FUNCTIONS 'main' BLOCK_WITH_DECLARATION 'finish'
+GLOBALS::= (DECLARATION)*
+FUNCTIONS::= (FUNCTIONS)*
 FUNCTION::='function' 'id' '(' (TYPE 'id' (',' TYPE 'id')*)? ')' 'returns' TYPE BLOCK_WITH_DECLARATION
 VAR::= TYPE 'id' ('[' [0-9]+ ']')? '=' EXPRESSION
 SHAPE::= ('circle' | 'rectangle' | 'triangle') 'id' 'center' '=' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION 'color' '=' 'id' /*center must be assigned a point*/
