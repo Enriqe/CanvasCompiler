@@ -18,7 +18,10 @@ ___MAR 5 - MAR 11___
 + Implementacion de tabla de variables
 
 ___MAR 12 - MAR 18___
++ Implementacion de clases Var, Function y FuncitonDirectory
++ Divided globals into vars and functions
 
 ___MAR 19 - MAR 25___
++ 
 
 ___MAR 26 - ABR 1___
