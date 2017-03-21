@@ -41,12 +41,12 @@ def p_functions(p):
     functions : function functions
               | null
     '''
-    if(p[1] != None):
-        global temp_function
-        temp_function = Function()
-        temp_function.name = p[1]["name"]
-        temp_function.add_variable(p[1]["var"])
-        function_dir.add_function(temp_function)
+    #if(p[1] != None):
+        #global temp_function
+        #temp_function = Function()
+        #temp_function.name = p[1]["name"]
+        #temp_function.add_variable(p[1]["var"])
+        #function_dir.add_function(temp_function)
 
 
 def p_function(p):
@@ -54,8 +54,13 @@ def p_function(p):
     function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
     '''
     # todo: check what to return here
-    vals = {"name": p[2], "var": p[8]}
-    p[0] = vals
+    temp_function = Function()
+    temp_function.name = p[2]
+    temp_function.add_variable(p[8])
+    function_dir.add_function(temp_function)
+
+    #vals = {"name": p[2], "var": p[8]}
+    #p[0] = vals
     #todo: add name and type to function table
 
 def p_function_arguments(p):

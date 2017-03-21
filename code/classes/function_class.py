@@ -1,11 +1,9 @@
 class Function:
 
     def __init__(self, name = "", type = ""):
-        print(name)
         self.name = name
         self.type = type
         self.variables = {}
-        print("FUNCTION CREATED")
 
     def add_variable(self, var):
         if var.name in self.variables:
