@@ -9,7 +9,7 @@ from classes.function_class import Function
 from classes.function_directory_class import FunctionDirectory
 
 function_dir = FunctionDirectory()
-temp_function = function_dir.global_function
+temp_function = Function()
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -20,20 +20,20 @@ logging.basicConfig(
 
 def p_program_syntax(p):
     '''
-    program : PROGRAM VAR_IDENTIFIER globals functions MAIN block_with_declaration FINISH
+    program : PROGRAM VAR_IDENTIFIER globals functions MAIN main_block FINISH
     '''
     function_dir.print_dir()
-    print("hello")
 
 def p_globals(p):
     '''
     globals : declaration globals
             | null
     '''
-    print("P_GLOBALS")
+    global temp_function
     if(p[1] == None):
         temp_function = Function()
     else:
+        temp_function = function_dir.get_global_function()
         temp_function.add_variable(p[1])
 
 def p_functions(p):
@@ -41,23 +41,21 @@ def p_functions(p):
     functions : function functions
               | null
     '''
-    print("P_FUNCTIONS")
-    temp_function = Function()
-    if(p[1] == None):
-        temp_function.name = "main"
-    else:
-        temp_function.name = p[1]
-
-    function_dir.add_function(temp_function)
+    if(p[1] != None):
+        global temp_function
+        temp_function = Function()
+        temp_function.name = p[1]["name"]
+        temp_function.add_variable(p[1]["var"])
+        function_dir.add_function(temp_function)
 
 
 def p_function(p):
     '''
     function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
     '''
-    print("P_FUNCTION")
     # todo: check what to return here
-    p[0] = p[2]
+    vals = {"name": p[2], "var": p[8]}
+    p[0] = vals
     #todo: add name and type to function table
 
 def p_function_arguments(p):
@@ -109,10 +107,19 @@ def p_shape_type(p):
                | TRIANGLE
     '''
 
+def p_main_block(p):
+    '''
+    main_block : block_with_declaration
+    '''
+    temp_function = Function("main")
+    temp_function.add_variable(p[1])
+    function_dir.add_function(temp_function)
+
 def p_block_with_declaration(p):
     '''
     block_with_declaration : L_BRACKET statement_type R_BRACKET
     '''
+    p[0] = p[2]
 
 def p_statement_type(p):
     '''
@@ -120,7 +127,7 @@ def p_statement_type(p):
                      | declaration statement_type
                      | null
     '''
-    
+    p[0] = p[1]
 
 def p_block(p):
     '''
@@ -187,6 +194,8 @@ def p_declaration(p):
                 | color
     '''
     p[0] =  p[1]
+    #print(p[1].value)
+    #temp_function.add_variable(p[1])
 
 def p_point(p):
     '''
