@@ -6,3 +6,4 @@ code/*.pyc
 code/*.out
 code/*.un~
 code/*.un
+code/classes/*.pyc
