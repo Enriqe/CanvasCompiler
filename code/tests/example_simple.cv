@@ -4,11 +4,12 @@ int globalVar = 0
 
 function uno() returns int [
   int unoVar = 1
-
+  dec unoVar2 = 1.1
 ]
 
 function dos() returns int [
   int dosVar = 2
+  dec dosVar2 = 2.1
   
 ]
 

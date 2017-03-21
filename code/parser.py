@@ -20,7 +20,7 @@ logging.basicConfig(
 
 def p_program_syntax(p):
     '''
-    program : PROGRAM VAR_IDENTIFIER globals functions MAIN main_block FINISH
+    program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
     '''
     function_dir.print_dir()
 
@@ -30,38 +30,39 @@ def p_globals(p):
             | null
     '''
     global temp_function
-    if(p[1] == None):
-        temp_function = Function()
-    else:
+    if(p[1]):
+        print("GLOBALS")
         temp_function = function_dir.get_global_function()
         temp_function.add_variable(p[1])
+
+def p_globals_finished(p):
+    '''
+    globals_finished : 
+    '''
+    global temp_function
+    temp_function = Function()
 
 def p_functions(p):
     '''
     functions : function functions
               | null
     '''
-    #if(p[1] != None):
-        #global temp_function
-        #temp_function = Function()
-        #temp_function.name = p[1]["name"]
-        #temp_function.add_variable(p[1]["var"])
-        #function_dir.add_function(temp_function)
-
 
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+    function : FUNCTION VAR_IDENTIFIER function_name L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
     '''
     # todo: check what to return here
-    temp_function = Function()
-    temp_function.name = p[2]
-    temp_function.add_variable(p[8])
+    global temp_function
     function_dir.add_function(temp_function)
+    temp_function = Function()
 
-    #vals = {"name": p[2], "var": p[8]}
-    #p[0] = vals
-    #todo: add name and type to function table
+def p_function_name(p):
+    '''
+    function_name :
+    '''
+    global temp_function
+    temp_function.name = p[-1]
 
 def p_function_arguments(p):
     '''
@@ -85,8 +86,6 @@ def p_var(p):
     '''  
     tempVar = Var(p[2], p[1], p[5])
     p[0] = tempVar
-
-    #todo: add type, name, and value of var to var table
 
 def p_list_index(p):
     '''
@@ -126,6 +125,18 @@ def p_block_with_declaration(p):
     '''
     p[0] = p[2]
 
+def p_block_declarations(p):
+    '''
+    block_declarations : declaration block_declarations
+                       | null
+    '''
+    global temp_function
+    if(p[1]):
+        print("BLOCK_DECLARATIONS FUNC")
+        print(temp_function.name)
+        temp_function.add_variable(p[1])
+        p[0] = p[1]
+
 def p_statement_type(p):
     '''
     statement_type : statement statement_type
@@ -136,13 +147,13 @@ def p_statement_type(p):
 
 def p_block(p):
     '''
-    block : L_BRACKET block_contains R_BRACKET
+    block : L_BRACKET block_statements R_BRACKET
     '''
 
-def p_block_contains(p):
+def p_block_statements(p):
     '''
-    block_contains : statement
-                   | null
+    block_statements : statement
+                     | null
     '''
 
 def p_statement(p):
