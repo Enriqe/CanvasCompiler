@@ -37,7 +37,7 @@ def p_globals(p):
 
 def p_globals_finished(p):
     '''
-    globals_finished : 
+    globals_finished :
     '''
     global temp_function
     temp_function = Function()
@@ -50,19 +50,13 @@ def p_functions(p):
 
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER function_name L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
     '''
     # todo: check what to return here
     global temp_function
+    temp_function.name = p[2]
     function_dir.add_function(temp_function)
     temp_function = Function()
-
-def p_function_name(p):
-    '''
-    function_name :
-    '''
-    global temp_function
-    temp_function.name = p[-1]
 
 def p_function_arguments(p):
     '''
@@ -83,7 +77,7 @@ def p_type(p):
 def p_var(p):
     '''
     var : type VAR_IDENTIFIER list_index EQUALS expression
-    '''  
+    '''
     tempVar = Var(p[2], p[1], p[5])
     p[0] = tempVar
 
@@ -130,10 +124,7 @@ def p_block_declarations(p):
     block_declarations : declaration block_declarations
                        | null
     '''
-    global temp_function
     if(p[1]):
-        print("BLOCK_DECLARATIONS FUNC")
-        print(temp_function.name)
         temp_function.add_variable(p[1])
         p[0] = p[1]
 
@@ -210,8 +201,6 @@ def p_declaration(p):
                 | color
     '''
     p[0] =  p[1]
-    #print(p[1].value)
-    #temp_function.add_variable(p[1])
 
 def p_point(p):
     '''
@@ -235,7 +224,9 @@ def p_canvas(p):
     '''
     canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
-    #todo: add type, name, and value of var to var table
+    val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
+    tempVar = Var(p[2], p[1], val)
+    p[0] = tempVar
 
 def p_canvas_assignment(p):
     '''
@@ -278,7 +269,7 @@ def p_exp(p):
         | MINUS exp
     '''
     p[0] = p[1]
-    
+
 def p_term(p):
     '''
     term : factor term_loop
@@ -401,6 +392,9 @@ def p_color(p):
     color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
     #todo: add type, name, and value of var to var table
+    val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
+    tempVar = Var(p[2], p[1], val)
+    p[0] = tempVar
 
 # Error rule for syntax errors
 def p_error(p):
