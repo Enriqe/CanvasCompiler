@@ -8,7 +8,7 @@ class Function:
     def add_variable(self, var):
         if var.name in self.variables:
             #todo: throw error
-            print "error"
+            print ("Error: , variable", var.name," already defined in this scope")
         else:
             self.variables[var.name] = var
 

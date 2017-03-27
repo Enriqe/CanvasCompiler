@@ -64,6 +64,9 @@ def p_function_arguments(p):
                        | type VAR_IDENTIFIER COMMA function_arguments
                        | null
     '''
+    if(p[1]):
+        tempVar = Var(p[2], p[1], "")
+        temp_function.add_variable(tempVar)
 
 def p_type(p):
     '''
@@ -133,7 +136,6 @@ def p_block_declarations(p):
     '''
     if(p[1]):
         temp_function.add_variable(p[1])
-        p[0] = p[1]
 
 def p_statement_type(p):
     '''
