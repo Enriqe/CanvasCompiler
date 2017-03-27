@@ -4,6 +4,6 @@ code/parsetab.*
 code/parselog.*
 code/*.pyc
 code/*.out
-code/*.un~
-code/*.un
+*.un~
+*.un
 code/classes/*.pyc

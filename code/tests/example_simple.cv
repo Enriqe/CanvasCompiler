@@ -2,13 +2,19 @@ program hello_world2
 
 int globalVar = 0
 
-function uno() returns int [
+function uno(int unoPar, int dosPar) returns int [
   int unoVar = 1
-
+  dec unoVar2 = 1.1
+  point unoPoint x = 14 y = 15.5
+  circle unoCircle center = myPoint
+                   width  = 20
+                   height = 20
+                   color  = myColor
 ]
 
 function dos() returns int [
   int dosVar = 2
+  dec dosVar2 = 2.1
   
 ]
 

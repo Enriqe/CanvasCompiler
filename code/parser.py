@@ -9,7 +9,7 @@ from classes.function_class import Function
 from classes.function_directory_class import FunctionDirectory
 
 function_dir = FunctionDirectory()
-temp_function = function_dir.global_function
+temp_function = Function()
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -20,45 +20,43 @@ logging.basicConfig(
 
 def p_program_syntax(p):
     '''
-    program : PROGRAM VAR_IDENTIFIER globals functions MAIN block_with_declaration FINISH
+    program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
     '''
     function_dir.print_dir()
-    print("hello")
 
 def p_globals(p):
     '''
     globals : declaration globals
             | null
     '''
-    print("P_GLOBALS")
-    if(p[1] == None):
-        temp_function = Function()
-    else:
+    global temp_function
+    if(p[1]):
+        print("GLOBALS")
+        temp_function = function_dir.get_global_function()
         temp_function.add_variable(p[1])
+
+def p_globals_finished(p):
+    '''
+    globals_finished :
+    '''
+    global temp_function
+    temp_function = Function()
 
 def p_functions(p):
     '''
     functions : function functions
               | null
     '''
-    print("P_FUNCTIONS")
-    temp_function = Function()
-    if(p[1] == None):
-        temp_function.name = "main"
-    else:
-        temp_function.name = p[1]
-
-    function_dir.add_function(temp_function)
-
 
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type block_with_declaration
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
     '''
-    print("P_FUNCTION")
     # todo: check what to return here
-    p[0] = p[2]
-    #todo: add name and type to function table
+    global temp_function
+    temp_function.name = p[2]
+    function_dir.add_function(temp_function)
+    temp_function = Function()
 
 def p_function_arguments(p):
     '''
@@ -66,6 +64,9 @@ def p_function_arguments(p):
                        | type VAR_IDENTIFIER COMMA function_arguments
                        | null
     '''
+    if(p[1]):
+        tempVar = Var(p[2], p[1], "")
+        temp_function.add_variable(tempVar)
 
 def p_type(p):
     '''
@@ -79,11 +80,9 @@ def p_type(p):
 def p_var(p):
     '''
     var : type VAR_IDENTIFIER list_index EQUALS expression
-    '''  
+    '''
     tempVar = Var(p[2], p[1], p[5])
     p[0] = tempVar
-
-    #todo: add type, name, and value of var to var table
 
 def p_list_index(p):
     '''
@@ -100,7 +99,13 @@ def p_shape(p):
     '''
     shape : shape_type VAR_IDENTIFIER CENTER EQUALS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
-    #todo: add type, name, and value of var to var table
+    # ^         ^           ^          ^      ^          ^          ^     ^       ^         ^       ^        ^       ^     ^          ^          
+    #p[0]      p[1]        p[2]       p[3]   p[4]       p[5]      p[6]   p[7]    p[8]      p[9]   p[10]     p[11]   p[12] p[13]      p[14]
+    shape_type = p[1]
+    shape_id = p[2]
+    shape_values = {"center" : p[5], "width" : p[8], "height" : p[11], "color" : p[14]} 
+    tempVar = Var(shape_id, shape_type, shape_values)
+    p[0] = tempVar
 
 def p_shape_type(p):
     '''
@@ -108,11 +113,29 @@ def p_shape_type(p):
                | RECTANGLE
                | TRIANGLE
     '''
+    p[0] = p[1]
+
+def p_main_block(p):
+    '''
+    main_block : block_with_declaration
+    '''
+    temp_function = Function("main")
+    temp_function.add_variable(p[1])
+    function_dir.add_function(temp_function)
 
 def p_block_with_declaration(p):
     '''
     block_with_declaration : L_BRACKET statement_type R_BRACKET
     '''
+    p[0] = p[2]
+
+def p_block_declarations(p):
+    '''
+    block_declarations : declaration block_declarations
+                       | null
+    '''
+    if(p[1]):
+        temp_function.add_variable(p[1])
 
 def p_statement_type(p):
     '''
@@ -120,17 +143,17 @@ def p_statement_type(p):
                      | declaration statement_type
                      | null
     '''
-    
+    p[0] = p[1]
 
 def p_block(p):
     '''
-    block : L_BRACKET block_contains R_BRACKET
+    block : L_BRACKET block_statements R_BRACKET
     '''
 
-def p_block_contains(p):
+def p_block_statements(p):
     '''
-    block_contains : statement
-                   | null
+    block_statements : statement
+                     | null
     '''
 
 def p_statement(p):
@@ -192,7 +215,13 @@ def p_point(p):
     '''
     point : POINT VAR_IDENTIFIER X EQUALS expression Y EQUALS expression
     '''
-    #todo: add type, name, and value of var to var table
+    #  ^      ^       ^          ^    ^      ^       ^    ^      ^
+    # p[0]   p[1]    p[2]      p[3]  p[4]   p[5]    p[6] p[7]   p[8]
+    var_type = p[1]
+    point_id = p[2]
+    point_values = {"x" : p[5], "y" : p[8]}
+    tempVar = Var(point_id, var_type, point_values)
+    p[0] = tempVar
 
 def p_point_assignment(p):
     '''
@@ -210,7 +239,9 @@ def p_canvas(p):
     '''
     canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
-    #todo: add type, name, and value of var to var table
+    val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
+    tempVar = Var(p[2], p[1], val)
+    p[0] = tempVar
 
 def p_canvas_assignment(p):
     '''
@@ -253,7 +284,7 @@ def p_exp(p):
         | MINUS exp
     '''
     p[0] = p[1]
-    
+
 def p_term(p):
     '''
     term : factor term_loop
@@ -376,6 +407,9 @@ def p_color(p):
     color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
     '''
     #todo: add type, name, and value of var to var table
+    val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
+    tempVar = Var(p[2], p[1], val)
+    p[0] = tempVar
 
 # Error rule for syntax errors
 def p_error(p):

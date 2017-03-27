@@ -1,20 +1,19 @@
 class Function:
 
-    def __init__(self, name = "", type = "", vars = {}):
+    def __init__(self, name = "", type = ""):
         self.name = name
         self.type = type
-        self.vars = vars
-        self.id = -1
+        self.variables = {}
 
     def add_variable(self, var):
-        if var.name in self.vars:
+        if var.name in self.variables:
             #todo: throw error
-            print "error"
+            print ("Error: , variable", var.name," already defined in this scope")
         else:
-            self.vars[var.name] = var
-    
+            self.variables[var.name] = var
+
     def print_function(self):
+        print("-"*20)
         print("Function name", self.name, "Return Value", self.type)
-        print("FUNCTION VARIABLES:")
-        for key, value in self.vars.iteritems():
+        for key, value in self.variables.iteritems():
             value.print_var()
