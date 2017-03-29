@@ -7,9 +7,11 @@ from scanner import tokens
 from classes.var_class import Var
 from classes.function_class import Function
 from classes.function_directory_class import FunctionDirectory
+from classes.reader_controller_class import ReaderController
 
 function_dir = FunctionDirectory()
 temp_function = Function()
+reader = ReaderController()
 
 logging.basicConfig(
     level = logging.DEBUG,

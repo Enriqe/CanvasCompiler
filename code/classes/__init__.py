@@ -1,1 +1,1 @@
-__all__ = ["function_class", "var_class", "function_directory_class"]
+__all__ = ["function_class", "var_class", "function_directory_class", "quadruple_class", "reader_controller_class"]
