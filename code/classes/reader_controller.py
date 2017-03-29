@@ -1,4 +1,4 @@
-from cuadruple_class import Quadruple
+from cuadruple import Quadruple
 
 class ReaderController:
     quad_list = []

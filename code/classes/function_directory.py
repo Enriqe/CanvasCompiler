@@ -1,4 +1,4 @@
-from function_class import Function
+from function import Function
 
 class FunctionDirectory:
 

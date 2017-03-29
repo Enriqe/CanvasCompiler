@@ -4,10 +4,10 @@ import sys
 import logging
 # Get the token map from the lexer.  This is required.
 from scanner import tokens
-from classes.var_class import Var
-from classes.function_class import Function
-from classes.function_directory_class import FunctionDirectory
-from classes.reader_controller_class import ReaderController
+from classes.var import Var
+from classes.function import Function
+from classes.function_directory import FunctionDirectory
+from classes.reader_controller import ReaderController
 
 function_dir = FunctionDirectory()
 temp_function = Function()
