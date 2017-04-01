@@ -4,7 +4,6 @@ class ReaderController:
     quad_list = []
     operator_stack = []
     operand_stack = []
-    left_operand = ""
 
     def read_operand(self, current_opnd):
         self.operand_stack.append(opnd)
@@ -52,7 +51,14 @@ class ReaderController:
                 # TODO: clean up this mess
                 self.operator_stack.append(current_op)
 
-    # to run when expression is finished and empty both stacks ops and oprnds
+
+    '''
+    finished_expression:
+    To be ran when expression is finished. Empties both operator_stack and operand_stack
+    and generates corresponding quadruples.
+
+
+    '''
     def finished_expression(self):
         #TODO: check for equals sign
         top_op = self.operator_stack[-1]
@@ -74,6 +80,7 @@ class ReaderController:
                 #TODO: call error exit
                 print "ERROR, operation not valid"
             top_op = self.operator_stack[-1]
+
         if(top_op == '='):
             operand = self.operand_stack.pop()
             op = self.operator
