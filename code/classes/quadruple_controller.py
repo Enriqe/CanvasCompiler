@@ -1,33 +1,10 @@
 from quadruple import Quadruple
 
-priority = {
-        '=' : 0,
-        'and' : 1,
-        'or' : 1,
-        '>' : 2,
-        '<' : 2,
-        '>=' : 2,
-        '<=' : 2,
-        '!=' : 2,
-        '==' : 2,
-        '+' : 3,
-        '-' : 3,
-        '*' : 4,
-        '/' : 4,
-        '(' : 5,
-        ')' : 5
-        }
-
-def has_higher_priority(op1, op2):
-    return priority[op1] > priority[op2]
-
 class QuadrupleController:
     quad_list = []
     operator_stack = []
     operand_stack = []
-
-    def add_quadruple(self, quad):
-        quad_list.append(quad)
+    left_operand = ""
 
     def read_operand(self, current_opnd):
         self.operand_stack.append(opnd)
@@ -42,13 +19,15 @@ class QuadrupleController:
         if len(self.operator_stack) == 0:
             self.operator_stack.append(current_op)
         else:
-            prev_op = self.operator_stack[-1]
+            top_op = self.operator_stack[-1]
 
             #TODO: create a priority list/dict/enum/w.e. to compare priorities between ops
-            if(has_higher_priority(prev_op, current_op)):
+            if(priority[current_op] > priority[top_op]):
+                self.operator_stack.append(current_op)
+            else:
                 # loop through operator_stack while a higher-priority operator than the current_op
                 # is found
-                while(has_higher_priority(prev_op, current_op) and len(self.operator_stack) > 0):
+                while(priority[top_op] > priority[current_op] and len(self.operator_stack) > 0):
                     #TODO: should we check for a uniary operator?
 
                     # Pops from stacks and generates Quad
@@ -67,15 +46,16 @@ class QuadrupleController:
                     else:
                         print "ERROR, operation not valid"
 
-                    prev_op = self.operator_stack[-1]
+                    top_op = self.operator_stack[-1]
 
-            self.operator_stack.append(current_op)
+                # TODO: clean up this mess
+                self.operator_stack.append(current_op)
 
     # to run when expression is finished and empty both stacks ops and oprnds
     def finished_expression(self):
         #TODO: check for equals sign
-        prev_op = self.operator_stack[-1]
-        while( len(self.operator_stack) > 0 and prev_op != '='):
+        top_op = self.operator_stack[-1]
+        while( len(self.operator_stack) > 0 and top_op != '='):
             # Pops from stacks and generates Quad
             temp_op = self.operator_stack.pop()
             right_opnd = self.operand_stack.pop()
@@ -92,8 +72,8 @@ class QuadrupleController:
             else:
                 #TODO: call error exit
                 print "ERROR, operation not valid"
-            prev_op = self.operator_stack[-1]
-        if(prev_op == '='):
+            top_op = self.operator_stack[-1]
+        if(top_op == '='):
             operand = self.operand_stack.pop()
             op = self.operator
             temp_quad = Quadruple(left_opnd, "", operand)

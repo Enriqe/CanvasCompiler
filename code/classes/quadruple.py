@@ -10,5 +10,5 @@ class Quadruple:
     Validates (with semantic cube) and performs corresponding operation and returns result
 
     '''
-    def generate_quad(self, left_opnd, right_opnd, op):
+    #def generate_quad(self, left_opnd, right_opnd, op):
         

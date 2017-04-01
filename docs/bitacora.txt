@@ -28,3 +28,4 @@ ___MAR 19 - MAR 25___
 ___MAR 26 - ABR 1___
 + Creacion de clase cuadruplos y reading_controller
 + Implementacion de Cubo Semantico
+~ Reducimos conflictos de 4 -> 3 shift/reduce y 76 -> 19 reduce/reduce
