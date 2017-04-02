@@ -1,0 +1,7 @@
+program simple_quad_test
+
+main [
+  int A = 1 + 2 * 3
+]
+
+finish
