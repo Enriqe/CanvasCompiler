@@ -342,14 +342,43 @@ def p_factor_sign(p):
 
 def p_factor_value(p):
     '''
-    factor_value : VAR_IDENTIFIER
-                 | INT_VAL
-                 | DEC_VAL
-                 | YESNO_VAL
+    factor_value : factor_var
+                 | factor_int
+                 | factor_dec
+                 | factor_yesno
     '''
     p[0] = p[1]
-    #TODO check if fixable
+    #TODO check if able to integrate to p_push_operand helper function
     quad_controller.read_operand(p[1])
+
+def p_factor_var(p):
+    '''
+    factor_var : VAR_IDENTIFIER
+    '''
+    p[0] = p[1]
+    var_type = temp_function.variables[p[1]].type
+    quad_controller.read_type(var_type)
+
+def p_factor_int(p):
+    '''
+    factor_int : INT_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type("int")
+
+def p_factor_dec(p):
+    '''
+    factor_dec : DEC_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type("dec")
+
+def p_factor_yesno(p):
+    '''
+    factor_yesno : YESNO_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type("yesno")
 
 def p_conditional(p):
     '''

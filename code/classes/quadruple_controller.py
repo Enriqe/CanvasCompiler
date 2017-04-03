@@ -1,9 +1,11 @@
 from quadruple import Quadruple
+from semantic_cube import SemanticCube
 
 class QuadrupleController:
     quad_list = []
     operator_stack = []
     operand_stack = []
+    type_stack = []
     avail = 0
 
     def add_quadruple(self, quad):
@@ -15,13 +17,17 @@ class QuadrupleController:
     def read_operand(self, current_opnd):
         self.operand_stack.append(current_opnd)
 
+    def read_type(self, type):
+        self.type_stack.append(type)
+
     def read_equals(self):
         if(len(self.operator_stack) > 0):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
-            sign = self.operator_stack.pop()
+            equals_op = self.operator_stack.pop()
             #TODO do validation of both sides with semantic cube
-            quad = Quadruple("=", left_opnd, right_opnd)
+            # res_type = SemanticCube[left_opnd_type][right_opnd_type]
+            quad = Quadruple(equals_op, left_opnd, right_opnd)
             res = quad.generate_quad()
 
             self.quad_list.append(quad)
