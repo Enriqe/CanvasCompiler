@@ -29,6 +29,7 @@ def p_program_syntax(p):
     program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
     '''
     function_dir.print_dir()
+    quad_controller.print_quads()
 
 def p_globals(p):
     '''
@@ -85,7 +86,7 @@ def p_type(p):
 
 def p_var(p):
     '''
-    var : type VAR_IDENTIFIER push_operand list_index equals expression
+    var : type VAR_IDENTIFIER push_operand list_index EQUALS push_operator expression
     '''
     tempVar = Var(p[2], p[1], p[5])
     p[0] = tempVar
@@ -318,8 +319,20 @@ def p_factor(p):
 
 def p_factor_id(p):
     '''
-    factor_id : L_PAR expression R_PAR
+    factor_id : left_par expression right_par
     '''
+
+def p_left_par(p):
+    '''
+    left_par : L_PAR
+    '''
+    quad_controller.read_fake_bottom()
+
+def p_right_par(p):
+    '''
+    right_par : R_PAR
+    '''
+    quad_controller.pop_fake_bottom()
 
 def p_factor_exp(p):
     '''
@@ -484,17 +497,11 @@ def p_push_operator(p):
     '''
     quad_controller.read_operator(p[-1])
 
-def p_equals(p):
-    '''
-    equals : EQUALS
-    '''
-    quad_controller.read_equals()
-
 def p_finished_expression(p):
     '''
     finished_expression :
     '''
-    quad_controller.read_equals()
+    quad_controller.finished_expression()
 
 # Error rule for syntax errors
 def p_error(p):

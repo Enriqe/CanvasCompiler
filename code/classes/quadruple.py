@@ -1,9 +1,8 @@
 class Quadruple:
 
-    def __init__(self, operator = "", left_op = "", right_op = "", mem_count = 0):
+    def __init__(self, operator = "", left_op = "", right_op = "", result = ""):
         #TODO CHECK IF FIXABLE
-        if(operator != "="):
-            self.mem_count = mem_count
+        self.result = result
         self.left_operand = left_op
         self.right_operand = right_op 
         self.operator = operator
@@ -30,3 +29,10 @@ class Quadruple:
 
         return result
         
+    def print_quad(self):
+        oper = self.operator if self.operator else '__'
+        left = self.left_operand if self.left_operand else '__'
+        right = self.right_operand if self.right_operand else '__'
+        res = self.result if self.result else '__'
+        print(oper, left, right, res)
+
