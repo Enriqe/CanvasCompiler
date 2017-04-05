@@ -22,6 +22,18 @@ class Quadruple:
             result = float(self.left_operand) + float(self.right_operand)
         if(self.operator == '-'):
             result = float(self.left_operand) - float(self.right_operand)
+        if(self.operator == '<'):
+            result = float(self.left_operand) < float(self.right_operand)
+        if(self.operator == '>'):
+            result = float(self.left_operand) > float(self.right_operand)
+        if(self.operator == '<='):
+            result = float(self.left_operand) <= float(self.right_operand)
+        if(self.operator == '>='):
+            result = float(self.left_operand) >= float(self.right_operand)
+        if(self.operator == '=='):
+            result = float(self.left_operand) == float(self.right_operand)
+        if(self.operator == '!='):
+            result = float(self.left_operand) != float(self.right_operand)
         
         #TODO
         if(self.operator == '='):

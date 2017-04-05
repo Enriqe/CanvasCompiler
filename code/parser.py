@@ -262,26 +262,31 @@ def p_canvas_assignment(p):
 
 def p_expression(p):
     '''
-    expression : exp expression_a finished_expression
+    expression : expression_a finished_expression
     '''
     p[0] = p[1]
-    #else:
-        #print("else of p_expression")
 
+# ADDED so finished_expression only executes once per expression
 def p_expression_a(p):
     '''
-    expression_a : expression_ops expression
+    expression_a : exp after_exp_check expression_b
+                 | null
+    '''
+
+def p_expression_b(p):
+    '''
+    expression_b : expression_ops expression_a
                  | null
     '''
 
 def p_expression_ops(p):
     '''
-    expression_ops : L_THAN
-            | G_THAN
-            | EQUALS_EQUALS
-            | NOT_EQUALS
-            | G_THAN_EQUALS
-            | L_THAN_EQUALS
+    expression_ops : L_THAN push_operator
+                   | G_THAN push_operator
+                   | EQUALS_EQUALS push_operator
+                   | NOT_EQUALS push_operator
+                   | G_THAN_EQUALS push_operator
+                   | L_THAN_EQUALS push_operator
     '''
 
 def p_exp(p):
@@ -472,6 +477,12 @@ def p_color(p):
 
 
 # neuralgic point for terms
+def p_after_exp_check(p):
+    '''
+    after_exp_check :
+    '''
+    quad_controller.finished_operand(["<", ">", "<=", ">=", "==", "!="])
+
 def p_after_term_check(p):
     '''
     after_term_check :
