@@ -7,6 +7,7 @@ class QuadrupleController:
     operand_stack = []
     type_stack = []
     avail = 0
+    fake_bottom = '('
 
     def add_quadruple(self, quad):
         quad_list.append(quad)
@@ -20,23 +21,27 @@ class QuadrupleController:
     def read_type(self, type):
         self.type_stack.append(type)
 
-    def read_equals(self):
-        if(len(self.operator_stack) > 0):
+    def read_fake_bottom(self):
+        self.operator_stack.append(self.fake_bottom)
+
+    def pop_fake_bottom(self):
+        self.operator_stack.pop()
+
+    def finished_expression(self):
+        if(self.operator_stack[-1] == '='):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
             #TODO do validation of both sides with semantic cube
             # res_type = SemanticCube[left_opnd_type][right_opnd_type]
-            quad = Quadruple(equals_op, left_opnd, right_opnd)
+            quad = Quadruple(equals_op, right_opnd, "", left_opnd)
             res = quad.generate_quad()
 
             self.quad_list.append(quad)
-            for q in self.quad_list:
-                print("quad: ", q.operator, q.left_operand, q.right_operand)
-            print("ASGN RES", res)
-        else:
-            self.operator_stack.append("=")
-        
+
+    def print_quads(self):
+        for q in self.quad_list:
+            q.print_quad()
 
     '''
     finished_operand:
@@ -51,12 +56,12 @@ class QuadrupleController:
 
             # Pops from stacks and generates quad
             self.avail += 1
-            mem_count = self.avail
+            result = 't' + str(self.avail)
             curr_op = self.operator_stack.pop()
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
 
-            quad = Quadruple(curr_op, left_opnd, right_opnd, mem_count)
+            quad = Quadruple(curr_op, left_opnd, right_opnd, result)
 
             #TODO: validate with semantic cube before generating quad
             result = quad.generate_quad()

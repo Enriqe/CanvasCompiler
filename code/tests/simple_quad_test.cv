@@ -3,9 +3,8 @@ program simple_quad_test
 
 
 main [
-  int A = 1 + 2 * 3
+  int A = ((1 + 2) * 4) * 3
 
-  int B = A
 ]
 
 finish
