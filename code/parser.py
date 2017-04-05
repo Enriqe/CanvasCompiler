@@ -8,6 +8,9 @@ from classes.var import Var
 from classes.function import Function
 from classes.function_directory import FunctionDirectory
 from classes.quadruple_controller import QuadrupleController
+# import semantic_helper
+# from classes.semantic_helper import type_dict
+# from classes.semantic_helper import operator_dict
 
 function_dir = FunctionDirectory()
 temp_function = Function()
@@ -55,6 +58,7 @@ def p_functions(p):
               | null
     '''
 
+#TODO add semantic logic to p_function
 def p_function(p):
     '''
     function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
@@ -88,7 +92,7 @@ def p_var(p):
     '''
     var : type VAR_IDENTIFIER push_operand list_index EQUALS push_operator expression
     '''
-    tempVar = Var(p[2], p[1], p[6])
+    tempVar = Var(p[2], p[1], p[7]) #check that p[i] index still calls corresponding argument when modyifying rule
     p[0] = tempVar
 
 def p_list_index(p):
@@ -141,13 +145,12 @@ def p_block_declarations(p):
     block_declarations : declaration declaration_end block_declarations
                        | null
     '''
-    if(p[1]):
-        temp_function.add_variable(p[1])
 
 def p_declaration_end(p):
     '''
     declaration_end : 
     '''
+    temp_function.add_variable(p[-1])
 
 def p_statement_type(p):
     '''
@@ -358,12 +361,14 @@ def p_factor_sign(p):
     '''
     p[0] = p[1]
 
+#since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
 def p_factor_value(p):
     '''
     factor_value : factor_var
                  | factor_int
                  | factor_dec
                  | factor_yesno
+                 | factor_string
     '''
     p[0] = p[1]
     #TODO check if able to integrate to p_push_operand helper function
@@ -374,30 +379,38 @@ def p_factor_var(p):
     factor_var : VAR_IDENTIFIER
     '''
     p[0] = p[1]
-    print("FACTOR VAR", temp_function.variables)
-    # var_type = temp_function.variables[p[1]].type
-    # quad_controller.read_type(var_type)
+    temp_var = temp_function.variables[p[1]]
+    var_type = temp_var.type
+    quad_controller.read_type(var_type)
 
 def p_factor_int(p):
     '''
     factor_int : INT_VAL
     '''
     p[0] = p[1]
-    quad_controller.read_type("int")
+    #TODO make it cleaner if possible
+    quad_controller.read_type('int')
 
 def p_factor_dec(p):
     '''
     factor_dec : DEC_VAL
     '''
     p[0] = p[1]
-    quad_controller.read_type("dec")
+    quad_controller.read_type('dec')
 
 def p_factor_yesno(p):
     '''
     factor_yesno : YESNO_VAL
     '''
     p[0] = p[1]
-    quad_controller.read_type("yesno")
+    quad_controller.read_type('yesno')
+
+def p_factor_string(p):
+    '''
+    factor_string : STRING_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type('string')
 
 def p_conditional(p):
     '''
@@ -496,6 +509,7 @@ def p_push_operand(p):
     push_operand :
     '''
     quad_controller.read_operand(p[-1])
+    quad_controller.read_type(p[-2])
 
 def p_push_operator(p):
     '''

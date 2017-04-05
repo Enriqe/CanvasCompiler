@@ -1,5 +1,6 @@
 from quadruple import Quadruple
 from semantic_cube import SemanticCube
+import semantic_helper
 
 class QuadrupleController:
     quad_list = []
@@ -32,11 +33,8 @@ class QuadrupleController:
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
-            #TODO do validation of both sides with semantic cube
-            # res_type = SemanticCube[left_opnd_type][right_opnd_type]
             quad = Quadruple(equals_op, right_opnd, "", left_opnd)
             res = quad.generate_quad()
-
             self.quad_list.append(quad)
 
     def print_quads(self):
@@ -50,21 +48,24 @@ class QuadrupleController:
     @param operators: List of operators of the priority level we are at
     '''
     def finished_operand(self, operators):
-        
         # checks if operator_stack is not empty and top operator is in current priority level
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
-
             # Pops from stacks and generates quad
             self.avail += 1
             result = 't' + str(self.avail)
             curr_op = self.operator_stack.pop()
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
+            left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
+            right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
 
-            quad = Quadruple(curr_op, left_opnd, right_opnd, result)
-
-            #TODO: validate with semantic cube before generating quad
-            result = quad.generate_quad()
-
-            self.operand_stack.append(result)
-            self.quad_list.append(quad)
+            res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
+            if res_type != -1:
+                quad = Quadruple(curr_op, left_opnd, right_opnd, result)
+                result = quad.generate_quad()
+                self.operand_stack.append(result)
+                self.type_stack.append(res_type)
+                self.quad_list.append(quad)
+            else:
+                #TODO add error handler, print line no. and two operand mismatches
+                print("ERROR, type mismatch")
