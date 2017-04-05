@@ -270,26 +270,31 @@ def p_canvas_assignment(p):
 
 def p_expression(p):
     '''
-    expression : exp expression_a finished_expression
+    expression : expression_a finished_expression
     '''
     p[0] = p[1]
-    #else:
-        #print("else of p_expression")
 
+# ADDED so finished_expression only executes once per expression
 def p_expression_a(p):
     '''
-    expression_a : expression_ops expression
+    expression_a : exp after_exp_check expression_b
+                 | null
+    '''
+
+def p_expression_b(p):
+    '''
+    expression_b : expression_ops expression_a
                  | null
     '''
 
 def p_expression_ops(p):
     '''
-    expression_ops : L_THAN
-            | G_THAN
-            | EQUALS_EQUALS
-            | NOT_EQUALS
-            | G_THAN_EQUALS
-            | L_THAN_EQUALS
+    expression_ops : L_THAN push_operator
+                   | G_THAN push_operator
+                   | EQUALS_EQUALS push_operator
+                   | NOT_EQUALS push_operator
+                   | G_THAN_EQUALS push_operator
+                   | L_THAN_EQUALS push_operator
     '''
 
 def p_exp(p):
@@ -327,18 +332,18 @@ def p_factor(p):
 
 def p_factor_id(p):
     '''
-    factor_id : left_par expression right_par
+    factor_id : left_exp_par expression right_exp_par
     '''
 
-def p_left_par(p):
+def p_left_exp_par(p):
     '''
-    left_par : L_PAR
+    left_exp_par : L_PAR
     '''
     quad_controller.read_fake_bottom()
 
-def p_right_par(p):
+def p_right_exp_par(p):
     '''
-    right_par : R_PAR
+    right_exp_par : R_PAR
     '''
     quad_controller.pop_fake_bottom()
 
@@ -419,20 +424,39 @@ def p_conditional(p):
 
 def p_conditional_if(p):
     '''
-    conditional_if : L_PAR expression R_PAR block
+    conditional_if : L_PAR expression R_PAR after_if_expression block
     '''
+
+def p_after_if_expression(p):
+    '''
+    after_if_expression :
+    '''
+    quad_controller.after_if_expression()
 
 def p_conditional_elsif(p):
     '''
-    conditional_elsif : ELSIF conditional_if conditional_elsif
+    conditional_elsif : ELSIF after_else conditional_if after_elsif_expression conditional_elsif
                       | null
     '''
 
+def p_after_elsif_expression(p):
+    '''
+    after_elsif_expression :
+    '''
+    quad_controller.after_elsif_expression()
+
 def p_conditional_else(p):
     '''
-    conditional_else : ELSE block
+    conditional_else : ELSE after_else block
                      | null
     '''
+    quad_controller.finished_conditional()
+
+def p_after_else(p):
+    '''
+    after_else :
+    '''
+    quad_controller.after_else()
 
 def p_print(p):
     '''
@@ -491,6 +515,12 @@ def p_color(p):
 
 
 # neuralgic point for terms
+def p_after_exp_check(p):
+    '''
+    after_exp_check :
+    '''
+    quad_controller.finished_operand(["<", ">", "<=", ">=", "==", "!="])
+
 def p_after_term_check(p):
     '''
     after_term_check :
