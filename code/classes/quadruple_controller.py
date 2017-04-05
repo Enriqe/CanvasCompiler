@@ -6,11 +6,14 @@ class QuadrupleController:
     operator_stack = []
     operand_stack = []
     type_stack = []
+    jump_stack = []
     avail = 0
     fake_bottom = '('
+    quad_counter = 0
 
     def add_quadruple(self, quad):
-        quad_list.append(quad)
+        self.quad_list.append(quad)
+        self.quad_counter = self.quad_counter + 1
 
     def read_operator(self, current_op):
         self.operator_stack.append(current_op)
@@ -27,8 +30,12 @@ class QuadrupleController:
     def pop_fake_bottom(self):
         self.operator_stack.pop()
 
+    def fill(self, loc, quad_num):
+        quad = self.quad_list[loc]
+        quad.add_location(quad_num)
+
     def finished_expression(self):
-        if(self.operator_stack[-1] == '='):
+        if(len(self.operator_stack) > 0 and self.operator_stack[-1] == '='):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
@@ -37,11 +44,40 @@ class QuadrupleController:
             quad = Quadruple(equals_op, right_opnd, "", left_opnd)
             res = quad.generate_quad()
 
-            self.quad_list.append(quad)
+            self.add_quadruple(quad)
+
+################### Conditionals ###################
+
+    def finished_conditional(self):
+        end = self.jump_stack.pop()
+        self.fill(end, self.quad_counter)
+
+    def after_if_expression(self):
+        res = self.operand_stack.pop()
+        quad = Quadruple("GOTOF", res)
+        self.add_quadruple(quad)
+        self.jump_stack.append(self.quad_counter - 1)
+
+    def after_elsif_expression(self):
+        wait = self.jump_stack.pop()
+        jump = self.jump_stack.pop()
+        self.fill(jump, self.quad_counter)
+        self.jump_stack.append(wait)
+
+    def after_else(self):
+        quad = Quadruple("GOTO")
+        self.add_quadruple(quad)
+        false = self.jump_stack.pop()
+        self.fill(false, self.quad_counter)
+        self.jump_stack.append(self.quad_counter - 1)
+
+####################################################
 
     def print_quads(self):
+        counter = 0
         for q in self.quad_list:
-            q.print_quad()
+            q.print_quad(counter)
+            counter = counter + 1
 
     '''
     finished_operand:
@@ -50,7 +86,7 @@ class QuadrupleController:
     @param operators: List of operators of the priority level we are at
     '''
     def finished_operand(self, operators):
-        
+
         # checks if operator_stack is not empty and top operator is in current priority level
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
 
@@ -67,4 +103,4 @@ class QuadrupleController:
             result = quad.generate_quad()
 
             self.operand_stack.append(result)
-            self.quad_list.append(quad)
+            self.add_quadruple(quad)

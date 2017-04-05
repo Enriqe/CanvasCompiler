@@ -34,17 +34,32 @@ class Quadruple:
             result = float(self.left_operand) == float(self.right_operand)
         if(self.operator == '!='):
             result = float(self.left_operand) != float(self.right_operand)
-        
         #TODO
         if(self.operator == '='):
             result = self.right_operand
 
         return result
-        
-    def print_quad(self):
-        oper = self.operator if self.operator else '__'
-        left = self.left_operand if self.left_operand else '__'
-        right = self.right_operand if self.right_operand else '__'
-        res = self.result if self.result else '__'
-        print(oper, left, right, res)
+
+    def add_location(self, loc):
+        self.result = loc
+
+    def print_quad(self, counter = 0):
+        try:
+            oper = self.operator
+        except:
+            oper = '__'
+        try:
+            left = self.left_operand
+        except:
+            left = '__'
+        try:
+            right = self.right_operand
+        except:
+            right = '__'
+        try:
+            res = self.result
+        except:
+            res ='__'
+
+        print(counter, oper, left, right, res)
 

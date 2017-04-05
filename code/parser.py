@@ -324,18 +324,18 @@ def p_factor(p):
 
 def p_factor_id(p):
     '''
-    factor_id : left_par expression right_par
+    factor_id : left_exp_par expression right_exp_par
     '''
 
-def p_left_par(p):
+def p_left_exp_par(p):
     '''
-    left_par : L_PAR
+    left_exp_par : L_PAR
     '''
     quad_controller.read_fake_bottom()
 
-def p_right_par(p):
+def p_right_exp_par(p):
     '''
-    right_par : R_PAR
+    right_exp_par : R_PAR
     '''
     quad_controller.pop_fake_bottom()
 
@@ -405,20 +405,39 @@ def p_conditional(p):
 
 def p_conditional_if(p):
     '''
-    conditional_if : L_PAR expression R_PAR block
+    conditional_if : L_PAR expression R_PAR after_if_expression block
     '''
+
+def p_after_if_expression(p):
+    '''
+    after_if_expression :
+    '''
+    quad_controller.after_if_expression()
 
 def p_conditional_elsif(p):
     '''
-    conditional_elsif : ELSIF conditional_if conditional_elsif
+    conditional_elsif : ELSIF after_else conditional_if after_elsif_expression conditional_elsif
                       | null
     '''
 
+def p_after_elsif_expression(p):
+    '''
+    after_elsif_expression :
+    '''
+    quad_controller.after_elsif_expression()
+
 def p_conditional_else(p):
     '''
-    conditional_else : ELSE block
+    conditional_else : ELSE after_else block
                      | null
     '''
+    quad_controller.finished_conditional()
+
+def p_after_else(p):
+    '''
+    after_else :
+    '''
+    quad_controller.after_else()
 
 def p_print(p):
     '''
