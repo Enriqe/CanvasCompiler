@@ -87,7 +87,7 @@ def p_var(p):
     '''
     var : type VAR_IDENTIFIER push_operand list_index equals expression
     '''
-    tempVar = Var(p[2], p[1], p[5])
+    tempVar = Var(p[2], p[1], p[6])
     p[0] = tempVar
 
 def p_list_index(p):
@@ -123,25 +123,30 @@ def p_shape_type(p):
 
 def p_main_block(p):
     '''
-    main_block : block_with_declaration
+    main_block : L_BRACKET block_declarations R_BRACKET
     '''
-    temp_function = Function("main")
-    temp_function.add_variable(p[1])
+    temp_function.name = "main"
+    # temp_function.add_variable(p[1])
     function_dir.add_function(temp_function)
 
-def p_block_with_declaration(p):
-    '''
-    block_with_declaration : L_BRACKET statement_type R_BRACKET
-    '''
-    p[0] = p[2]
+# def p_block_with_declaration(p):
+#     '''
+#     block_with_declaration : L_BRACKET statement_type R_BRACKET
+#     '''
+#     p[0] = p[2]
 
 def p_block_declarations(p):
     '''
-    block_declarations : declaration block_declarations
+    block_declarations : declaration declaration_end block_declarations
                        | null
     '''
     if(p[1]):
         temp_function.add_variable(p[1])
+
+def p_declaration_end(p):
+    '''
+    declaration_end : 
+    '''
 
 def p_statement_type(p):
     '''
@@ -356,8 +361,9 @@ def p_factor_var(p):
     factor_var : VAR_IDENTIFIER
     '''
     p[0] = p[1]
-    var_type = temp_function.variables[p[1]].type
-    quad_controller.read_type(var_type)
+    print("FACTOR VAR", temp_function.variables)
+    # var_type = temp_function.variables[p[1]].type
+    # quad_controller.read_type(var_type)
 
 def p_factor_int(p):
     '''
