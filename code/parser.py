@@ -424,14 +424,14 @@ def p_conditional(p):
 
 def p_conditional_if(p):
     '''
-    conditional_if : L_PAR expression R_PAR after_if_expression block
+    conditional_if : L_PAR expression R_PAR after_cond_expression block
     '''
 
-def p_after_if_expression(p):
+def p_after_cond_expression(p):
     '''
-    after_if_expression :
+    after_cond_expression :
     '''
-    quad_controller.after_if_expression()
+    quad_controller.after_cond_expression()
 
 def p_conditional_elsif(p):
     '''
@@ -497,8 +497,15 @@ def p_for_loop(p):
 
 def p_while_loop(p):
     '''
-    while_loop : WHILE L_PAR expression R_PAR block
+    while_loop : while L_PAR expression R_PAR after_cond_expression block
     '''
+    quad_controller.after_while()
+
+def p_while(p):
+    '''
+    while : WHILE
+    '''
+    quad_controller.before_while()
 
 def p_color(p):
     '''

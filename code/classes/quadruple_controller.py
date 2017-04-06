@@ -49,7 +49,7 @@ class QuadrupleController:
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
             quad = Quadruple(equals_op, right_opnd, "", left_opnd)
-            res = quad.generate_quad()
+            res = quad.eval_quad()
             self.add_quadruple(quad)
 
 ################### Conditionals ###################
@@ -58,7 +58,7 @@ class QuadrupleController:
         end = self.jump_stack.pop()
         self.fill(end, self.quad_counter)
 
-    def after_if_expression(self):
+    def after_cond_expression(self):
         res = self.operand_stack.pop()
         quad = Quadruple("GOTOF", res)
         self.add_quadruple(quad)
@@ -77,6 +77,16 @@ class QuadrupleController:
         self.fill(false, self.quad_counter)
         self.jump_stack.append(self.quad_counter - 1)
 
+    def before_while(self):
+        self.jump_stack.append(self.quad_counter)
+
+    def after_while(self):
+        end = self.jump_stack.pop()
+        jump = self.jump_stack.pop()
+        quad = Quadruple("GOTO", "", "", jump)
+        self.add_quadruple(quad)
+        self.fill(end, self.quad_counter)
+
 ####################################################
 
     def print_quads(self):
@@ -94,7 +104,7 @@ class QuadrupleController:
     def finished_operand(self, operators):
         # checks if operator_stack is not empty and top operator is in current priority level
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
-            # Pops from stacks and generates quad
+            # Pops from stacks and evals quad
             self.avail += 1
             result = 't' + str(self.avail)
             curr_op = self.operator_stack.pop()
@@ -107,7 +117,7 @@ class QuadrupleController:
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
             if res_type != -1:
                 quad = Quadruple(curr_op, left_opnd, right_opnd, result)
-                result = quad.generate_quad()
+                result = quad.eval_quad()
                 self.operand_stack.append(result)
                 self.type_stack.append(res_type)
                 self.add_quadruple(quad)

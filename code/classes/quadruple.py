@@ -8,11 +8,11 @@ class Quadruple:
         self.operator = operator
 
     '''
-    generate_quad:
+    eval_quad:
     Validates (with semantic cube) and performs corresponding operation and returns result
 
     '''
-    def generate_quad(self):
+    def eval_quad(self):
         #TODO: check if operand is a value or a variable
         if(self.operator == '*'):
             result = float(self.left_operand) * float(self.right_operand)
