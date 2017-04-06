@@ -128,7 +128,7 @@ def p_shape_type(p):
 
 def p_main_block(p):
     '''
-    main_block : L_BRACKET block_declarations R_BRACKET
+    main_block : L_BRACKET block_declarations block_statements R_BRACKET
     '''
     temp_function.name = "main"
     # temp_function.add_variable(p[1])

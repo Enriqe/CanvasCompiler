@@ -1,9 +1,10 @@
 # TODO
 
-* IMPLEMENT TYPES STACK IN QUAD_CONTROLLER:
-* * should be in var declaration, expressions, function params, function signature
+* Function semantics
+* * pass correct no. of args, check return type
 * * test with global vars, then with functions
-* START WITH LOOPS QUADS
-* START WITH FUNCTION QUADS
-* START WITH VM
+
+* Function quads
+* VM
+
 * CREATE AUTOMATED TESTS, TO RUN EVERYTIME WE DO CHANGE

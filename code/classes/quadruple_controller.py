@@ -2,6 +2,14 @@ from quadruple import Quadruple
 from semantic_cube import SemanticCube
 import semantic_helper
 
+def debug(right, right_type, left, left_type, op):
+        print("DEBUGGING")
+        print(right)
+        print(right_type)
+        print(left)
+        print(left_type)
+        print(op)
+
 class QuadrupleController:
     quad_list = []
     operator_stack = []
@@ -94,6 +102,7 @@ class QuadrupleController:
             left_opnd = self.operand_stack.pop()
             left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
+            # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
 
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
             if res_type != -1:

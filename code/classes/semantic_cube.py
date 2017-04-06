@@ -25,6 +25,7 @@ SemanticCube[type_dict['string']][type_dict['string']][operator_dict['+']] = 'st
 
 for op in ['!=', '==']:
     SemanticCube[type_dict['string']][type_dict['string']][operator_dict[op]] = 'yesno'
+    SemanticCube[type_dict['yesno']][type_dict['yesno']][operator_dict[op]] = 'yesno'
 
 # TESTS
 #if (SemanticCube[type_dict['string']][type_dict['string']][operator_dict['+']] != type_dict['string']): print("ERROR 1")

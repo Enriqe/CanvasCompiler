@@ -3,7 +3,7 @@ program simple_quad_test
 
 
 main [
-  int A = (1 + 2 > 1) == (4 * 3 < 1000)
+  yesno A = (1 + 2 > 1) == (4 * 3 < 1000)
   int B = 0
   if (2 == 2) [
     B = 10 + 1
@@ -12,7 +12,7 @@ main [
   ] else [
     B = 5 + 10
   ]
-  int C = 1
+  C = 1
 ]
 
 finish
