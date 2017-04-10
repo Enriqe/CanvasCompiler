@@ -40,8 +40,9 @@ class QuadrupleController:
         self.operator_stack.pop()
 
     def fill(self, loc, quad_num):
-        quad = self.quad_list[loc]
+        quad = self.quad_list[loc] 
         quad.add_location(quad_num)
+        self.quad_list[loc] = quad # faltaba actualizar el quad en la lista
 
     def finished_expression(self):
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] == '='):
