@@ -40,7 +40,7 @@ class QuadrupleController:
         self.operator_stack.pop()
 
     def fill(self, loc, quad_num):
-        quad = self.quad_list[loc] 
+        quad = self.quad_list[loc]
         quad.add_location(quad_num)
         self.quad_list[loc] = quad # faltaba actualizar el quad en la lista
 
@@ -52,6 +52,25 @@ class QuadrupleController:
             quad = Quadruple(equals_op, right_opnd, "", left_opnd)
             res = quad.eval_quad()
             self.add_quadruple(quad)
+
+    def finished_function(self):
+        quad = Quadruple("ENDPROC")
+        self.add_quadruple(quad)
+
+    def function_call(self, args, name, original_signature, count):
+        #TODO check types of args in function call against original_signature
+
+        # print("ARGS", args)
+        # print("name", name)
+        # print("og", original_signature)
+        num_args = len(args)
+        quad = Quadruple("ERA", num_args, name)
+        self.add_quadruple(quad)
+        for arg in args:
+            quad = Quadruple("PARAM", arg)
+            self.add_quadruple(quad)
+        quad = Quadruple("GOSUB", name, count)
+        self.add_quadruple(quad)
 
 ################### Conditionals ###################
 

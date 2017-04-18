@@ -8,13 +8,15 @@ from classes.var import Var
 from classes.function import Function
 from classes.function_directory import FunctionDirectory
 from classes.quadruple_controller import QuadrupleController
-# import semantic_helper
-# from classes.semantic_helper import type_dict
-# from classes.semantic_helper import operator_dict
+from classes.semantic_helper import type_dict
+from classes.semantic_helper import operator_dict
+
+
 
 function_dir = FunctionDirectory()
 temp_function = Function()
 quad_controller = QuadrupleController()
+temp_args = []
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -61,7 +63,7 @@ def p_functions(p):
 #TODO add semantic logic to p_function
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET count_function block_declarations block_statements R_BRACKET finished_function
     '''
     # todo: check what to return here
     global temp_function
@@ -78,6 +80,7 @@ def p_function_arguments(p):
     if(p[1]):
         tempVar = Var(p[2], p[1], "")
         temp_function.add_variable(tempVar)
+        temp_function.signature.append(type_dict[p[1]])
 
 def p_type(p):
     '''
@@ -180,8 +183,45 @@ def p_statement(p):
               | while_loop
               | paint
               | read
+              | function_call
               | return
     '''
+
+def p_function_call(p):
+    '''
+    function_call : VAR_IDENTIFIER L_PAR args_list calling_args R_PAR
+    '''
+    func_name = p[1]
+    if (func_name not in function_dir.functions):
+        #TODO throw error
+        print("ERROR: FUNCTION NOT DEFINED")
+    else:
+        aux_function = function_dir.functions[func_name]
+        quad_controller.function_call(temp_args, func_name, aux_function.signature, aux_function.counter)
+
+#TODO think of cleaner version
+def p_args_list(p):
+    '''
+    args_list : 
+    '''
+    global temp_args
+    temp_args = []
+
+def p_calling_args(p):
+    '''
+    calling_args : expression calling_args_a
+                 | null
+    '''
+    p[0] = p[1]
+    temp_args.insert(0, p[1])
+
+def p_calling_args_a(p):
+    '''
+    calling_args_a : COMMA calling_args
+                   | null
+    '''
+    if(p[1]):
+        p[0] = p[2]
 
 def p_assignment(p):
     '''
@@ -280,6 +320,7 @@ def p_expression_a(p):
     expression_a : exp after_exp_check expression_b
                  | null
     '''
+    p[0] = p[1]
 
 def p_expression_b(p):
     '''
@@ -559,6 +600,18 @@ def p_finished_expression(p):
     finished_expression :
     '''
     quad_controller.finished_expression()
+
+def p_finished_function(p):
+    '''
+    finished_function :
+    '''
+    quad_controller.finished_function()
+
+def p_count_function(p):
+    '''
+    count_function :
+    '''
+    temp_function.counter = quad_controller.quad_counter #TODO: Verify counter is accurate
 
 # Error rule for syntax errors
 def p_error(p):

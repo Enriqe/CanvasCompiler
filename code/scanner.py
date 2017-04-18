@@ -168,6 +168,7 @@ def t_YESNO_VAL(t):
     r'(no|yes)'
     return t
 
+#TODO fix regex: doesn't allow one char var declarations
 def t_VAR_IDENTIFIER (t):
     r'[a-zA-Z]+[a-zA-Z0-9]*(_[a-zA-Z0-9]*)*'
     t.type = reserved_words.get(t.value, 'VAR_IDENTIFIER')

@@ -4,7 +4,7 @@
 * * pass correct no. of args, check return type
 * * test with global vars, then with functions
 
-* Function quads
+* Free up var table at end of procedure
 * VM
 
 * CREATE AUTOMATED TESTS, TO RUN EVERYTIME WE DO CHANGE
