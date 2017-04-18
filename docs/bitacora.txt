@@ -26,4 +26,10 @@ ___MAR 19 - MAR 25___
 ~ Modificacion de gramatica en p_function para aceptar parametros y vars en el scope de la funcion
 
 ___MAR 26 - ABR 1___
++ Creacion de clase cuadruplos y reading_controller
 + Implementacion de Cubo Semantico
+~ Reducimos conflictos de 4 -> 3 shift/reduce y 76 -> 19 reduce/reduce
+
+___ABR 2 - ABR 8
++ Integra if, elsif, y else a quadruplos
++ Integra while quads

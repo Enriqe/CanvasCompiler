@@ -4,6 +4,8 @@ class Function:
         self.name = name
         self.type = type
         self.variables = {}
+        self.counter = 0#location of function to store in memory
+        self.signature = [] #example of signature: myFunc(int x, dec y) ==> [0, 2]
 
     def add_variable(self, var):
         if var.name in self.variables:

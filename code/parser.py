@@ -4,12 +4,19 @@ import sys
 import logging
 # Get the token map from the lexer.  This is required.
 from scanner import tokens
-from classes.var_class import Var
-from classes.function_class import Function
-from classes.function_directory_class import FunctionDirectory
+from classes.var import Var
+from classes.function import Function
+from classes.function_directory import FunctionDirectory
+from classes.quadruple_controller import QuadrupleController
+from classes.semantic_helper import type_dict
+from classes.semantic_helper import operator_dict
+
+
 
 function_dir = FunctionDirectory()
 temp_function = Function()
+quad_controller = QuadrupleController()
+temp_args = []
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -18,11 +25,16 @@ logging.basicConfig(
     format = "%(filename)10s:%(lineno)4d:%(message)s"
 )
 
+##############################################
+############# PARSER FUNCTIONS ###############
+##############################################
+
 def p_program_syntax(p):
     '''
     program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
     '''
     function_dir.print_dir()
+    quad_controller.print_quads()
 
 def p_globals(p):
     '''
@@ -48,9 +60,10 @@ def p_functions(p):
               | null
     '''
 
+#TODO add semantic logic to p_function
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET block_declarations block_statements R_BRACKET
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET count_function block_declarations block_statements R_BRACKET finished_function
     '''
     # todo: check what to return here
     global temp_function
@@ -67,6 +80,7 @@ def p_function_arguments(p):
     if(p[1]):
         tempVar = Var(p[2], p[1], "")
         temp_function.add_variable(tempVar)
+        temp_function.signature.append(type_dict[p[1]])
 
 def p_type(p):
     '''
@@ -79,9 +93,9 @@ def p_type(p):
 
 def p_var(p):
     '''
-    var : type VAR_IDENTIFIER list_index EQUALS expression
+    var : type VAR_IDENTIFIER push_operand list_index EQUALS push_operator expression
     '''
-    tempVar = Var(p[2], p[1], p[5])
+    tempVar = Var(p[2], p[1], p[7]) #check that p[i] index still calls corresponding argument when modyifying rule
     p[0] = tempVar
 
 def p_list_index(p):
@@ -117,25 +131,29 @@ def p_shape_type(p):
 
 def p_main_block(p):
     '''
-    main_block : block_with_declaration
+    main_block : L_BRACKET block_declarations block_statements R_BRACKET
     '''
-    temp_function = Function("main")
-    temp_function.add_variable(p[1])
+    temp_function.name = "main"
+    # temp_function.add_variable(p[1])
     function_dir.add_function(temp_function)
 
-def p_block_with_declaration(p):
-    '''
-    block_with_declaration : L_BRACKET statement_type R_BRACKET
-    '''
-    p[0] = p[2]
+# def p_block_with_declaration(p):
+#     '''
+#     block_with_declaration : L_BRACKET statement_type R_BRACKET
+#     '''
+#     p[0] = p[2]
 
 def p_block_declarations(p):
     '''
-    block_declarations : declaration block_declarations
+    block_declarations : declaration declaration_end block_declarations
                        | null
     '''
-    if(p[1]):
-        temp_function.add_variable(p[1])
+
+def p_declaration_end(p):
+    '''
+    declaration_end : 
+    '''
+    temp_function.add_variable(p[-1])
 
 def p_statement_type(p):
     '''
@@ -152,7 +170,7 @@ def p_block(p):
 
 def p_block_statements(p):
     '''
-    block_statements : statement
+    block_statements : statement block_statements
                      | null
     '''
 
@@ -165,40 +183,82 @@ def p_statement(p):
               | while_loop
               | paint
               | read
+              | function_call
               | return
     '''
 
+def p_function_call(p):
+    '''
+    function_call : VAR_IDENTIFIER L_PAR args_list calling_args R_PAR
+    '''
+    func_name = p[1]
+    if (func_name not in function_dir.functions):
+        #TODO throw error
+        print("ERROR: FUNCTION NOT DEFINED")
+    else:
+        aux_function = function_dir.functions[func_name]
+        quad_controller.function_call(temp_args, func_name, aux_function.signature, aux_function.counter)
+
+#TODO think of cleaner version
+def p_args_list(p):
+    '''
+    args_list : 
+    '''
+    global temp_args
+    temp_args = []
+
+def p_calling_args(p):
+    '''
+    calling_args : expression calling_args_a
+                 | null
+    '''
+    p[0] = p[1]
+    temp_args.insert(0, p[1])
+
+def p_calling_args_a(p):
+    '''
+    calling_args_a : COMMA calling_args
+                   | null
+    '''
+    if(p[1]):
+        p[0] = p[2]
+
 def p_assignment(p):
     '''
-    assignment : var_assignment
-               | shape_assignment
-               | point_assignment
-               | canvas_assignment
+    assignment : VAR_IDENTIFIER assignment_a
+    '''
+
+def p_assignment_a(p):
+    #TODO CHECK IF FIXABLE
+    '''
+    assignment_a : EQUALS expression
+                 | var_assignment
+                 | point_assignment
+                 | shape_or_canvas_assignment
+                 | canvas_assignment
     '''
 
 def p_var_assignment(p):
     '''
-    var_assignment : VAR_IDENTIFIER list_index EQUALS var_equals
+    var_assignment : list_index EQUALS expression
     '''
 
-def p_var_equals(p):
+def p_shape_or_canvas_assignment(p):
     '''
-    var_equals : expression
-              | VAR_IDENTIFIER
+    shape_or_canvas_assignment : shape_or_canvas_assignment_a
+                               | shape_assignment
+                               | canvas_assignment
+    '''
+def p_shape_or_canvas_assignment_a(p):
+    '''
+    shape_or_canvas_assignment_a : WIDTH EQUALS expression
+                                 | HEIGHT EQUALS expression
+                                 | COLOR EQUALS VAR_IDENTIFIER
     '''
 
 def p_shape_assignment(p):
     '''
-    shape_assignment : VAR_IDENTIFIER shape_assignment_b 
-    '''
-
-def p_shape_assignment_b(p):
-    '''
-    shape_assignment_b : EQUALS VAR_IDENTIFIER
-                       | CENTER EQUALS POINT
-                       | WIDTH EQUALS expression
-                       | HEIGHT EQUALS expression
-                       | COLOR EQUALS VAR_IDENTIFIER
+    shape_assignment : CENTER EQUALS POINT
     '''
 
 def p_declaration(p):
@@ -225,15 +285,15 @@ def p_point(p):
 
 def p_point_assignment(p):
     '''
-    point_assignment : VAR_IDENTIFIER point_assignment_b 
+    point_assignment : point_assignment_b 
     '''
 
 def p_point_assignment_b(p):
     '''
-    point_assignment_b : EQUALS VAR_IDENTIFIER
-                       | X EQUALS expression
+    point_assignment_b : X EQUALS expression
                        | Y EQUALS expression
     '''
+
 
 def p_canvas(p):
     '''
@@ -245,56 +305,62 @@ def p_canvas(p):
 
 def p_canvas_assignment(p):
     '''
-    canvas_assignment : VAR_IDENTIFIER canvas_assignemnt_b 
-    '''
-
-def p_canvas_assignemnt_b(p):
-    '''
-    canvas_assignemnt_b : ADD VAR_IDENTIFIER
-                        | EQUALS VAR_IDENTIFIER
-                        | WIDTH EQUALS expression
-                        | HEIGHT EQUALS expression
-                        | COLOR EQUALS expression
+    canvas_assignment : ADD VAR_IDENTIFIER
     '''
 
 def p_expression(p):
     '''
-    expression : exp exp_ops exp
-               | exp
+    expression : expression_a finished_expression
     '''
-    if(len(p) == 2):
-        p[0] = p[1]
-    else:
-        print("else of p_expression")
+    p[0] = p[1]
 
-def p_exp_ops(p):
+# ADDED so finished_expression only executes once per expression
+def p_expression_a(p):
     '''
-    exp_ops : L_THAN
-            | G_THAN
-            | EQUALS_EQUALS
-            | NOT_EQUALS
-            | G_THAN_EQUALS
-            | L_THAN_EQUALS
+    expression_a : exp after_exp_check expression_b
+                 | null
+    '''
+    p[0] = p[1]
+
+def p_expression_b(p):
+    '''
+    expression_b : expression_ops expression_a
+                 | null
+    '''
+
+def p_expression_ops(p):
+    '''
+    expression_ops : L_THAN push_operator
+                   | G_THAN push_operator
+                   | EQUALS_EQUALS push_operator
+                   | NOT_EQUALS push_operator
+                   | G_THAN_EQUALS push_operator
+                   | L_THAN_EQUALS push_operator
     '''
 
 def p_exp(p):
     '''
-    exp : term
-        | PLUS exp
-        | MINUS exp
+    exp : term after_term_check exp_a
     '''
     p[0] = p[1]
 
+def p_exp_a(p):
+    '''
+    exp_a : PLUS push_operator exp
+         | MINUS push_operator exp
+         | null
+    '''
+
 def p_term(p):
     '''
-    term : factor term_loop
+    term : factor after_factor_check term_loop
     '''
     p[0] = p[1]
 
 def p_term_loop(p):
     '''
-    term_loop : DIV term
-              | MULT term
+    term_loop : DIV push_operator term
+              | MULT push_operator term
               | null
     '''
 
@@ -307,8 +373,20 @@ def p_factor(p):
 
 def p_factor_id(p):
     '''
-    factor_id : L_PAR expression R_PAR
+    factor_id : left_exp_par expression right_exp_par
     '''
+
+def p_left_exp_par(p):
+    '''
+    left_exp_par : L_PAR
+    '''
+    quad_controller.read_fake_bottom()
+
+def p_right_exp_par(p):
+    '''
+    right_exp_par : R_PAR
+    '''
+    quad_controller.pop_fake_bottom()
 
 def p_factor_exp(p):
     '''
@@ -329,14 +407,56 @@ def p_factor_sign(p):
     '''
     p[0] = p[1]
 
+#since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
 def p_factor_value(p):
     '''
-    factor_value : VAR_IDENTIFIER
-                 | INT_VAL
-                 | DEC_VAL
-                 | YESNO_VAL
+    factor_value : factor_var
+                 | factor_int
+                 | factor_dec
+                 | factor_yesno
+                 | factor_string
     '''
     p[0] = p[1]
+    #TODO check if able to integrate to p_push_operand helper function
+    quad_controller.read_operand(p[1])
+
+def p_factor_var(p):
+    '''
+    factor_var : VAR_IDENTIFIER
+    '''
+    p[0] = p[1]
+    temp_var = temp_function.variables[p[1]]
+    var_type = temp_var.type
+    quad_controller.read_type(var_type)
+
+def p_factor_int(p):
+    '''
+    factor_int : INT_VAL
+    '''
+    p[0] = p[1]
+    #TODO make it cleaner if possible
+    quad_controller.read_type('int')
+
+def p_factor_dec(p):
+    '''
+    factor_dec : DEC_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type('dec')
+
+def p_factor_yesno(p):
+    '''
+    factor_yesno : YESNO_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type('yesno')
+
+def p_factor_string(p):
+    '''
+    factor_string : STRING_VAL
+    '''
+    p[0] = p[1]
+    quad_controller.read_type('string')
 
 def p_conditional(p):
     '''
@@ -345,20 +465,39 @@ def p_conditional(p):
 
 def p_conditional_if(p):
     '''
-    conditional_if : L_PAR expression R_PAR block
+    conditional_if : L_PAR expression R_PAR after_cond_expression block
     '''
+
+def p_after_cond_expression(p):
+    '''
+    after_cond_expression :
+    '''
+    quad_controller.after_cond_expression()
 
 def p_conditional_elsif(p):
     '''
-    conditional_elsif : ELSIF conditional_if conditional_elsif
+    conditional_elsif : ELSIF after_else conditional_if after_elsif_expression conditional_elsif
                       | null
     '''
 
+def p_after_elsif_expression(p):
+    '''
+    after_elsif_expression :
+    '''
+    quad_controller.after_elsif_expression()
+
 def p_conditional_else(p):
     '''
-    conditional_else : ELSE block
+    conditional_else : ELSE after_else block
                      | null
     '''
+    quad_controller.finished_conditional()
+
+def p_after_else(p):
+    '''
+    after_else :
+    '''
+    quad_controller.after_else()
 
 def p_print(p):
     '''
@@ -399,8 +538,15 @@ def p_for_loop(p):
 
 def p_while_loop(p):
     '''
-    while_loop : WHILE L_PAR expression R_PAR block
+    while_loop : while L_PAR expression R_PAR after_cond_expression block
     '''
+    quad_controller.after_while()
+
+def p_while(p):
+    '''
+    while : WHILE
+    '''
+    quad_controller.before_while()
 
 def p_color(p):
     '''
@@ -410,6 +556,62 @@ def p_color(p):
     val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
     tempVar = Var(p[2], p[1], val)
     p[0] = tempVar
+
+##############################################
+############# HELPER FUNCTIONS ###############
+##############################################
+
+
+# neuralgic point for terms
+def p_after_exp_check(p):
+    '''
+    after_exp_check :
+    '''
+    quad_controller.finished_operand(["<", ">", "<=", ">=", "==", "!="])
+
+def p_after_term_check(p):
+    '''
+    after_term_check :
+    '''
+    quad_controller.finished_operand(["+", "-"])
+
+# neuralgic point for factors
+def p_after_factor_check(p):
+    '''
+    after_factor_check :
+    '''
+    quad_controller.finished_operand(["*", "/"])
+
+def p_push_operand(p):
+    '''
+    push_operand :
+    '''
+    quad_controller.read_operand(p[-1])
+    quad_controller.read_type(p[-2])
+
+def p_push_operator(p):
+    '''
+    push_operator :
+    '''
+    quad_controller.read_operator(p[-1])
+
+def p_finished_expression(p):
+    '''
+    finished_expression :
+    '''
+    quad_controller.finished_expression()
+
+def p_finished_function(p):
+    '''
+    finished_function :
+    '''
+    quad_controller.finished_function()
+
+def p_count_function(p):
+    '''
+    count_function :
+    '''
+    temp_function.counter = quad_controller.quad_counter #TODO: Verify counter is accurate
 
 # Error rule for syntax errors
 def p_error(p):

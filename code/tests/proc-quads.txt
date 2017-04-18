@@ -1,0 +1,87 @@
+int A = 2
+// =====start reading expression
+// operand_stack.push(A)
+// operator_stack.push(=)
+// operand_stack.push(2)
+// =====finish reading expression
+// operand_stack = [A, 2]
+// operator_stack = [=]
+// op = operator_stack.pop()
+// opnd2 = operand_stack.pop()
+// opnd1 = operand_stack.pop()
+// res = my_quad.res_count + 1
+// my_quad.gen_quad(opnd1, opnd2, op, res)
+// operand_stack.push(res)
+int B = 5
+
+int C = B + A * B
+// =====start reading expression
+// operand_stack.push(C)
+// operator_stack.push(=)
+// operand_stack.push(B)
+// top_op = operator_stack.peek()
+// if (priority[curr_op (+)] > priority[top_op] (=)){
+//   operator_stack.push(+)
+// }
+// operand_stack.push(A)
+// top_op = operator_stack.peek() // +
+// if (priority[curr_op (*)] > priority[top_op] (+)){
+//   operator_stack.push(*)
+// }
+// operand_stack.push(B)
+// ======finish reading expression
+//      operand_stack = [C, B, A, B]
+//      operator_stack = [=, +, *]
+// while(!operand_stack.empty()){
+//   if(operator_stack.peek() != '='){
+//      op = operator_stack.pop()
+//      op2 = operand_stack.pop()
+//      op1 = operand_stack.pop()
+//      my_quad.gen_quad(opnd1, opnd2, op) // que si no le mando res, se encarge la clase del contador
+//      operand_stack.push(res)       
+//   }
+// }
+
+int C = A * B + A
+// ===== start reading expression
+// operand_stack.push(C)
+// if (reading_point == '='){
+//  operator_stack.push(=)
+// }
+// operand_stack.push(A)
+// top_op = operator_stack.peek() // =
+// if(priority[curr_op (*)] > priority[top_op (=)]{
+//      operator_stack.push(curr_op)
+// })
+// operand_stack.push(B)
+// top_op = operator_stack.peek() // *
+// if (priority[curr_op (+)] > priority[top_op] (*)){
+// else { 
+//    op = operand_stack.peek()
+//    while (priority[top_op] > priority[curr_op]){
+//       //validar que sea +, *, /, -
+//      if(operator_stack.peek() != '='){
+//        op = operator_stack.pop()
+//        op2 = operand_stack.pop()
+//        op1 = operand_stack.pop()
+//        my_quad.gen_quad(opnd1, opnd2, op) // que si no le mando res, se encarge la clase del contador
+//        operand_stack.push(res)       
+//      }
+//       top_op = operand_stack.peek()
+//    }
+// }
+// 
+// ===== finish reading expression
+
+Quads:
+
+= 2   A        // custom quad generator for =
+= 5   B        // custom quad generator for =
+* A B t1
++ B t1 t2
+= t2  C        // custom quad generator for =
+
+
+
+
+
