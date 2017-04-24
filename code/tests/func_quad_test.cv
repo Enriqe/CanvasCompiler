@@ -1,13 +1,20 @@
 program hello_world2
 
-function myFunc1 (int arg1, int arg2) returns yesno [
+function myfunc1 (int arg1, int arg2) returns yesno [
+    int y1 = 1
+]
+
+function myfunc2 (int arg1, dec arg2) returns yesno [
     int y1 = 1
 ]
 
 main [
     int x1 = 0
     int x2 = 1
-    myFunc1(x1, x2)
+    dec d1 = 1.1
+    myfunc1(x1, x2)
+    myfunc2(x1, d1)
+
 ]
 
 finish
