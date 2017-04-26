@@ -19,6 +19,10 @@ class QuadrupleController:
     avail = 0
     fake_bottom = '('
     quad_counter = 0
+    vm_temp = VM()
+    vm_local = VM()
+    vm_global = VM()
+    vm_controller = VMController()
 
     def add_quadruple(self, quad):
         self.quad_list.append(quad)
@@ -125,18 +129,20 @@ class QuadrupleController:
         # checks if operator_stack is not empty and top operator is in current priority level
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
             # Pops from stacks and evals quad
-            self.avail += 1
-            result = 't' + str(self.avail)
+            # self.avail += 1
+            # result = 't' + str(self.avail) 
+            
             curr_op = self.operator_stack.pop()
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
-
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
+            # temp_vaddress = VM_TEMP_CODE + semantic_helper[res_type] + str(len(vm_temp.types[res_type]))
+            temp_v_address = vm_controller.set_v_address(res_type, len(vm_temp.types[res_type]))
             if res_type != -1:
-                quad = Quadruple(curr_op, left_opnd, right_opnd, result)
+                quad = Quadruple(curr_op, left_opnd, right_opnd, temp_vaddress)
                 result = quad.eval_quad()
                 self.operand_stack.append(result)
                 self.type_stack.append(res_type)
