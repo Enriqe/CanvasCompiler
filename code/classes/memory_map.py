@@ -1,4 +1,4 @@
-class VM:
+class MemoryMap:
     types = {
         'int' : [],
         'string' : [],

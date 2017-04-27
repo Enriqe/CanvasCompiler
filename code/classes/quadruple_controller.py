@@ -19,10 +19,10 @@ class QuadrupleController:
     avail = 0
     fake_bottom = '('
     quad_counter = 0
-    vm_temp = VM()
-    vm_local = VM()
-    vm_global = VM()
-    vm_controller = VMController()
+    temp_memory = MemoryMap()
+    local_memory = MemoryMap()
+    global_memory = MemoryMap()
+    memory_controller = MemoryController()
 
     def add_quadruple(self, quad):
         self.quad_list.append(quad)
@@ -139,8 +139,7 @@ class QuadrupleController:
             right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
-            # temp_vaddress = VM_TEMP_CODE + semantic_helper[res_type] + str(len(vm_temp.types[res_type]))
-            temp_v_address = vm_controller.set_v_address(res_type, len(vm_temp.types[res_type]))
+            temp_address = memory_controller.set_address(res_type, len(temp_memory.types[res_type]))
             if res_type != -1:
                 quad = Quadruple(curr_op, left_opnd, right_opnd, temp_vaddress)
                 result = quad.eval_quad()

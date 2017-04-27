@@ -1,1 +1,1 @@
-__all__ = ["function", "var", "function_directory", "quadruple", "quadruple_controller", "semantic_helper", "vm_controller", "vm"]
+__all__ = ["function", "var", "function_directory", "quadruple", "quadruple_controller", "semantic_helper", "memory_controller", "memory_map"]
