@@ -5,7 +5,7 @@ program hello_world
 main [
     int myVarX = 1
     int foo = 2
-    foo = 2 + 1
+    myVarX = 2 * foo
 ]
 
 finish

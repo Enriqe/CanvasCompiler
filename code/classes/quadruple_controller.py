@@ -148,8 +148,10 @@ class QuadrupleController:
                 print("ERROR, type mismatch")
     
     # Used in parser for temp vars
-    def peek_res_type(self):
-        curr_op = self.operator_stack[-1]
-        left_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
-        right_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
-        return SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
+    def peek_res_type(self, operators):
+        if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
+            curr_op = self.operator_stack[-1]
+            left_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
+            right_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
+            return SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
+        return -1

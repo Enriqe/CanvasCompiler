@@ -37,7 +37,7 @@ def p_program_syntax(p):
     '''
     function_dir.print_dir()
     quad_controller.print_quads()
-    # memory_controller.print_memory()
+    memory_controller.print_memory()
 
 def p_globals(p):
     '''
@@ -104,7 +104,6 @@ def p_var(p):
     virt_address = p[3]
     tempVar = Var(p[2], p[1], p[7], virt_address) 
     p[0] = tempVar
-    memory_controller.print_memory()
 
 def p_list_index(p):
     '''
@@ -233,7 +232,7 @@ def p_calling_args_a(p):
 
 def p_assignment(p):
     '''
-    assignment : VAR_IDENTIFIER assignment_a
+    assignment : VAR_IDENTIFIER assignment_a finished_expression
     '''
 
 def p_assignment_a(p):
@@ -403,7 +402,6 @@ def p_right_exp_par(p):
     '''
     quad_controller.pop_fake_bottom()
 
-#why do we have this?
 def p_factor_exp(p):
     '''
     factor_exp : factor_sign factor_value list_index
@@ -415,8 +413,8 @@ def p_factor_exp(p):
 
 def p_factor_sign(p):
     '''
-    factor_sign : MINUS push_operator
-                | PLUS push_operator
+    factor_sign : MINUS
+                | PLUS
                 | null
     '''
     p[0] = p[1]
@@ -594,26 +592,32 @@ def p_after_exp_check(p):
     '''
     after_exp_check :
     '''
-    res_type = quad_controller.peek_res_type()
-    temp_address = memory_controller.get_temp_address(res_type)
-    quad_controller.finished_operand(temp_address, ["<", ">", "<=", ">=", "==", "!="])
+    ops = ["<", ">", "<=", ">=", "==", "!="] 
+    res_type = quad_controller.peek_res_type(ops)
+    if res_type != -1:
+        temp_address = memory_controller.get_temp_address(res_type)
+        quad_controller.finished_operand(temp_address, ops)
 
 def p_after_term_check(p):
     '''
     after_term_check :
     '''
-    res_type = quad_controller.peek_res_type()
-    temp_address = memory_controller.get_temp_address(res_type)
-    quad_controller.finished_operand(temp_address, ["+", "-"])
+    ops = ["+", "-"]
+    res_type = quad_controller.peek_res_type(ops)
+    if res_type != -1:
+        temp_address = memory_controller.get_temp_address(res_type)
+        quad_controller.finished_operand(temp_address, ops)
 
 # neuralgic point for factors
 def p_after_factor_check(p):
     '''
     after_factor_check :
     '''
-    res_type = quad_controller.peek_res_type()
-    temp_address = memory_controller.get_temp_address(res_type)
-    quad_controller.finished_operand(temp_address, ["*", "/"])
+    ops = ["*", "/"]
+    res_type = quad_controller.peek_res_type(ops)
+    if res_type != -1:
+        temp_address = memory_controller.get_temp_address(res_type)
+        quad_controller.finished_operand(temp_address, ops)
 
 def p_push_operand(p):
     '''
