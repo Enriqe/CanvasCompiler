@@ -232,7 +232,7 @@ def p_calling_args_a(p):
 
 def p_assignment(p):
     '''
-    assignment : VAR_IDENTIFIER assignment_a finished_expression
+    assignment : VAR_IDENTIFIER assignment_a
     '''
 
 def p_assignment_a(p):
