@@ -1,0 +1,11 @@
+program hello_world
+
+
+
+main [
+    int myVarX = 1
+    int foo = 2
+    foo = 2 + 1
+]
+
+finish

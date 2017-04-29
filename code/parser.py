@@ -2,20 +2,22 @@ import scanner as scanner
 import ply.yacc as yacc
 import sys
 import logging
-# Get the token map from the lexer.  This is required.
+# Get the token map from the lexer.
 from scanner import tokens
 from classes.var import Var
 from classes.function import Function
 from classes.function_directory import FunctionDirectory
 from classes.quadruple_controller import QuadrupleController
+from classes.memory_controller import MemoryController
 from classes.semantic_helper import type_dict
 from classes.semantic_helper import operator_dict
 
-
+ALLOC_SCOPE = "1" # flag used to segment memory between scopes
 
 function_dir = FunctionDirectory()
 temp_function = Function()
 quad_controller = QuadrupleController()
+memory_controller = MemoryController()
 temp_args = []
 
 logging.basicConfig(
@@ -35,6 +37,7 @@ def p_program_syntax(p):
     '''
     function_dir.print_dir()
     quad_controller.print_quads()
+    # memory_controller.print_memory()
 
 def p_globals(p):
     '''
@@ -51,8 +54,9 @@ def p_globals_finished(p):
     '''
     globals_finished :
     '''
-    global temp_function
+    global temp_function, ALLOC_SCOPE
     temp_function = Function()
+    ALLOC_SCOPE = "2"
 
 def p_functions(p):
     '''
@@ -92,11 +96,15 @@ def p_type(p):
     p[0] = p[1]
 
 def p_var(p):
+    #  WHEN MODYFING RULE : check that p[i] index still calls corresponding argument 
     '''
     var : type VAR_IDENTIFIER push_operand list_index EQUALS push_operator expression
     '''
-    tempVar = Var(p[2], p[1], p[7]) #check that p[i] index still calls corresponding argument when modyifying rule
+    # virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[1], p[2])
+    virt_address = p[3]
+    tempVar = Var(p[2], p[1], p[7], virt_address) 
     p[0] = tempVar
+    memory_controller.print_memory()
 
 def p_list_index(p):
     '''
@@ -314,6 +322,13 @@ def p_expression(p):
     '''
     p[0] = p[1]
 
+# def p_debug(p):
+#     '''
+#     debug :
+#     '''
+#     print "DEBUGG"
+#     print len(quad_controller.operand_stack)
+
 # ADDED so finished_expression only executes once per expression
 def p_expression_a(p):
     '''
@@ -388,21 +403,20 @@ def p_right_exp_par(p):
     '''
     quad_controller.pop_fake_bottom()
 
+#why do we have this?
 def p_factor_exp(p):
     '''
     factor_exp : factor_sign factor_value list_index
     '''
-    if(p[1] == None):
-        p[0] = p[2]
-    else:
-        print "in"
+    if(p[1] == "-"):
         p[0] = p[2] * -1
-
+    else:
+        p[0] = p[2]
 
 def p_factor_sign(p):
     '''
-    factor_sign : MINUS
-                | PLUS
+    factor_sign : MINUS push_operator
+                | PLUS push_operator
                 | null
     '''
     p[0] = p[1]
@@ -418,45 +432,58 @@ def p_factor_value(p):
     '''
     p[0] = p[1]
     #TODO check if able to integrate to p_push_operand helper function
-    quad_controller.read_operand(p[1])
+    # address = memory_controller.get_address(p[1], ALLOC_SCOPE)
 
 def p_factor_var(p):
     '''
     factor_var : VAR_IDENTIFIER
     '''
     p[0] = p[1]
+    #TODO repeated code
     temp_var = temp_function.variables[p[1]]
     var_type = temp_var.type
     quad_controller.read_type(var_type)
+    quad_controller.read_operand(temp_var.virt_address)
 
 def p_factor_int(p):
     '''
     factor_int : INT_VAL
     '''
     p[0] = p[1]
-    #TODO make it cleaner if possible
+    #TODO repeated code
     quad_controller.read_type('int')
+    virt_address = memory_controller.generate_const_address('int', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_factor_dec(p):
     '''
     factor_dec : DEC_VAL
     '''
     p[0] = p[1]
+    #TODO repeated code
     quad_controller.read_type('dec')
+    virt_address = memory_controller.generate_const_address('dec', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_factor_yesno(p):
     '''
     factor_yesno : YESNO_VAL
     '''
     p[0] = p[1]
+    #TODO repeated code
     quad_controller.read_type('yesno')
+    virt_address = memory_controller.generate_const_address('yesno', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_factor_string(p):
     '''
     factor_string : STRING_VAL
     '''
     p[0] = p[1]
+    #TODO repeated code
     quad_controller.read_type('string')
+    virt_address = memory_controller.generate_const_address('string', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_conditional(p):
     '''
@@ -567,27 +594,35 @@ def p_after_exp_check(p):
     '''
     after_exp_check :
     '''
-    quad_controller.finished_operand(["<", ">", "<=", ">=", "==", "!="])
+    res_type = quad_controller.peek_res_type()
+    temp_address = memory_controller.get_temp_address(res_type)
+    quad_controller.finished_operand(temp_address, ["<", ">", "<=", ">=", "==", "!="])
 
 def p_after_term_check(p):
     '''
     after_term_check :
     '''
-    quad_controller.finished_operand(["+", "-"])
+    res_type = quad_controller.peek_res_type()
+    temp_address = memory_controller.get_temp_address(res_type)
+    quad_controller.finished_operand(temp_address, ["+", "-"])
 
 # neuralgic point for factors
 def p_after_factor_check(p):
     '''
     after_factor_check :
     '''
-    quad_controller.finished_operand(["*", "/"])
+    res_type = quad_controller.peek_res_type()
+    temp_address = memory_controller.get_temp_address(res_type)
+    quad_controller.finished_operand(temp_address, ["*", "/"])
 
 def p_push_operand(p):
     '''
     push_operand :
     '''
-    quad_controller.read_operand(p[-1])
+    virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2], p[-1])
+    quad_controller.read_operand(virt_address)
     quad_controller.read_type(p[-2])
+    p[0] = virt_address
 
 def p_push_operator(p):
     '''

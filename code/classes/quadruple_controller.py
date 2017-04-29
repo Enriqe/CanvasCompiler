@@ -1,6 +1,9 @@
 from quadruple import Quadruple
 from semantic_cube import SemanticCube
 import semantic_helper
+from memory_controller import MemoryController
+
+TEMP_SEGMENT = "3" # flag used to segment memory between scopes
 
 def debug(right, right_type, left, left_type, op):
         print("DEBUGGING")
@@ -19,9 +22,6 @@ class QuadrupleController:
     avail = 0
     fake_bottom = '('
     quad_counter = 0
-    temp_memory = MemoryMap()
-    local_memory = MemoryMap()
-    global_memory = MemoryMap()
     memory_controller = MemoryController()
 
     def add_quadruple(self, quad):
@@ -54,7 +54,7 @@ class QuadrupleController:
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
             quad = Quadruple(equals_op, right_opnd, "", left_opnd)
-            res = quad.eval_quad()
+            # res = quad.eval_quad()
             self.add_quadruple(quad)
 
     def finished_function(self):
@@ -125,27 +125,31 @@ class QuadrupleController:
     operator is in the same priority level and genereates quad
     @param operators: List of operators of the priority level we are at
     '''
-    def finished_operand(self, operators):
+    def finished_operand(self, temp_address, operators):
         # checks if operator_stack is not empty and top operator is in current priority level
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
-            # Pops from stacks and evals quad
-            # self.avail += 1
-            # result = 't' + str(self.avail) 
-            
             curr_op = self.operator_stack.pop()
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
+            # print ("DEBUGING")
             # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
-            temp_address = memory_controller.set_address(res_type, len(temp_memory.types[res_type]))
+            
             if res_type != -1:
-                quad = Quadruple(curr_op, left_opnd, right_opnd, temp_vaddress)
-                result = quad.eval_quad()
-                self.operand_stack.append(result)
+                quad = Quadruple(curr_op, left_opnd, right_opnd, temp_address)
+                # result = quad.eval_quad()
+                self.operand_stack.append(temp_address)
                 self.type_stack.append(res_type)
                 self.add_quadruple(quad)
             else:
                 #TODO add error handler, print line no. and two operand mismatches
                 print("ERROR, type mismatch")
+    
+    # Used in parser for temp vars
+    def peek_res_type(self):
+        curr_op = self.operator_stack[-1]
+        left_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
+        right_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
+        return SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]

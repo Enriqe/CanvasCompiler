@@ -1,14 +1,70 @@
 import semantic_helper
+from memory_map import MemoryMap
+
+CONST_SEGMENT   = "4"
+TEMP_SEGMENT    = "3"
+LOCAL_SEGMENT   = "2"
+GLOBAL_SEGMENT  = "1"
 
 class MemoryController:
-    M_TEMP_CODE    = "3"
-    M_LOCAL_CODE   = "2"
-    M_GLOBAL_CODE  = "1"
+
+    temp_memory = MemoryMap()
+    local_memory = MemoryMap()
+    global_memory = MemoryMap()
+    const_memory = MemoryMap()
     
     '''
-    formula to generate our virtual addresses:
+    string which maps our virtual addresses:
 
     ADDRESS = MEM_SEGMENT + VAR_TYPE_CODE + SUBINDEX
+    e.g. "1int23" is global int at index 23
     '''
-    def set_address(self, var_type, next_avail):
-        return M_TEMP_CODE + str(semantic_helper[var_type]) + str(next_avail)
+    def get_address(self, var_type, var_segment):
+        next_avail = 0
+        if var_segment == TEMP_SEGMENT:
+            self.temp_memory.types[var_type].append()
+            next_avail = len(self.temp_memory.types[var_type])
+        elif var_segment == GLOBAL_SEGMENT:
+            self.global_memory.types[var_type].append()
+            next_avail = len(self.global_memory.types[var_type])
+        elif var_segment == LOCAL_SEGMENT:
+            self.local_memory.types[var_type].append()
+            next_avail = len(self.local_memory.types[var_type])
+        return var_segment + str(semantic_helper.type_dict[var_type]) + str(next_avail)
+
+    '''
+    string which maps our virtual addresses:
+
+    ADDRESS = MEM_SEGMENT + VAR_TYPE_CODE + SUBINDEX
+    e.g. "1int23" is global int at index 23
+    '''
+    def generate_var_address(self, var_segment, var_type, var_name):
+        next_avail = 0
+        if var_segment == TEMP_SEGMENT:
+            next_avail = len(self.temp_memory.types[var_type])
+            self.temp_memory.types[var_type].append(var_name)
+        elif var_segment == GLOBAL_SEGMENT:
+            next_avail = len(self.global_memory.types[var_type])
+            self.global_memory.types[var_type].append(var_name)
+        elif var_segment == LOCAL_SEGMENT:
+            next_avail = len(self.local_memory.types[var_type])
+            self.local_memory.types[var_type].append(var_name)
+        return var_segment + str(semantic_helper.type_dict[var_type]) + str(next_avail)
+
+    # TODO: content is similar to generate_var_address, check for integration
+    def generate_const_address(self, const_type, const_value):
+        next_avail = len(self.const_memory.types[const_type])
+        self.const_memory.types[const_type].append(const_value)
+        return CONST_SEGMENT + str(semantic_helper.type_dict[const_type]) + str(next_avail)
+    
+    def get_temp_address(self, temp_type):
+        next_avail = len(self.temp_memory.types[temp_type])
+        # TODO should we have to append something to temp memory???
+        self.temp_memory.types[temp_type].append("T")
+        return next_avail
+
+    def print_memory(self):
+        print( "CONST-MEM", self.const_memory.types)
+        print( "TEMP-MEM", self.temp_memory.types)
+        print( "LOCAL-MEM", self.local_memory.types)
+        print( "GLOBAL-MEM", self.global_memory.types)
