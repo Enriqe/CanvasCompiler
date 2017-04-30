@@ -13,15 +13,27 @@ class ActivationRecord:
             temp_mem[key] = [None] * temp_map[key]
 
     def get_val(address):
+        scope = address[0]
+        type1 = type_converter[address[1:3]]
+        addr = int(address[3:])
         #TODO USE TYPE CONVERTER TO GET VAL
         #IF g OR l RETURN FROM LOCAL
         #IF t RETURN FROM TEMP
-        return 0
+        if (scope == 'g' or scope == 'l'):
+            return local_mem[type1][addr]
+        elif (scope == 't'):
+            return temp_mem[type1][addr]
+        return -1
 
     def set_val(address, value):
-        #TODO USE TYPE CONVERTER TO SET VAL
-        #SAME AS ABOVE
-        return 0
+        scope = address[0]
+        type1 = type_converter[address[1:3]]
+        addr = int(address[3:])
+        #TODO USE TYPE CONVERTER TO GET VAL
+        if (scope == 'g' or scope == 'l'):
+            local_mem[type1][addr] = value
+        elif (scope == 't'):
+            temp_mem[type1][addr] = value
 
     def set_return_address(address):
         return_address = address

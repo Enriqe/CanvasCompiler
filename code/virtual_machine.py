@@ -41,8 +41,8 @@ class VMManager:
 
 
     def get_val(address, val):
-        scope = address[0]
         #TODO TEST IF EXISTS (OR NOT)
+        scope = address[0]
         type1 = type_converter[address[1:3]]
         addr = int(address[3:])
         if (scope == 'g'):
@@ -135,6 +135,7 @@ def run():
         elif (oper == 'ENDPROC'):
             index = manager.end_func()
         #elif (oper == 'GOTOF'):
+            #index = 
         #elif (oper == 'GOTOF'):
         #elif (oper == 'GOTO'):
 
