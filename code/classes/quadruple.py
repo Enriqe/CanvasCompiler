@@ -43,6 +43,9 @@ class Quadruple:
     def add_location(self, loc):
         self.result = loc
 
+    def text(self):
+        return str(self.operator) + ',' + str(self.left_operand) + ',' + str(self.right_operand) + ',' + self.result + '\n'
+
     def print_quad(self, counter = 0):
         try:
             oper = self.operator

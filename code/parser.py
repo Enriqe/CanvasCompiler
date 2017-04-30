@@ -36,7 +36,9 @@ def p_program_syntax(p):
     program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
     '''
     function_dir.print_dir()
+    #TODO DELETE
     quad_controller.print_quads()
+    quad_controller.finish()
     memory_controller.print_memory()
 
 def p_globals(p):

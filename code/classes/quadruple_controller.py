@@ -1,4 +1,7 @@
+import csv
 from quadruple import Quadruple
+from memory_map import MemoryMap
+from memory_controller import MemoryController
 from semantic_cube import SemanticCube
 import semantic_helper
 from memory_controller import MemoryController
@@ -136,7 +139,6 @@ class QuadrupleController:
             # print ("DEBUGING")
             # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
-            
             if res_type != -1:
                 quad = Quadruple(curr_op, left_opnd, right_opnd, temp_address)
                 # result = quad.eval_quad()
@@ -146,7 +148,13 @@ class QuadrupleController:
             else:
                 #TODO add error handler, print line no. and two operand mismatches
                 print("ERROR, type mismatch")
-    
+
+    def finish(self):
+        with open("../output.csv", "w+") as file1:
+            writer = csv.writer(file1, delimiter=' ', quotechar='|')
+            for q in self.quad_list:
+                writer.writerow([q.operator, q.left_operand, q.right_operand, q.result])
+
     # Used in parser for temp vars
     def peek_res_type(self, operators):
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
