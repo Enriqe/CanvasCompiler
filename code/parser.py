@@ -11,8 +11,9 @@ from classes.quadruple_controller import QuadrupleController
 from classes.memory_controller import MemoryController
 from classes.semantic_helper import type_dict
 from classes.semantic_helper import operator_dict
+from classes.memory_map import MemoryMap
 
-ALLOC_SCOPE = "1" # flag used to segment memory between scopes
+ALLOC_SCOPE = "g" # flag used to segment memory between scopes
 
 function_dir = FunctionDirectory()
 temp_function = Function()
@@ -39,7 +40,6 @@ def p_program_syntax(p):
     #TODO DELETE
     quad_controller.print_quads()
     quad_controller.finish()
-    memory_controller.print_memory()
 
 def p_globals(p):
     '''
@@ -57,14 +57,25 @@ def p_globals_finished(p):
     globals_finished :
     '''
     global temp_function, ALLOC_SCOPE
+    temp_function.local_map = memory_controller.get_global_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
     temp_function = Function()
-    ALLOC_SCOPE = "2"
+    memory_controller.clear_local_map()
+    memory_controller.clear_temp_map()
+    ALLOC_SCOPE = "l" #change to local scope
 
 def p_functions(p):
     '''
-    functions : function functions
+    functions : function clear_function_memory functions
               | null
     '''
+
+def p_clear_function_memory(p):
+    '''
+    clear_function_memory :
+    '''
+    memory_controller.clear_local_map()
+    memory_controller.clear_temp_map()
 
 #TODO add semantic logic to p_function
 def p_function(p):
@@ -74,17 +85,20 @@ def p_function(p):
     # todo: check what to return here
     global temp_function
     temp_function.name = p[2]
+    temp_function.local_map = memory_controller.get_local_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
     function_dir.add_function(temp_function)
     temp_function = Function()
 
 def p_function_arguments(p):
     '''
-    function_arguments : type VAR_IDENTIFIER
-                       | type VAR_IDENTIFIER COMMA function_arguments
+    function_arguments : type VAR_IDENTIFIER push_operand
+                       | type VAR_IDENTIFIER push_operand COMMA function_arguments
                        | null
     '''
     if(p[1]):
-        tempVar = Var(p[2], p[1], "")
+        virt_address = p[3]
+        tempVar = Var(p[2], p[1], "", virt_address)
         temp_function.add_variable(tempVar)
         temp_function.signature.append(type_dict[p[1]])
 
@@ -127,6 +141,7 @@ def p_shape(p):
     shape_type = p[1]
     shape_id = p[2]
     shape_values = {"center" : p[5], "width" : p[8], "height" : p[11], "color" : p[14]} 
+    #TODO add virt_address
     tempVar = Var(shape_id, shape_type, shape_values)
     p[0] = tempVar
 
@@ -143,6 +158,8 @@ def p_main_block(p):
     main_block : L_BRACKET block_declarations block_statements R_BRACKET
     '''
     temp_function.name = "main"
+    temp_function.local_map = memory_controller.get_local_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
     # temp_function.add_variable(p[1])
     function_dir.add_function(temp_function)
 
@@ -234,13 +251,28 @@ def p_calling_args_a(p):
 
 def p_assignment(p):
     '''
-    assignment : VAR_IDENTIFIER assignment_a
+    assignment : VAR_IDENTIFIER assignment_push_operand assignment_a finished_expression
     '''
+
+def p_assignment_push_operand(p):
+    '''
+    assignment_push_operand :
+    '''
+#TODO throw ERROR if var is not foudn in global or local scope
+    global temp_function
+    if p[-1] not in temp_function.variables:
+        aux_function = function_dir.get_global_function()
+    else:
+        aux_function = temp_function
+    temp_var = aux_function.variables[p[-1]]
+    var_type = temp_var.type
+    quad_controller.read_type(var_type)
+    quad_controller.read_operand(temp_var.virt_address)
 
 def p_assignment_a(p):
     #TODO CHECK IF FIXABLE
     '''
-    assignment_a : EQUALS expression
+    assignment_a : EQUALS push_operator expression
                  | var_assignment
                  | point_assignment
                  | shape_or_canvas_assignment
@@ -289,6 +321,7 @@ def p_point(p):
     var_type = p[1]
     point_id = p[2]
     point_values = {"x" : p[5], "y" : p[8]}
+    #TODO add virt_address
     tempVar = Var(point_id, var_type, point_values)
     p[0] = tempVar
 
@@ -309,6 +342,7 @@ def p_canvas(p):
     canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
     val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
+    #TODO add virt_address
     tempVar = Var(p[2], p[1], val)
     p[0] = tempVar
 
@@ -439,8 +473,13 @@ def p_factor_var(p):
     factor_var : VAR_IDENTIFIER
     '''
     p[0] = p[1]
-    #TODO repeated code
-    temp_var = temp_function.variables[p[1]]
+    #TODO throw ERROR if var is not found in global or local scope
+    global temp_function
+    if p[1] not in temp_function.variables:
+        aux_function = function_dir.get_global_function()
+    else:
+        aux_function = temp_function
+    temp_var = aux_function.variables[p[1]]
     var_type = temp_var.type
     quad_controller.read_type(var_type)
     quad_controller.read_operand(temp_var.virt_address)
@@ -581,6 +620,7 @@ def p_color(p):
     '''
     #todo: add type, name, and value of var to var table
     val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
+    #TODO add virt_address
     tempVar = Var(p[2], p[1], val)
     p[0] = tempVar
 
