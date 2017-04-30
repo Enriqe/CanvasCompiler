@@ -1,4 +1,5 @@
 from semantic_helper import type_dict
+from classes.semantic_helper import type_converter
 
 class ActivationRecord:
     local_mem = {}
@@ -11,10 +12,15 @@ class ActivationRecord:
             local_mem[key] = [None] * local_map[key]
             temp_mem[key] = [None] * temp_map[key]
 
-    def get_val(ºaddress):
+    def get_val(address):
+        #TODO USE TYPE CONVERTER TO GET VAL
+        #IF g OR l RETURN FROM LOCAL
+        #IF t RETURN FROM TEMP
         return 0
 
     def set_val(address, value):
+        #TODO USE TYPE CONVERTER TO SET VAL
+        #SAME AS ABOVE
         return 0
 
     def set_return_address(address):

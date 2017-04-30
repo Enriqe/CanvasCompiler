@@ -24,3 +24,17 @@ operator_dict = {
     '==' : 9,
     '=' : 10
 }
+
+
+type_converter = {
+        'in' : 'int',
+        'st' : 'string',
+        'de' : 'dec',
+        'ye' : 'yesno',
+        'po' : 'point',
+        'tr' : 'triangle',
+        'ci' : 'circle',
+        're' : 'rectangle',
+        'ca' : 'canvas',
+        'co' : 'color'
+        }

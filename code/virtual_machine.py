@@ -2,19 +2,8 @@ import sys
 import csv
 from classes.function_directory import FunctionDirectory
 from classes.quadruple import Quadruple
+from classes.semantic_helper import type_converter
 
-type_converter = {
-        'in' : 'int',
-        'st' : 'string',
-        'de' : 'dec',
-        'ye' : 'yesno',
-        'po' : 'point',
-        'tr' : 'triangle',
-        'ci' : 'circle',
-        're' : 'rectangle',
-        'ca' : 'canvas',
-        'co' : 'color'
-        }
 
 class VMManager:
     quads = []
@@ -41,14 +30,33 @@ class VMManager:
         type1 = type_converter[address[1:3]]
         addr = int(address[3:])
         if (scope == 'g'):
-            global_mem[type1][addr] = val
+            global_mem.set_val(address, val)
         elif (scope == 'l'):
-            ar_stack[type1][addr] = val
+            ar_stack.top().set_val(address, val)
+        elif (scope == 't'):
+            if (ar_stack.size() > 0):
+                ar_stack.top().set_val(address, val)
+            else:
+                global_mem.set_val(address, val)
+
 
     def get_val(address, val):
+        scope = address[0]
+        #TODO TEST IF EXISTS (OR NOT)
+        type1 = type_converter[address[1:3]]
+        addr = int(address[3:])
+        if (scope == 'g'):
+            return global_mem.get_val(address)
+        elif (scope == 'l'):
+            return ar_stack.top().get_val(address)
+        elif (scope == 't'):
+            if (ar_stack.size() > 0):
+                ar_stack.top().get_val(address)
+            else:
+                global_mem.get_val(address)
 
     def gen_activation_record(func_name):
-        self.func_dir.get_function(func_name)
+        func = self.func_dir.get_function(func_name)
         ar = ActivationRecord(func.localMap, func.tempMap)
         ar_stack.push(ar)
 
@@ -61,11 +69,16 @@ class VMManager:
         ar_stack.top().set_return_address(ret_address)
         return func.index
 
+    def return_func():
+        #TODO RETURN VALUE SHOULD BE SAVED IN GLOBALS
+        print("FIX THIS")
+
     def end_func():
         ar = ar_stack.pop()
         next_index = ar.get_return_index()
         ret_addr = ar.get_return_address()
-
+        #TODO SET CORRECT VALUE
+        self.set_val(ret_addr, 0)  
         return next_index
 
 manager = VMManager()
@@ -121,9 +134,9 @@ def run():
             index = manager.call_func(result, index+1)
         elif (oper == 'ENDPROC'):
             index = manager.end_func()
-        elif (oper == 'GOTOF'):
-        elif (oper == 'GOTOF'):
-        elif (oper == 'GOTO'):
+        #elif (oper == 'GOTOF'):
+        #elif (oper == 'GOTOF'):
+        #elif (oper == 'GOTO'):
 
 if __name__ == '__main__':
 
@@ -137,6 +150,4 @@ if __name__ == '__main__':
         q.print_quad
     # print data
     # print "End of file"
-
-
     print("Successful")
