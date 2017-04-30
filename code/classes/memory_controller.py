@@ -1,10 +1,10 @@
 import semantic_helper
 from memory_map import MemoryMap
 
-CONST_SEGMENT   = "4"
-TEMP_SEGMENT    = "3"
-LOCAL_SEGMENT   = "2"
-GLOBAL_SEGMENT  = "1"
+CONST_SEGMENT   = "c"
+TEMP_SEGMENT    = "t"
+LOCAL_SEGMENT   = "l"
+GLOBAL_SEGMENT  = "g"
 
 class MemoryController:
 

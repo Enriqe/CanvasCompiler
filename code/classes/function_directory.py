@@ -22,6 +22,10 @@ class FunctionDirectory:
             self.current_function = self.current_function + 1
             self.functions[function.name] = function
 
+    def get_function(self, func_name):
+        if func_name in self.functions:
+            return self.functions[func_name]
+
     def add_var_to_FunctionDirectory(self, var):
         if (self.current_function == var.function):
             print "todo"

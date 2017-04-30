@@ -1,4 +1,6 @@
 # TODO
+* Parser
+* * WRITE method
 
 * Function semantics
 * * pass correct no. of args, check return type
