@@ -1,0 +1,8 @@
+= cint0  gint0
+= cint1  lint2
+ENDPROC   
+= cint2  lint2
+ENDPROC   
+= cint3  lint0
+* cint4 lint0 tint0
+= tint0  gint0

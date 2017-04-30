@@ -1,11 +1,18 @@
 program hello_world
 
+int globalVar = 22
 
+function uno(int unoPar, int unoPar2) returns int [
+    int unoVar = 10
+]
+
+function dos(int dosPar, int dosPar2) returns int [
+    int dosVar = 20
+]
 
 main [
-    int myVarX = 1
     int foo = 2
-    myVarX = 2 * foo
+    globalVar = 2 * foo
 ]
 
 finish

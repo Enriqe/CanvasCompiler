@@ -14,5 +14,6 @@
     * Option 1 : parser - mem_controller - parser - quad_controller
     * Option 2 : parser - quad_controller - mem_controller - quad_controller
 
-* Save local and temp memory counters to corresponding function when finishing function
-* Restart counters for local and temp memory everytime we enter a new function
+
+
+* Save name of function in globals var table

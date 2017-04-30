@@ -13,3 +13,4 @@ class MemoryMap:
             'canvas' : 0,
             'color' : 0,
         }
+    
