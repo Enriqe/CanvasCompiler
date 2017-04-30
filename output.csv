@@ -6,3 +6,16 @@ ENDPROC
 = cint3  lint0
 * cint4 lint0 tint0
 = tint0  gint0
+globals 
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+dos int
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+main 
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+uno int
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['22', '10', '20', '2', '2'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

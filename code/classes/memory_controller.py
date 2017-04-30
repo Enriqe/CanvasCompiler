@@ -1,3 +1,4 @@
+import csv
 import semantic_helper
 from memory_map import MemoryMap
 from constants_table import ConstantsTable
@@ -84,3 +85,8 @@ class MemoryController:
 
     def clear_temp_map(self):
         self.temp_memory = MemoryMap()
+    
+    def print_const_memory(self):
+        with open("../output.csv", "a") as file1:
+            writer = csv.writer(file1, delimiter=' ')
+            writer.writerow([self.const_memory.types])

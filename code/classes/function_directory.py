@@ -1,3 +1,4 @@
+import csv
 from function import Function
 
 class FunctionDirectory:
@@ -34,3 +35,14 @@ class FunctionDirectory:
         self.global_function.print_function()
         for key, val in self.functions.iteritems():
             val.print_function()
+
+    def finish(self):
+        with open("../output.csv", "a") as file1:
+            writer = csv.writer(file1, delimiter=' ')
+            writer.writerow([self.global_function.name, self.global_function.type])
+            writer.writerow([self.global_function.local_map.types])
+            writer.writerow([self.global_function.temp_map.types])
+            for key, function in self.functions.iteritems():
+                writer.writerow([function.name, function.type])
+                writer.writerow([function.local_map.types])
+                writer.writerow([function.temp_map.types])
