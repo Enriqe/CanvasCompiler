@@ -2,6 +2,7 @@ import sys
 import csv
 from classes.quadruple import Quadruple
 
+
 quads = []
 
 def equals(q):
@@ -33,7 +34,8 @@ def run():
     quad = quads[0]
     while quad:
         oper = quad.operator
-        
+        if (oper == '='):
+
 
 if __name__ == '__main__':
 
