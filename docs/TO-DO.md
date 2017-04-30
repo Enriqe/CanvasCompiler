@@ -17,3 +17,5 @@
 
 
 * Save name of function in globals var table
+
+* Arrays

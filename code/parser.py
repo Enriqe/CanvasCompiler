@@ -40,6 +40,9 @@ def p_program_syntax(p):
     #TODO DELETE
     quad_controller.print_quads()
     quad_controller.finish()
+    function_dir.finish()
+    memory_controller.print_const_memory()
+
 
 def p_globals(p):
     '''
@@ -85,6 +88,7 @@ def p_function(p):
     # todo: check what to return here
     global temp_function
     temp_function.name = p[2]
+    temp_function.type = p[7]
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
     function_dir.add_function(temp_function)
