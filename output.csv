@@ -1,10 +1,12 @@
-MAIN   3
+MAIN   4
 + lin0 cin0 tin0
+RETURN tin0  
 ENDPROC   
 = cin1  lin0
-ERA 1 myfunc1 
+= cin2  lin0
+ERA gin0  
 PARAM 4  
-GOSUB myfunc1 1 
+GOSUB gin0 tin0 1
 PRINT   lin0
 BEGINFUNCTIONS
 globals int
@@ -15,6 +17,6 @@ myfunc1 int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 main int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '4'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '1', '4'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

@@ -102,6 +102,7 @@ def p_function(p):
     temp_function.type = p[7]
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
+    temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type) # this is ugly
     function_dir.add_function(temp_function)
     temp_function = Function()
 
@@ -115,7 +116,7 @@ def p_function_arguments(p):
         virt_address = p[3]
         tempVar = Var(p[2], p[1], "", virt_address)
         temp_function.add_variable(tempVar)
-        temp_function.signature.append(type_dict[p[1]])
+        temp_function.signature.append(virt_address)
 
 def p_type(p):
     '''
@@ -177,7 +178,7 @@ def p_main_block(p):
     temp_function.type = "int"
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
-    # temp_function.add_variable(p[1])
+    temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type)
     function_dir.add_function(temp_function)
 
 # def p_block_with_declaration(p):
@@ -521,7 +522,9 @@ def p_function_call(p):
             print("ERROR: FUNCTION NOT DEFINED")
         else:
             aux_function = function_dir.functions[func_name]
-            quad_controller.function_call(temp_args, func_name, aux_function.signature, aux_function.counter)
+            res_type = aux_function.type
+            res_temp_address = memory_controller.get_temp_address(res_type)
+            quad_controller.function_call(temp_args, aux_function.virt_address, aux_function.counter, res_temp_address, res_type)
         p[0] = True
 
 def p_factor_int(p):

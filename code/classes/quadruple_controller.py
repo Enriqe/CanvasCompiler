@@ -61,24 +61,24 @@ class QuadrupleController:
             self.add_quadruple(quad)
 
     def finished_function(self):
+        quad = self.quad_list[-1] # peek last quad before return
+        return_address = quad.get_result()
+        quad = Quadruple("RETURN", return_address)
+        self.add_quadruple(quad)
         quad = Quadruple("ENDPROC")
         self.add_quadruple(quad)
 
-    def function_call(self, args, name, original_signature, count):
-        #TODO check types of args in function call against original_signature
-
-        # print("ARGS", args)
-        # print("name", name)
-        # print("og", original_signature)
+    def function_call(self, args, virt_address, jump_to_function_index, res_temp_address, res_type):
         num_args = len(args)
-        quad = Quadruple("ERA", num_args, name)
+        quad = Quadruple("ERA", virt_address)
         self.add_quadruple(quad)
         for arg in args:
             quad = Quadruple("PARAM", arg)
             self.add_quadruple(quad)
-        quad = Quadruple("GOSUB", name, count)
+        quad = Quadruple("GOSUB", virt_address, res_temp_address, jump_to_function_index)
         self.add_quadruple(quad)
-
+        self.operand_stack.append(res_temp_address)
+        self.type_stack.append(res_type)
 
 ################### Canvas Custom Operations ###################
 
@@ -156,10 +156,9 @@ class QuadrupleController:
             # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
             if res_type != -1:
-                quad = Quadruple(curr_op, left_opnd, right_opnd, temp_address)
-                # result = quad.eval_quad()
                 self.operand_stack.append(temp_address)
                 self.type_stack.append(res_type)
+                quad = Quadruple(curr_op, left_opnd, right_opnd, temp_address)
                 self.add_quadruple(quad)
             else:
                 #TODO add error handler, print line no. and two operand mismatches
