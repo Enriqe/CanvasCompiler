@@ -162,6 +162,7 @@ def p_main_block(p):
     main_block : L_BRACKET block_declarations block_statements R_BRACKET
     '''
     temp_function.name = "main"
+    temp_function.type = "int"
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
     # temp_function.add_variable(p[1])
@@ -469,8 +470,6 @@ def p_factor_value(p):
                  | factor_string
     '''
     p[0] = p[1]
-    #TODO check if able to integrate to p_push_operand helper function
-    # address = memory_controller.get_address(p[1], ALLOC_SCOPE)
 
 def p_factor_var(p):
     '''
