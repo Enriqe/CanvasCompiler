@@ -106,10 +106,11 @@ def p_function(p):
     function_dir.add_function(temp_function)
     temp_function = Function()
 
+#TODO CHECK IF AMBIGIOUS
 def p_function_arguments(p):
     '''
-    function_arguments : type VAR_IDENTIFIER push_operand
-                       | type VAR_IDENTIFIER push_operand COMMA function_arguments
+    function_arguments : type VAR_IDENTIFIER push_argument
+                       | type VAR_IDENTIFIER push_argument COMMA function_arguments
                        | null
     '''
     if(p[1]):
@@ -117,6 +118,14 @@ def p_function_arguments(p):
         tempVar = Var(p[2], p[1], "", virt_address)
         temp_function.add_variable(tempVar)
         temp_function.signature.append(virt_address)
+
+def p_push_argument(p):
+    '''
+    push_argument :
+    '''
+    virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
+    p[0] = virt_address
+
 
 def p_type(p):
     '''
