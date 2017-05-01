@@ -7,38 +7,38 @@ class ActivationRecord:
     return_index = -1
     return_address = -1
 
-    def __init__(local_map, temp_map):
+    def __init__(self, local_map, temp_map):
         for key in type_dict:
-            local_mem[key] = [None] * local_map[key]
-            temp_mem[key] = [None] * temp_map[key]
+            self.local_mem[key] = [None] * local_map.types[key]
+            self.temp_mem[key] = [None] * temp_map.types[key]
 
-    def get_val(address):
+    def get_val(self, address):
         scope = address[0]
         type1 = type_converter[address[1:3]]
         addr = int(address[3:])
         if (scope == 'g' or scope == 'l'):
-            return local_mem[type1][addr]
+            return self.local_mem[type1][addr]
         elif (scope == 't'):
-            return temp_mem[type1][addr]
+            return self.temp_mem[type1][addr]
         return -1
 
-    def set_val(address, value):
+    def set_val(self, address, value):
         scope = address[0]
         type1 = type_converter[address[1:3]]
         addr = int(address[3:])
         if (scope == 'g' or scope == 'l'):
-            local_mem[type1][addr] = value
+            self.local_mem[type1][addr] = value
         elif (scope == 't'):
-            temp_mem[type1][addr] = value
+            self.temp_mem[type1][addr] = value
 
-    def set_return_address(address):
+    def set_return_address(self, address):
         return_address = address
 
-    def get_return_address():
+    def get_return_address(self):
         return return_address
 
-    def set_return_index(address):
+    def set_return_index(self, address):
         return_address = address
 
-    def get_return_index():
+    def get_return_index(self):
         return return_index
