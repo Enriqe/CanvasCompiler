@@ -3,6 +3,7 @@ import semantic_helper
 from memory_map import MemoryMap
 from constants_table import ConstantsTable
 
+CONST_TABLE_BEGIN_FLAG = "BEGINCONSTTABLE"
 CONST_SEGMENT   = "c"
 TEMP_SEGMENT    = "t"
 LOCAL_SEGMENT   = "l"
@@ -70,4 +71,5 @@ class MemoryController:
     def print_const_memory(self):
         with open("../output.csv", "a") as file1:
             writer = csv.writer(file1, delimiter=' ')
+            writer.writerow([CONST_TABLE_BEGIN_FLAG])
             writer.writerow([self.const_memory.types])

@@ -1,25 +1,87 @@
 import sys
 import csv
+import ast
 from classes.function_directory import FunctionDirectory
+from classes.function import Function
+from classes.constants_table import ConstantsTable
 from classes.quadruple import Quadruple
 from classes.semantic_helper import type_converter
+from classes.activation_record import ActivationRecord
 
+FUNC_BEGIN_FLAG = "BEGINFUNCTIONS"
+CONST_TABLE_BEGIN_FLAG = "BEGINCONSTTABLE"
+QUAD_BEGIN_FLAG = "BEGINQUADS"
 
 class VMManager:
     quads = []
     func_dir = FunctionDirectory()
-    #TODO TAMAÑOS DE AR GLOBAL O WATAFAK
-    global_mem = ActivationRecord()
-    #TODO CONSTANTS?
-    ar_stack = Stack()
+    #TODO TAMAOS DE AR GLOBAL O WATAFAK
+    # global_mem = ActivationRecord()
+    const_table = ConstantsTable()
+    # ar_stack = Stack()
 
-    def init_quads(file_name):
-        with open(file_name, 'rb') as fle:
-            reader = csv.reader(fle, delimiter=',', quotechar='|')
+    def print_something(self, string):
+        print string
+
+    def init_obj_file(self, file_name):
+        row_type = QUAD_BEGIN_FLAG # file always starts with quads
+        print "sdf"
+
+        with open(file_name, 'r') as csvfile:
+            reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
             for row in reader:
                 print row
-                q = Quadruple(row[0],row[1],row[2],row[3])
-                self.quads.append(q)
+                if row[0] == FUNC_BEGIN_FLAG: # switch type of processing to functions
+                    row_type = FUNC_BEGIN_FLAG
+                    #yield row
+                elif row[0] == CONST_TABLE_BEGIN_FLAG: # switch type of processing to read const table
+                    row_type = CONST_TABLE_BEGIN_FLAG
+                    #yield row
+                ##TODO maybe separate into different ifs
+                elif row_type == QUAD_BEGIN_FLAG: #processing quad data
+                    q = Quadruple(row[0],row[1],row[2],row[3])
+                    self.quads.append(q)
+                elif row_type == FUNC_BEGIN_FLAG: # processing function data
+                    temp_function = Function()
+                    temp_function.name = row[0]
+                    temp_function.type = row[1]
+                    row = reader.next()
+                    #yield row # dunno if will work
+                    #print "ROWW"
+                    temp_function.local_map = ast.literal_eval(row[0])
+                    temp_function.print_function()
+                    break
+                    ## row = reader.next()
+                    #yield row
+                    #temp_function.temp_map = ast_literal_eval(row)
+                    #self.func_dir.add_function(temp_function)
+                #elif row_type == CONST_TABLE_BEGIN_FLAG: # reading const table
+                    #self.const_table = ast_literal_eval(row)
+
+
+    # def init_dir_func(file_name):
+    #     with open(file_name, 'rb') as file:
+    #         reader = csv.reader(file, delimiter=',', quotechar='|')
+    #         for row in reader:
+    #             if row == CONST_TABLE_BEGIN_FLAG:
+    #                 break
+    #             print row
+    #             temp_function = Function()
+    #             temp_function.name = row[0]
+    #             temp_function.type = row[1]
+    #             # row = reader.next()
+    #             yield row
+    #             temp_function.local_map = ast_literal_eval(row)
+    #             # row = reader.next()
+    #             yield row
+    #             temp_function.temp_map = ast_literal_eval(row)
+    #             self.function_directory.add_function(temp_function)
+
+    # def init_const_table(file_name):
+    #     with open(file_name, 'rb') as file:
+    #         reader = csv.reader(file, delimiter=',', quotechar='|')
+    #         for row in reader:
+    #             self.const_table = ast_literal_eval(row)
 
     def get_quad(index):
         return self.quads[index]
@@ -145,13 +207,16 @@ def run():
 if __name__ == '__main__':
 
     if (len(sys.argv) > 1) : file1 = sys.argv[1]
-    else : file1 = '../output.obj'
+    else : file1 = '../output.csv'
+    print file1
 
-    manager.init_quads(file1)
-    run()
+    manager.init_obj_file(file1)
+    manager.func_dir.print_dir()
+    print manager.const_table.types
+    # run()
 
-    for q in quads:
-        q.print_quad
+    # for q in quads:
+    #     q.print_quad
     # print data
     # print "End of file"
     print("Successful")

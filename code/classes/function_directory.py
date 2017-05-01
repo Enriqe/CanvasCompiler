@@ -1,6 +1,8 @@
 import csv
 from function import Function
 
+FUNC_BEGIN_FLAG = "BEGINFUNCTIONS"
+
 class FunctionDirectory:
 
     ## http://code.activestate.com/recipes/66531/
@@ -8,6 +10,7 @@ class FunctionDirectory:
     def __init__(self):
         self.__dict__ = self.__shared_state
         self.global_function = Function("globals")
+        self.global_function.type = "int"
         self.functions = {}
         self.current_function = 0
 
@@ -39,6 +42,7 @@ class FunctionDirectory:
     def finish(self):
         with open("../output.csv", "a") as file1:
             writer = csv.writer(file1, delimiter=' ')
+            writer.writerow([FUNC_BEGIN_FLAG])
             writer.writerow([self.global_function.name, self.global_function.type])
             writer.writerow([self.global_function.local_map.types])
             writer.writerow([self.global_function.temp_map.types])
