@@ -65,7 +65,6 @@ class VMManager:
         if (scope == 'g'):
             self.global_mem.set_val(address, val)
         elif (scope == 'l'):
-            print self.ar_stack
             self.ar_stack[-1].set_val(address, val)
         elif (scope == 't'):
             if (len(self.ar_stack) > 0):
@@ -92,25 +91,25 @@ class VMManager:
             return self.const_table.types[type1][addr]
 
 
-    def gen_activation_record(func_name):
+    def gen_activation_record(self, func_name):
         func = self.func_dir.get_function(func_name)
-        ar = ActivationRecord(func.localMap, func.tempMap)
+        ar = ActivationRecord(func.get_local_map(), func.get_temp_map())
         self.ar_stack.append(ar)
 
-    def add_param(address, value):
+    def add_param(self, address, value):
         #TODO Como saber el address del param
         self.ar_stack[-1].set_val(address, value)
 
-    def call_func(ret_address, ret_index):
+    def call_func(self, ret_address, ret_index):
         self.ar_stack[-1].set_return_index(ret_index)
         self.ar_stack[-1].set_return_address(ret_address)
         return func.index
 
-    def return_func():
+    def return_func(self):
         #TODO RETURN VALUE SHOULD BE SAVED IN GLOBALS
         print("FIX THIS")
 
-    def end_func():
+    def end_func(self):
         ar = self.ar_stack.pop()
         next_index = ar.get_return_index()
         ret_addr = ar.get_return_address()
@@ -129,13 +128,18 @@ def run():
         left = quad.left_operand
         right = quad.right_operand
         result = quad.result
-        if (oper == '='):
+        if (oper == 'MAIN'):
+            manager.gen_activation_record("main")
+            index += 1
+        elif (oper == 'PRINT'):
+            manager.get_val(
+        elif (oper == '='):
             val = manager.get_val(left)
             manager.set_val(result, val)
             index += 1
         elif (oper in ['+','-','*','/','<','>','<=','>=','==','!=']):
-            left_val = manager.get_val(left)
-            right_val = manager.get_val(right)
+            left_val = int(manager.get_val(left))
+            right_val = int(manager.get_val(right))
             if (oper == '+'):
                 manager.set_val(result, left_val + right_val)
             elif (oper == '-'):
@@ -179,7 +183,12 @@ def run():
                 index += 1
         elif (oper == 'GOTO'):
             index = int(result)
-        quad = manager.get_quad(index)
+
+        # Check if last quad
+        if (index < len(manager.quads)):
+            quad = manager.get_quad(index)
+        else :
+            break
 
 if __name__ == '__main__':
 

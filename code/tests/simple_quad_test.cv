@@ -1,21 +1,22 @@
 program simple_quad_test
 
 main [
-  yesno A = (1 + 2 > 1) == (4 * 3 < 1000)
+  yesno ab = (1 + 2 > 1) == (4 * 3 < 1000)
 
-  int B = 0
-  int C = 1
-  if (2 == 2) [
-    B = 10 + 1
-  ] elsif (2 != 2) [
-    B = 20 + 20
+  int bc = 0
+  int cd = 1
+  if (cd == bc) [
+    bc = 10 + 1
+  ] elsif (bc < cd) [
+    bc = 20 + 20
+    print(bc)
   ] else [
-    B = 5 + 10
+    bc = 5 + 10
     while ( 2 < 3 ) [
-      B = 10 * 10
+      bc = 10 * 10
     ]
   ]
-  C = 1
+  cd = 1
 
 ]
 

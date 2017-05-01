@@ -17,9 +17,9 @@ class ActivationRecord:
         type1 = type_converter[address[1:3]]
         addr = int(address[3:])
         if (scope == 'g' or scope == 'l'):
-            return local_mem[type1][addr]
+            return self.local_mem[type1][addr]
         elif (scope == 't'):
-            return temp_mem[type1][addr]
+            return self.temp_mem[type1][addr]
         return -1
 
     def set_val(self, address, value):
