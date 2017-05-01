@@ -123,7 +123,7 @@ def run():
     index = 0
     quad = manager.get_quad(index)
     while quad:
-        quad.print_quad()
+        #quad.print_quad()
         oper = quad.operator
         left = quad.left_operand
         right = quad.right_operand
@@ -132,7 +132,9 @@ def run():
             manager.gen_activation_record("main")
             index += 1
         elif (oper == 'PRINT'):
-            manager.get_val(
+            val = manager.get_val(result)
+            print val
+            index += 1
         elif (oper == '='):
             val = manager.get_val(left)
             manager.set_val(result, val)
@@ -177,7 +179,8 @@ def run():
         elif (oper == 'ENDPROC'):
             index = manager.end_func()
         elif (oper == 'GOTOF'):
-            if (left == 'no'):
+            left_val = manager.get_val(left)
+            if (left_val == False):
                 index = int(result)
             else :
                 index += 1
@@ -194,16 +197,10 @@ if __name__ == '__main__':
 
     if (len(sys.argv) > 1) : file1 = sys.argv[1]
     else : file1 = '../output.csv'
-    print file1
 
     manager.init_obj_file(file1)
-    manager.func_dir.print_dir()
-    print "CONST TABLE:"
-    print manager.const_table.types
+    #manager.func_dir.print_dir()
+    #print manager.const_table.types
     run()
 
-    for q in manager.quads:
-        q.print_quad()
-    # print data
-    print "End of file"
     print("Successful")

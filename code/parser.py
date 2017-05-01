@@ -392,7 +392,6 @@ def p_expression(p):
 def p_expression_a(p):
     '''
     expression_a : exp after_exp_check expression_b
-                 | null
     '''
     p[0] = p[1]
 
