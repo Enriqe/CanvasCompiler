@@ -94,15 +94,13 @@ def p_clear_function_memory(p):
 #TODO add semantic logic to p_function
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET count_function block_declarations block_statements return R_BRACKET finished_function
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type function_return_address L_BRACKET count_function block_declarations block_statements return R_BRACKET finished_function
     '''
     # todo: check what to return here
     global temp_function
     temp_function.name = p[2]
-    temp_function.type = p[7]
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
-    temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type) # this is ugly
     function_dir.add_function(temp_function)
     temp_function = Function()
 
@@ -126,6 +124,12 @@ def p_push_argument(p):
     virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
     p[0] = virt_address
 
+def p_function_return_address(p):
+    '''
+    function_return_address :
+    '''
+    temp_function.type = p[-1]
+    temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type) # this is ugly
 
 def p_type(p):
     '''
@@ -660,7 +664,7 @@ def p_paint(p):
 
 def p_return(p):
     '''
-    return : RETURN expression
+    return : RETURN return_assign expression finished_expression
            | null
     '''
     global temp_function
@@ -675,6 +679,13 @@ def p_return(p):
     else:
         temp_var = aux_function.variables[p[2]]
         quad_controller.return_function(temp_var.virt_address)
+
+def p_return_assign(p):
+    '''
+    return_assign :
+    '''
+    quad_controller.read_operand(temp_function.virt_address)
+    quad_controller.read_operator('=')
 
 
 def p_for_loop(p):
