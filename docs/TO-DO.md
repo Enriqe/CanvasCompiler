@@ -5,6 +5,7 @@ DONE * Translate function quads to virt addresses
 * Check if function call matchees function definition signature
 DONE * in GOSUB, append temp_addr and use it in following expressions
 DONE * Create return quad in funciton quads
+* FIX FINISHED_EXPRESSION
 * Params in func
     * Append counter to creation of params in quads
 * Free up var table at end of procedure
