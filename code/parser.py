@@ -34,7 +34,7 @@ logging.basicConfig(
 
 def p_program_syntax(p):
     '''
-    program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
+    program : PROGRAM VAR_IDENTIFIER program_start globals globals_finished functions MAIN main_start main_block FINISH
     '''
     function_dir.print_dir()
     #TODO DELETE
@@ -43,6 +43,17 @@ def p_program_syntax(p):
     function_dir.finish()
     memory_controller.print_const_memory()
 
+def p_program_start(p):
+    '''
+    program_start :
+    '''
+    quad_controller.program_start()
+
+def p_main_start(p):
+    '''
+    main_start :
+    '''
+    quad_controller.main_start()
 
 def p_globals(p):
     '''
@@ -264,15 +275,16 @@ def p_assignment_push_operand(p):
     '''
     assignment_push_operand :
     '''
+    # TODO put this in a method \/\/\/\/\/
     global temp_function
     if p[-1] not in temp_function.variables:
         aux_function = function_dir.get_global_function()
     else:
         aux_function = temp_function
-
     if p[-1] not in aux_function.variables:
         #TODO throw ERROR if var is not foudn in global or local scope
         print "VAR NOT FOUND"
+    # TODO put this in a method /\/\/\/\/\
     else:
         temp_var = aux_function.variables[p[-1]]
         var_type = temp_var.type
@@ -483,6 +495,7 @@ def p_factor_var(p):
     factor_var : VAR_IDENTIFIER
     '''
     p[0] = p[1]
+    # TODO put this in a method \/\/\/\/\/
     global temp_function
     if p[1] not in temp_function.variables:
         aux_function = function_dir.get_global_function()
@@ -491,6 +504,7 @@ def p_factor_var(p):
     if p[1] not in aux_function.variables:
         #TODO throw ERROR if var is not found in global or local scope
         print "VAR NOT FOUND"
+    # TODO put this in a method /\/\/\/\/\
     else:
         temp_var = aux_function.variables[p[1]]
         var_type = temp_var.type
@@ -582,6 +596,7 @@ def p_print(p):
     '''
     print : PRINT L_PAR print_b print_a R_PAR
     '''
+    # TODO put this in a method \/\/\/\/\/
     global temp_function
     if p[3] not in temp_function.variables:
         aux_function = function_dir.get_global_function()
@@ -590,6 +605,7 @@ def p_print(p):
     if p[3] not in aux_function.variables:
         #TODO throw ERROR if var is not found in global or local scope
         print "VAR NOT FOUND"
+    # TODO put this in a method /\/\/\/\/\
     else:
         temp_var = aux_function.variables[p[3]]
         quad_controller.print_stmt(temp_var.virt_address)

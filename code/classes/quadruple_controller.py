@@ -49,7 +49,7 @@ class QuadrupleController:
     def fill(self, loc, quad_num):
         quad = self.quad_list[loc]
         quad.add_location(quad_num)
-        self.quad_list[loc] = quad # faltaba actualizar el quad en la lista
+        self.quad_list[loc] = quad 
 
     def finished_expression(self):
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] == '='):
@@ -82,9 +82,18 @@ class QuadrupleController:
 
 ################### Canvas Custom Operations ###################
 
-    def print_stmt(self, exp):
-        quad = Quadruple("PRINT", "", "", exp)
+    def print_stmt(self, var_id):
+        quad = Quadruple("PRINT", "", "", var_id)
         self.add_quadruple(quad)
+
+    def program_start(self):
+        quad = Quadruple("MAIN")
+        self.add_quadruple(quad)
+        self.jump_stack.append(self.quad_counter - 1)
+
+    def main_start(self):
+        main_quad_index = self.jump_stack.pop()
+        self.fill(main_quad_index, self.quad_counter)
 
 ################### Conditionals ###################
 
