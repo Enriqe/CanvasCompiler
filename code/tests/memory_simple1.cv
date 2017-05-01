@@ -13,6 +13,7 @@ function dos(int dosPar, int dosPar2) returns int [
 main [
     int foo = 2
     globalVar = 2 * foo
+    print(globalVar)
 ]
 
 finish

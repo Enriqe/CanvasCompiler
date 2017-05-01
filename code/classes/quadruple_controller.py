@@ -79,6 +79,13 @@ class QuadrupleController:
         quad = Quadruple("GOSUB", name, count)
         self.add_quadruple(quad)
 
+
+################### Canvas Custom Operations ###################
+
+    def print_stmt(self, exp):
+        quad = Quadruple("PRINT", "", "", exp)
+        self.add_quadruple(quad)
+
 ################### Conditionals ###################
 
     def finished_conditional(self):
