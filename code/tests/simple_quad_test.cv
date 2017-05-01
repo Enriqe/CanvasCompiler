@@ -5,6 +5,7 @@ main [
 
   int bc = 2
   int cd = 1
+  print(bc)
   if (cd == bc) [
     bc = 10 + 1
     print(bc)

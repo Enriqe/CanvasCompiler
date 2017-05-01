@@ -226,21 +226,8 @@ def p_statement(p):
               | while_loop
               | paint
               | read
-              | function_call
               | return
     '''
-
-def p_function_call(p):
-    '''
-    function_call : VAR_IDENTIFIER L_PAR args_list calling_args R_PAR
-    '''
-    func_name = p[1]
-    if (func_name not in function_dir.functions):
-        #TODO throw error
-        print("ERROR: FUNCTION NOT DEFINED")
-    else:
-        aux_function = function_dir.functions[func_name]
-        quad_controller.function_call(temp_args, func_name, aux_function.signature, aux_function.counter)
 
 #TODO think of cleaner version
 def p_args_list(p):
@@ -298,7 +285,6 @@ def p_assignment_a(p):
                  | var_assignment
                  | point_assignment
                  | shape_or_canvas_assignment
-                 | canvas_assignment
     '''
 
 def p_var_assignment(p):
@@ -463,12 +449,35 @@ def p_right_exp_par(p):
 
 def p_factor_exp(p):
     '''
-    factor_exp : factor_sign factor_value list_index
+    factor_exp : factor_value list_index
+    '''
+    p[0] = p[1]
+
+#since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
+def p_factor_value(p):
+    '''
+    factor_value : factor_var
+                 | factor_num
+                 | factor_yesno
+                 | factor_string
+    '''
+    p[0] = p[1]
+
+def p_factor_num(p):
+    '''
+    factor_num : factor_sign factor_num_a
     '''
     if(p[1] == "-"):
         p[0] = p[2] * -1
     else:
         p[0] = p[2]
+
+def p_factor_num_a(p):
+    '''
+    factor_num_a : factor_int
+                 | factor_dec
+    '''
+    p[0] = p[1]
 
 def p_factor_sign(p):
     '''
@@ -478,37 +487,42 @@ def p_factor_sign(p):
     '''
     p[0] = p[1]
 
-#since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
-def p_factor_value(p):
-    '''
-    factor_value : factor_var
-                 | factor_int
-                 | factor_dec
-                 | factor_yesno
-                 | factor_string
-    '''
-    p[0] = p[1]
-
 def p_factor_var(p):
     '''
-    factor_var : VAR_IDENTIFIER
+    factor_var : VAR_IDENTIFIER function_call
     '''
-    p[0] = p[1]
-    # TODO put this in a method \/\/\/\/\/
-    global temp_function
-    if p[1] not in temp_function.variables:
-        aux_function = function_dir.get_global_function()
-    else:
-        aux_function = temp_function
-    if p[1] not in aux_function.variables:
-        #TODO throw ERROR if var is not found in global or local scope
-        print "VAR NOT FOUND"
-    # TODO put this in a method /\/\/\/\/\
-    else:
-        temp_var = aux_function.variables[p[1]]
-        var_type = temp_var.type
-        quad_controller.read_type(var_type)
-        quad_controller.read_operand(temp_var.virt_address)
+    if(not p[2]):
+        p[0] = p[1]
+        # TODO put this in a method \/\/\/\/\/
+        global temp_function
+        if p[1] not in temp_function.variables:
+            aux_function = function_dir.get_global_function()
+        else:
+            aux_function = temp_function
+        if p[1] not in aux_function.variables:
+            #TODO throw ERROR if var is not found in global or local scope
+            print "VAR NOT FOUND"
+        # TODO put this in a method /\/\/\/\/\
+        else:
+            temp_var = aux_function.variables[p[1]]
+            var_type = temp_var.type
+            quad_controller.read_type(var_type)
+            quad_controller.read_operand(temp_var.virt_address)
+
+def p_function_call(p):
+    '''
+    function_call : L_PAR args_list calling_args R_PAR
+                  | null
+    '''
+    if(p[1]):
+        func_name = p[-1]
+        if (func_name not in function_dir.functions):
+            #TODO throw error
+            print("ERROR: FUNCTION NOT DEFINED")
+        else:
+            aux_function = function_dir.functions[func_name]
+            quad_controller.function_call(temp_args, func_name, aux_function.signature, aux_function.counter)
+        p[0] = True
 
 def p_factor_int(p):
     '''

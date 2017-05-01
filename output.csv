@@ -1,39 +1,20 @@
-MAIN   1
-+ cin0 cin1 tin0
-> tin0 cin2 tye0
-* cin3 cin4 tin1
-< tin1 cin5 tye1
-== tye0 tye1 tye2
-= tye2  lye0
-= cin6  lin0
-= cin7  lin1
-== lin1 lin0 tye3
-GOTOF tye3  15
-+ cin8 cin9 tin2
-= tin2  lin0
+MAIN   3
++ lin0 cin0 tin0
+ENDPROC   
+= cin1  lin0
+ERA 1 myfunc1 
+PARAM 4  
+GOSUB myfunc1 1 
 PRINT   lin0
-GOTO   20
-< lin0 lin1 tye4
-GOTOF tye4  21
-+ cin10 cin11 tin3
-= tin3  lin0
-PRINT   lin0
-GOTO   29
-+ cin12 cin13 tin4
-= tin4  lin0
-< lin0 cin14 tye5
-GOTOF tye5  29
-+ lin0 cin15 tin5
-= tin5  lin0
-PRINT   lin0
-GOTO   23
-= cin16  lin1
 BEGINFUNCTIONS
 globals int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+myfunc1 int
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 main int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 1}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 6, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 6}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '2', '1', '4', '3', '1000', '2', '1', '10', '1', '20', '20', '5', '10', '100', '10', '1'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '4'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
