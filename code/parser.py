@@ -94,7 +94,7 @@ def p_clear_function_memory(p):
 #TODO add semantic logic to p_function
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET count_function block_declarations block_statements R_BRACKET finished_function
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET count_function block_declarations block_statements return R_BRACKET finished_function
     '''
     # todo: check what to return here
     global temp_function
@@ -227,7 +227,6 @@ def p_statement(p):
               | while_loop
               | paint
               | read
-              | return
     '''
 
 #TODO think of cleaner version
@@ -653,7 +652,21 @@ def p_paint(p):
 def p_return(p):
     '''
     return : RETURN expression
+           | null
     '''
+    global temp_function
+    if p[2] not in temp_function.variables:
+        aux_function = function_dir.get_global_function()
+    else:
+        aux_function = temp_function
+    if p[2] not in aux_function.variables:
+        #TODO throw ERROR if var is not found in global or local scope
+        print "VAR NOT FOUND"
+    # TODO put this in a method /\/\/\/\/\
+    else:
+        temp_var = aux_function.variables[p[2]]
+        quad_controller.return_function(temp_var.virt_address)
+
 
 def p_for_loop(p):
     '''

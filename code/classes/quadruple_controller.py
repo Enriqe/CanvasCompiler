@@ -60,11 +60,12 @@ class QuadrupleController:
             # res = quad.eval_quad()
             self.add_quadruple(quad)
 
-    def finished_function(self):
-        quad = self.quad_list[-1] # peek last quad before return
-        return_address = quad.get_result()
+    def return_function(self, return_address):
         quad = Quadruple("RETURN", return_address)
         self.add_quadruple(quad)
+
+    def finished_function(self):
+        #quad = self.quad_list[-1] # peek last quad before return
         quad = Quadruple("ENDPROC")
         self.add_quadruple(quad)
 
