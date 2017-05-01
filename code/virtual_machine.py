@@ -134,16 +134,19 @@ def run():
             index = manager.call_func(result, index+1)
         elif (oper == 'ENDPROC'):
             index = manager.end_func()
-        #elif (oper == 'GOTOF'):
-            #index = 
-        #elif (oper == 'GOTOF'):
-        #elif (oper == 'GOTO'):
+        elif (oper == 'GOTOF'):
+            if (left == 'no'):
+                index = int(result)
+            else :
+                index += 1
+        elif (oper == 'GOTO'):
+            index = int(result)
 
 if __name__ == '__main__':
 
     if (len(sys.argv) > 1) : file1 = sys.argv[1]
     else : file1 = '../output.obj'
-    
+
     manager.init_quads(file1)
     run()
 

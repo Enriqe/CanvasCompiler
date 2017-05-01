@@ -1,21 +1,33 @@
-= cint0  gint0
-= cint1  lint2
-ENDPROC   
-= cint2  lint2
-ENDPROC   
-= cint3  lint0
-* cint4 lint0 tint0
-= tint0  gint0
++ cin0 cin1 tin0
+> tin0 cin2 tye0
+* cin3 cin4 tin1
+< tin1 cin5 tye1
+== tye0 tye1 tye2
+= tye2  lye0
+= cin6  lin0
+= cin7  lin1
+== cin8 cin9 tye3
+GOTOF tye3  13
++ cin10 cin11 tin2
+= tin2  lin0
+GOTO   17
+!= cin12 cin13 tye4
+GOTOF tye4  18
++ cin14 cin15 tin3
+= tin3  lin0
+GOTO   25
++ cin16 cin17 tin4
+= tin4  lin0
+< cin18 cin19 tye5
+GOTOF tye5  25
+* cin20 cin21 tin5
+= tin5  lin0
+GOTO   20
+= cin22  lin1
 globals 
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-dos int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 main 
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-uno int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['22', '10', '20', '2', '2'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 1}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 6, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 6}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '2', '1', '4', '3', '1000', '0', '1', '2', '2', '10', '1', '2', '2', '20', '20', '5', '10', '2', '3', '10', '10', '1'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

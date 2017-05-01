@@ -146,7 +146,8 @@ def p_shape(p):
     shape_id = p[2]
     shape_values = {"center" : p[5], "width" : p[8], "height" : p[11], "color" : p[14]} 
     #TODO add virt_address
-    tempVar = Var(shape_id, shape_type, shape_values)
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, shape_type)
+    tempVar = Var(shape_id, shape_type, shape_values, addr)
     p[0] = tempVar
 
 def p_shape_type(p):
@@ -326,7 +327,8 @@ def p_point(p):
     point_id = p[2]
     point_values = {"x" : p[5], "y" : p[8]}
     #TODO add virt_address
-    tempVar = Var(point_id, var_type, point_values)
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'point')
+    tempVar = Var(point_id, var_type, point_values, addr)
     p[0] = tempVar
 
 def p_point_assignment(p):
@@ -347,7 +349,8 @@ def p_canvas(p):
     '''
     val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
     #TODO add virt_address
-    tempVar = Var(p[2], p[1], val)
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'canvas')
+    tempVar = Var(p[2], p[1], val, addr)
     p[0] = tempVar
 
 def p_canvas_assignment(p):
@@ -625,7 +628,8 @@ def p_color(p):
     #todo: add type, name, and value of var to var table
     val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
     #TODO add virt_address
-    tempVar = Var(p[2], p[1], val)
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'color')
+    tempVar = Var(p[2], p[1], val, addr)
     p[0] = tempVar
 
 ##############################################
@@ -669,7 +673,7 @@ def p_push_operand(p):
     '''
     push_operand :
     '''
-    virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2], p[-1])
+    virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
     quad_controller.read_operand(virt_address)
     quad_controller.read_type(p[-2])
     p[0] = virt_address

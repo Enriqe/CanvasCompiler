@@ -4,6 +4,7 @@ main [
   yesno A = (1 + 2 > 1) == (4 * 3 < 1000)
 
   int B = 0
+  int C = 1
   if (2 == 2) [
     B = 10 + 1
   ] elsif (2 != 2) [
