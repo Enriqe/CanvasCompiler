@@ -3,17 +3,19 @@ program simple_quad_test
 main [
   yesno ab = (1 + 2 > 1) == (4 * 3 < 1000)
 
-  int bc = 0
+  int bc = 2
   int cd = 1
   if (cd == bc) [
     bc = 10 + 1
+    print(bc)
   ] elsif (bc < cd) [
     bc = 20 + 20
     print(bc)
   ] else [
     bc = 5 + 10
-    while ( 2 < 3 ) [
-      bc = 10 * 10
+    while ( bc < 100 ) [
+      bc = bc + 10
+      print(bc)
     ]
   ]
   cd = 1
