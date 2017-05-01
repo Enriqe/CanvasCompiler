@@ -20,68 +20,34 @@ class VMManager:
     const_table = ConstantsTable()
     # ar_stack = Stack()
 
-    def print_something(self, string):
-        print string
-
     def init_obj_file(self, file_name):
         row_type = QUAD_BEGIN_FLAG # file always starts with quads
-        print "sdf"
 
         with open(file_name, 'r') as csvfile:
-            reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+            reader = csv.reader(csvfile, delimiter=' ')
             for row in reader:
-                print row
                 if row[0] == FUNC_BEGIN_FLAG: # switch type of processing to functions
                     row_type = FUNC_BEGIN_FLAG
-                    #yield row
                 elif row[0] == CONST_TABLE_BEGIN_FLAG: # switch type of processing to read const table
                     row_type = CONST_TABLE_BEGIN_FLAG
-                    #yield row
-                ##TODO maybe separate into different ifs
                 elif row_type == QUAD_BEGIN_FLAG: #processing quad data
                     q = Quadruple(row[0],row[1],row[2],row[3])
                     self.quads.append(q)
                 elif row_type == FUNC_BEGIN_FLAG: # processing function data
                     temp_function = Function()
-                    temp_function.name = row[0]
                     temp_function.type = row[1]
+                    temp_function.name = row[0]
                     row = reader.next()
-                    #yield row # dunno if will work
-                    #print "ROWW"
-                    temp_function.local_map = ast.literal_eval(row[0])
-                    temp_function.print_function()
-                    break
-                    ## row = reader.next()
-                    #yield row
-                    #temp_function.temp_map = ast_literal_eval(row)
-                    #self.func_dir.add_function(temp_function)
-                #elif row_type == CONST_TABLE_BEGIN_FLAG: # reading const table
-                    #self.const_table = ast_literal_eval(row)
+                    temp_function.local_map.types = ast.literal_eval(row[0])
+                    row = reader.next()
+                    temp_function.temp_map.types = ast.literal_eval(row[0])
+                    if temp_function.name == "globals":
+                        self.func_dir.global_function = temp_function
+                    else:
+                        self.func_dir.add_function(temp_function)
+                elif row_type == CONST_TABLE_BEGIN_FLAG: # reading const table
+                    self.const_table.types = ast.literal_eval(row[0])
 
-
-    # def init_dir_func(file_name):
-    #     with open(file_name, 'rb') as file:
-    #         reader = csv.reader(file, delimiter=',', quotechar='|')
-    #         for row in reader:
-    #             if row == CONST_TABLE_BEGIN_FLAG:
-    #                 break
-    #             print row
-    #             temp_function = Function()
-    #             temp_function.name = row[0]
-    #             temp_function.type = row[1]
-    #             # row = reader.next()
-    #             yield row
-    #             temp_function.local_map = ast_literal_eval(row)
-    #             # row = reader.next()
-    #             yield row
-    #             temp_function.temp_map = ast_literal_eval(row)
-    #             self.function_directory.add_function(temp_function)
-
-    # def init_const_table(file_name):
-    #     with open(file_name, 'rb') as file:
-    #         reader = csv.reader(file, delimiter=',', quotechar='|')
-    #         for row in reader:
-    #             self.const_table = ast_literal_eval(row)
 
     def get_quad(index):
         return self.quads[index]
@@ -212,11 +178,12 @@ if __name__ == '__main__':
 
     manager.init_obj_file(file1)
     manager.func_dir.print_dir()
+    print "CONST TABLE:"
     print manager.const_table.types
     # run()
 
-    # for q in quads:
-    #     q.print_quad
+    for q in manager.quads:
+        q.print_quad()
     # print data
-    # print "End of file"
+    print "End of file"
     print("Successful")
