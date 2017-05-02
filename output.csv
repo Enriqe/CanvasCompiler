@@ -1,23 +1,29 @@
-MAIN   5
-= cin0  gin0
-+ lin0 cin1 tin0
-= tin0  gin1
+MAIN   12
+= cin0  lin1
+> lin0 cin1 tye0
+GOTOF tye0  10
+ERA myfunc1  
+- lin0 cin2 tin0
+PARAM tin0  lin0
+GOSUB gin0  1
+* gin0 lin0 tin1
+= tin1  lin1
+= lin1  gin0
 ENDPROC   
-= cin2  lin0
-ERA gin1  
+ERA myfunc1  
 PARAM cin3  lin0
-GOSUB gin1  2
-= gin1  gin1
+GOSUB gin0  1
+= gin0  lin0
 PRINT   lin0
 BEGINFUNCTIONS
 globals int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 myfunc1 int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 1}"
 main int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['3', '1', '1', '23'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '0', '1', '10'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

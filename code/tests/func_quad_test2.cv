@@ -1,14 +1,15 @@
 program hello_world2
 
-int glb = 3
-
 function myfunc1 (int arg1) returns int [
-    return arg1 + 1
+    int sol = 1
+    if (arg1 > 0) [
+      sol = myfunc1(arg1-1) * arg1
+    ]
+    return sol
 ]
 
 main [
-    int myVar = 1
-    myVar = myfunc1(23)
+    int myVar = myfunc1(10)
     print(myVar)
 ]
 

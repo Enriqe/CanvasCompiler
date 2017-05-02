@@ -99,16 +99,6 @@ def p_function(p):
     '''
     # todo: check what to return here
     global temp_function
-    temp_function.name = p[2]
-    temp_function.type = p[7]
-    temp_function.local_map = memory_controller.get_local_map()
-    temp_function.temp_map = memory_controller.get_temp_map()
-
-    globalfunc = function_dir.get_global_function()
-    func_var = Var(temp_function.name, temp_function.type, "", temp_function.virt_address)
-    globalfunc.add_variable(func_var)
-
-    function_dir.add_function(temp_function)
     temp_function = Function()
 
 #TODO CHECK IF AMBIGIOUS
@@ -135,8 +125,18 @@ def p_function_return_address(p):
     '''
     function_return_address :
     '''
+    global temp_function
+    temp_function.name = p[-6]
     temp_function.type = p[-1]
+    temp_function.local_map = memory_controller.get_local_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
     temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type) # this is ugly
+    globalfunc = function_dir.get_global_function()
+    func_var = Var(temp_function.name, temp_function.type, "", temp_function.virt_address)
+    globalfunc.add_variable(func_var)
+    globalfunc.local_map.types[temp_function.type] += 1
+
+    function_dir.add_function(temp_function)
 
 def p_type(p):
     '''
@@ -712,7 +712,9 @@ def p_return_assign(p):
     '''
     return_assign :
     '''
+    #TODO CMON GUYS
     quad_controller.read_operand(temp_function.virt_address)
+    quad_controller.read_type(temp_function.type)
     quad_controller.read_operator('=')
 
 def p_for_loop(p):
