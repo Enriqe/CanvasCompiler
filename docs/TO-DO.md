@@ -3,6 +3,7 @@ DONE * Save quad index for each function start in function call
 DONE * Translate function quads to virt addresses 
 * Check if global var is already defined with a function name
 * Check if function call matchees function definition signature
+* FIX tempvar 
 DONE * in GOSUB, append temp_addr and use it in following expressions
 DONE * Create return quad in funciton quads
 * FIX FINISHED_EXPRESSION
