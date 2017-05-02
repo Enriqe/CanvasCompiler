@@ -15,7 +15,6 @@ QUAD_BEGIN_FLAG = "BEGINQUADS"
 class VMManager:
     quads = []
     func_dir = FunctionDirectory()
-    #TODO TAMAOS DE AR GLOBAL O WATAFAK
     global_mem = None
     const_table = ConstantsTable()
     curr_stack = []
@@ -49,10 +48,9 @@ class VMManager:
                     self.const_table.types = ast.literal_eval(row[0])
         #SET GLOBAL MEM
         glob_func = self.func_dir.get_global_function()
-        loc = glob_func.get_local_map()
-        temp = glob_func.get_temp_map()
+        loc = glob_func.get_local_map().get_types()
+        temp = glob_func.get_temp_map().get_types()
         self.global_mem = ActivationRecord(loc, temp)
-
 
 
     def get_quad(self, index):
@@ -61,8 +59,6 @@ class VMManager:
     def set_val(self, address, val):
         scope = address[0]
         #TODO TEST IF EXISTS (OR NOT)
-        type1 = type_converter[address[1:3]]
-        addr = int(address[3:])
         if (scope == 'g'):
             self.global_mem.set_val(address, val)
         elif (scope == 'l'):
@@ -77,8 +73,6 @@ class VMManager:
     def get_val(self, address):
         #TODO TEST IF EXISTS (OR NOT)
         scope = address[0]
-        type1 = type_converter[address[1:3]]
-        addr = int(address[3:])
         if (scope == 'g'):
             return self.global_mem.get_val(address)
         elif (scope == 'l'):
@@ -89,46 +83,57 @@ class VMManager:
             else:
                 return self.global_mem.get_val(address)
         elif (scope == 'c'):
+            type1 = type_converter[address[1:3]]
+            addr = int(address[3:])
             return self.const_table.types[type1][addr]
+
+    def convert_val(self, address):
+        val = self.get_val(address)
+        type1 = type_converter[address[1:3]]
+        if (type1 == 'int'):
+            return int(val)
+        elif (type1 == 'dec'):
+            return float(val)
+        elif (type1 == 'string'):
+            return val
+        elif (type1 == 'yesno'):
+            return val
+        else:
+            print ("Error: Unconvertable value")
+            exit(1)
 
 
     def gen_ar(self, func_name):
         func = self.func_dir.get_function(func_name)
-        ar = ActivationRecord(func.get_local_map(), func.get_temp_map())
+        ltypes = func.get_local_map().get_types()
+        ttypes = func.get_temp_map().get_types()
+        ar = ActivationRecord(ltypes, ttypes)
         self.call_stack.append(ar)
 
     def gen_main_ar(self):
         func = self.func_dir.get_function('main')
-        ar = ActivationRecord(func.get_local_map(), func.get_temp_map())
+        ltypes = func.get_local_map().get_types()
+        ttypes = func.get_temp_map().get_types()
+        ar = ActivationRecord(ltypes, ttypes)
         self.curr_stack.append(ar)
 
     def add_param(self, var_address, param_address):
         #TODO Como saber el address del param
-        var_val = self.get_val(var_val)
+        var_val = self.get_val(var_address)
         self.curr_stack.append(self.call_stack[-1])
         self.set_val(param_address, var_val)
         self.curr_stack.pop()
 
-    def go_sub(self, ret_index, return_address):
-        #self.ar_stack[-1].set_return_index(ret_index)
-        #self.ar_stack[-1].set_return_address(ret_address)
+    def go_sub(self, ret_index):
         ar = self.call_stack[-1]
         ar.set_return_index(ret_index)
-        ar.set_return_address(return_address)
         self.curr_stack.append(ar)
         self.call_stack.pop()
-        return func.index
 
-    def return_func(self):
-        #TODO RETURN VALUE SHOULD BE SAVED IN GLOBALS
-        print("FIX THIS")
 
     def end_func(self):
-        ar = self.ar_stack.pop()
+        ar = self.curr_stack.pop()
         next_index = ar.get_return_index()
-        ret_addr = ar.get_return_address()
-        #TODO SET CORRECT VALUE
-        self.set_val(ret_addr, 0)
         return next_index
 
 manager = VMManager()
@@ -154,8 +159,8 @@ def run():
             manager.set_val(result, val)
             index += 1
         elif (oper in ['+','-','*','/','<','>','<=','>=','==','!=']):
-            left_val = int(manager.get_val(left))
-            right_val = int(manager.get_val(right))
+            left_val = manager.convert_val(left)
+            right_val = manager.convert_val(right)
             if (oper == '+'):
                 manager.set_val(result, left_val + right_val)
             elif (oper == '-'):
@@ -177,20 +182,20 @@ def run():
             elif (oper == '!='):
                 manager.set_val(result, left_val != right_val)
             else :
-                #TODO THROW ERROR
-                print("WAIT WAT")
+                print("Error: unrecognizable operator")
+                exit(1)
             index += 1
         elif (oper == 'ERA'):
             manager.gen_ar(left)
             index += 1
         elif (oper == 'PARAM'):
-            var_address = manager.get_val(left)
+            var_address = left
+            param_address = result
             manager.add_param(var_address, param_address)
             index += 1
         elif (oper == 'GOSUB'):
-            #TODO CHECK WHY FUNC NAME IS NEEDED IN QUAD
             temp_address = right
-            manager.go_sub(index+1, temp_address)
+            manager.go_sub(index+1)
             func_index = result
             index = int(func_index)
         elif (oper == 'ENDPROC'):

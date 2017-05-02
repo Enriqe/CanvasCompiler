@@ -3,19 +3,20 @@ program hello_world2
 int yo = 20
 
 function myfunc1 (int arg1, int arg2) returns int [
-    int y1 = 1
-    return y1
+    return arg1 + arg2
 ]
 
 function myfunc2 (int arg1, dec arg2) returns int [
-    int y1 = 1
-    return 10
+    int y1 = 200
+    return y1
 ]
 
 main [
-    int x1 = 0
     int x2 = 1
-    x1 = myfunc1(1 + 2, x2)
+    int x1 = myfunc1(1 + 2, x2)
+    print(x1)
+    x1 = myfunc2(1 + 2, x2)
+    print(x1)
 ]
 
 finish

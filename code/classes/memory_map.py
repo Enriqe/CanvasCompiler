@@ -14,3 +14,5 @@ class MemoryMap:
             'color' : 0,
         }
     
+    def get_types(self):
+        return self.types
