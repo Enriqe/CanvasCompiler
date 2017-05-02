@@ -32,13 +32,13 @@ class ActivationRecord:
             self.temp_mem[type1][addr] = value
 
     def set_return_address(self, address):
-        return_address = address
+        self.return_address = address
 
     def get_return_address(self):
-        return return_address
+        return self.return_address
 
-    def set_return_index(self, address):
-        return_address = address
+    def set_return_index(self, index):
+        self.return_index = index
 
     def get_return_index(self):
-        return return_index
+        return self.return_index

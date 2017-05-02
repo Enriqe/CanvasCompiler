@@ -552,11 +552,13 @@ def p_function_gosub(p):
     function_gosub :
     '''
     global curr_calling_function
+    global temp_args_count
     aux_function = function_dir.functions[curr_calling_function]
     if (temp_args_count != len(aux_function.signature)):
         print "YOU FUCKED UP"
     quad_controller.function_gosub(aux_function.virt_address, aux_function.counter)
     curr_calling_function = ''
+    temp_args_count = 0
 
 def p_factor_int(p):
     '''

@@ -1,11 +1,13 @@
 program hello_world2
 
+int yo = 20
+
 function myfunc1 (int arg1, int arg2) returns int [
     int y1 = 1
     return y1
 ]
 
-function myfunc2 (int arg1, dec arg2) returns yesno [
+function myfunc2 (int arg1, dec arg2) returns int [
     int y1 = 1
     return 10
 ]
@@ -13,8 +15,6 @@ function myfunc2 (int arg1, dec arg2) returns yesno [
 main [
     int x1 = 0
     int x2 = 1
-    dec d1 = 1.1
-    d1 = 3
     x1 = myfunc1(1 + 2, x2)
 ]
 
