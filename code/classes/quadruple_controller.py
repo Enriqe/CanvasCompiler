@@ -52,6 +52,9 @@ class QuadrupleController:
         self.quad_list[loc] = quad 
 
     def finished_expression(self):
+        print "STACKS"
+        print self.operator_stack
+        print self.operand_stack
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] != '('):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
@@ -78,11 +81,19 @@ class QuadrupleController:
             self.add_quadruple(quad)
 
     def function_gosub(self, virt_address, jump_to_function_index):
-
         quad = Quadruple("GOSUB", virt_address, '', jump_to_function_index)
         self.add_quadruple(quad)
         self.operand_stack.append(virt_address)
         self.type_stack.append(semantic_helper.type_converter[virt_address[1:3]])
+
+    def array_access(self, index, arr_size, base_address, next_temp):
+        quad = Quadruple("VER", "", index, arr_size)
+        self.add_quadruple(quad)
+        quad = Quadruple("ADDBASE", index, base_address, next_temp)
+        self.add_quadruple(quad)
+
+    def after_array_check(self):
+        self.operand_stack.pop()
 
 ################### Canvas Custom Operations ###################
 

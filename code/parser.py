@@ -150,11 +150,13 @@ def p_type(p):
 def p_var(p):
     #  WHEN MODYFING RULE : check that p[i] index still calls corresponding argument 
     '''
-    var : type VAR_IDENTIFIER push_operand list_index EQUALS push_operator expression
+    var : type VAR_IDENTIFIER list_index push_operand EQUALS push_operator expression
     '''
     # virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[1], p[2])
-    virt_address = p[3]
+    virt_address = p[4]
     tempVar = Var(p[2], p[1], p[7], virt_address) 
+    if p[3]:
+        tempVar.size = int(p[3])
     p[0] = tempVar
 
 def p_list_index(p):
@@ -162,6 +164,9 @@ def p_list_index(p):
     list_index : L_BRACKET INT_VAL R_BRACKET
                | null
     '''
+    if p[1]:
+        p[0] = p[2]
+
 def p_null(p):
     '''
     null :
@@ -250,7 +255,7 @@ def p_statement(p):
     '''
 
 
-def p_assignment(p):
+def p_assignment(p): # WARNING: MOVING ORDER OF RULES HERE AFFECTS VAR_ASSIGNMENT from assignment_a
     '''
     assignment : VAR_IDENTIFIER assignment_push_operand assignment_a finished_expression
     '''
@@ -286,8 +291,23 @@ def p_assignment_a(p):
 
 def p_var_assignment(p):
     '''
-    var_assignment : list_index EQUALS expression
+    var_assignment : list_index array_check EQUALS push_operator expression
     '''
+    if p[1]:
+        quad_controller.after_array_check()
+
+def p_array_check(p):
+    '''
+    array_check :
+    '''
+    if p[-1]:
+        temp_var = temp_function.variables[p[-3]]
+        index = int(p[-1])
+        temp_address = memory_controller.get_temp_address(temp_var.type)
+        temp_address = "*" + temp_address
+        quad_controller.array_access(index, temp_var.size, temp_var.virt_address, temp_address)
+        quad_controller.read_operand(temp_address)
+        quad_controller.read_type(temp_var.type)
 
 def p_shape_or_canvas_assignment(p):
     '''
@@ -497,7 +517,7 @@ def p_factor_var(p):
         else:
             aux_function = temp_function
         if p[1] not in aux_function.variables:
-            #TODO throw ERROR if var is not found in global or local scope
+            raise NameError("Var not defined: ", p[1])
             print "VAR NOT FOUND - factorvar"
         # TODO put this in a method /\/\/\/\/\
         else:
@@ -785,13 +805,17 @@ def p_push_operand(p):
     '''
     push_operand :
     '''
-    var_name = p[-1]
+    var_name = p[-2]
+    var_type = p[-3]
     if var_name in function_dir.global_function.variables:
-        raise NameError("Name already defined", p[-1])
+        raise NameError("Name already defined", var_name)
     else:
-        virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
+        if p[-1]: #array definition
+            virt_address = memory_controller.generate_arr_address(ALLOC_SCOPE, var_type, p[-1])
+        else:
+            virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, var_type)
         quad_controller.read_operand(virt_address)
-        quad_controller.read_type(p[-2])
+        quad_controller.read_type(var_type)
         p[0] = virt_address
 
 def p_push_operator(p):

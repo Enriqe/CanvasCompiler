@@ -35,6 +35,18 @@ class MemoryController:
             self.local_memory.types[var_type] += 1
         return var_segment + var_type[0:2] + str(next_avail)
 
+    def generate_arr_address(self, var_segment, var_type, arr_size):
+        arr_size = int(arr_size)
+        if var_segment == LOCAL_SEGMENT:
+            next_avail = self.local_memory.types[var_type]
+            self.local_memory.types[var_type] += arr_size
+        elif var_segment == GLOBAL_SEGMENT:
+            next_avail = self.global_memory.types[var_type]
+            self.global_memory.types[var_type] += arr_size
+        else:
+            raise TypeError("Temp can't be an array")
+        return var_segment + var_type[0:2] + str(next_avail)
+
     # TODO: content is similar to generate_var_address
     # TODO instead of saving a new constant each time, check if it already exists
     def generate_const_address(self, const_type, const_value):
