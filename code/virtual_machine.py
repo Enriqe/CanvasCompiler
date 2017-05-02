@@ -18,7 +18,8 @@ class VMManager:
     #TODO TAMAOS DE AR GLOBAL O WATAFAK
     global_mem = None
     const_table = ConstantsTable()
-    ar_stack = []
+    curr_stack = []
+    call_stack = []
 
     def init_obj_file(self, file_name):
         row_type = QUAD_BEGIN_FLAG # file always starts with quads
@@ -65,10 +66,10 @@ class VMManager:
         if (scope == 'g'):
             self.global_mem.set_val(address, val)
         elif (scope == 'l'):
-            self.ar_stack[-1].set_val(address, val)
+            self.curr_stack[-1].set_val(address, val)
         elif (scope == 't'):
-            if (len(self.ar_stack) > 0):
-                self.ar_stack[-1].set_val(address, val)
+            if (len(self.curr_stack) > 0):
+                self.curr_stack[-1].set_val(address, val)
             else:
                 self.global_mem.set_val(address, val)
 
@@ -81,28 +82,41 @@ class VMManager:
         if (scope == 'g'):
             return self.global_mem.get_val(address)
         elif (scope == 'l'):
-            return self.ar_stack[-1].get_val(address)
+            return self.curr_stack[-1].get_val(address)
         elif (scope == 't'):
-            if (len(self.ar_stack) > 0):
-                return self.ar_stack[-1].get_val(address)
+            if (len(self.curr_stack) > 0):
+                return self.curr_stack[-1].get_val(address)
             else:
                 return self.global_mem.get_val(address)
         elif (scope == 'c'):
             return self.const_table.types[type1][addr]
 
 
-    def gen_activation_record(self, func_name):
+    def gen_ar(self, func_name):
         func = self.func_dir.get_function(func_name)
         ar = ActivationRecord(func.get_local_map(), func.get_temp_map())
-        self.ar_stack.append(ar)
+        self.call_stack.append(ar)
 
-    def add_param(self, address, value):
+    def gen_main_ar(self):
+        func = self.func_dir.get_function('main')
+        ar = ActivationRecord(func.get_local_map(), func.get_temp_map())
+        self.curr_stack.append(ar)
+
+    def add_param(self, var_address, param_address):
         #TODO Como saber el address del param
-        self.ar_stack[-1].set_val(address, value)
+        var_val = self.get_val(var_val)
+        self.curr_stack.append(self.call_stack[-1])
+        self.set_val(param_address, var_val)
+        self.curr_stack.pop()
 
-    def call_func(self, ret_address, ret_index):
-        self.ar_stack[-1].set_return_index(ret_index)
-        self.ar_stack[-1].set_return_address(ret_address)
+    def go_sub(self, ret_index, return_address):
+        #self.ar_stack[-1].set_return_index(ret_index)
+        #self.ar_stack[-1].set_return_address(ret_address)
+        ar = self.call_stack[-1]
+        ar.set_return_index(ret_index)
+        ar.set_return_address(return_address)
+        self.curr_stack.append(ar)
+        self.call_stack.pop()
         return func.index
 
     def return_func(self):
@@ -129,8 +143,8 @@ def run():
         right = quad.right_operand
         result = quad.result
         if (oper == 'MAIN'):
-            manager.gen_activation_record("main")
-            index += 1
+            manager.gen_main_ar()
+            index = int(result)
         elif (oper == 'PRINT'):
             val = manager.get_val(result)
             print val
@@ -167,15 +181,18 @@ def run():
                 print("WAIT WAT")
             index += 1
         elif (oper == 'ERA'):
-            manager.gen_activation_record(left)
+            manager.gen_ar(left)
             index += 1
         elif (oper == 'PARAM'):
-            left_val = manager.get_val(left)
-            manager.add_param(result, left_val)
+            var_address = manager.get_val(left)
+            manager.add_param(var_address, param_address)
             index += 1
         elif (oper == 'GOSUB'):
             #TODO CHECK WHY FUNC NAME IS NEEDED IN QUAD
-            index = manager.call_func(result, index+1)
+            temp_address = right
+            manager.go_sub(index+1, temp_address)
+            func_index = result
+            index = int(func_index)
         elif (oper == 'ENDPROC'):
             index = manager.end_func()
         elif (oper == 'GOTOF'):
