@@ -520,8 +520,7 @@ def p_init_function_call(p):
         #TODO throw error
         print("ERROR: FUNCTION NOT DEFINED")
     else :
-        aux_function = function_dir.functions[func_name]
-        quad_controller.function_call_init(aux_function.virt_address)
+        quad_controller.function_call_init(func_name)
 
 def p_calling_args(p):
     '''
