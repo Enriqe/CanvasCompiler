@@ -8,7 +8,7 @@ function myfunc1 (int arg1) returns int [
 
 main [
     int myVar = 1
-    myVar = myfunc1(4)
+    myVar = myfunc1(23)
     print(myVar)
 ]
 

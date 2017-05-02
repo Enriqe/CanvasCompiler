@@ -539,11 +539,12 @@ def p_function_call_param(p):
     '''
     global temp_args_count
     aux_function = function_dir.functions[curr_calling_function]
-    if (temp_args_count > len(aux_function.signature)):
-        print("MORE ARGUMENTS THAN SHOULD BE")
-    param_address = aux_function.signature[temp_args_count]
-    quad_controller.function_call_param(param_address)
-    temp_args_count = temp_args_count + 1
+    if (temp_args_count >= len(aux_function.signature)):
+        raise AttributeError("Wrong number of arguments in function: ", curr_calling_function) 
+    else:
+        param_address = aux_function.signature[temp_args_count]
+        quad_controller.function_call_param(param_address)
+        temp_args_count = temp_args_count + 1
 
 def p_calling_args_a(p):
     '''
@@ -559,10 +560,11 @@ def p_function_gosub(p):
     global temp_args_count
     aux_function = function_dir.functions[curr_calling_function]
     if (temp_args_count != len(aux_function.signature)):
-        print "YOU FUCKED UP"
-    quad_controller.function_gosub(aux_function.virt_address, aux_function.counter)
-    curr_calling_function = ''
-    temp_args_count = 0
+        raise AttributeError("Wrong number of arguments in function: ", curr_calling_function) 
+    else:
+        quad_controller.function_gosub(aux_function.virt_address, aux_function.counter)
+        curr_calling_function = ''
+        temp_args_count = 0
 
 def p_factor_int(p):
     '''
@@ -782,10 +784,14 @@ def p_push_operand(p):
     '''
     push_operand :
     '''
-    virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
-    quad_controller.read_operand(virt_address)
-    quad_controller.read_type(p[-2])
-    p[0] = virt_address
+    var_name = p[-1]
+    if var_name in function_dir.global_function.variables:
+        raise NameError("Name already defined", p[-1])
+    else:
+        virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
+        quad_controller.read_operand(virt_address)
+        quad_controller.read_type(p[-2])
+        p[0] = virt_address
 
 def p_push_operator(p):
     '''
