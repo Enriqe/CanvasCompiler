@@ -1,16 +1,23 @@
 from semantic_helper import type_dict
+
 from classes.semantic_helper import type_converter
 
 class ActivationRecord:
-    local_mem = {}
-    temp_mem = {}
-    return_index = -1
-    return_address = -1
 
     def __init__(self, local_map, temp_map):
+        self.local_mem = {}
+        self.temp_mem = {}
+        self.return_index = -1
+        self.return_address = -1
         for key in type_dict:
-            self.local_mem[key] = [None] * local_map.types[key]
-            self.temp_mem[key] = [None] * temp_map.types[key]
+            self.local_mem[key] = [None] * local_map[key]
+            self.temp_mem[key] = [None] * temp_map[key]
+            #if key == 'int':
+                #print local_map[key]
+                #print self.local_mem[key]
+                #print temp_map[key]
+                #print self.temp_mem[key]
+        #print "---------------"
 
     def get_val(self, address):
         scope = address[0]

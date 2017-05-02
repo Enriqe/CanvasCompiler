@@ -267,7 +267,7 @@ def p_assignment_push_operand(p):
         aux_function = temp_function
     if p[-1] not in aux_function.variables:
         #TODO throw ERROR if var is not foudn in global or local scope
-        print "VAR NOT FOUND"
+        print "VAR NOT FOUND -- assign"
     # TODO put this in a method /\/\/\/\/\
     else:
         temp_var = aux_function.variables[p[-1]]
@@ -600,7 +600,8 @@ def p_factor_string(p):
     '''
     factor_string : STRING_VAL
     '''
-    p[0] = p[1]
+    st1 = p[1]
+    p[0] = st1[1:-1]
     #TODO repeated code
     quad_controller.read_type('string')
     virt_address = memory_controller.generate_const_address('string', p[1])
@@ -659,7 +660,7 @@ def p_print(p):
         aux_function = temp_function
     if p[3] not in aux_function.variables:
         #TODO throw ERROR if var is not found in global or local scope
-        print "VAR NOT FOUND"
+        print "Error: variable not found, line " + str(error_line(p))
     # TODO put this in a method /\/\/\/\/\
     else:
         temp_var = aux_function.variables[p[3]]
@@ -691,7 +692,7 @@ def p_paint(p):
 
 def p_return(p):
     '''
-    return : RETURN return_assign expression finished_expression
+    return : RETURN return_assign expression
            | null
     '''
     #global temp_function
@@ -713,7 +714,6 @@ def p_return_assign(p):
     '''
     quad_controller.read_operand(temp_function.virt_address)
     quad_controller.read_operator('=')
-
 
 def p_for_loop(p):
     '''
@@ -757,7 +757,7 @@ def p_after_exp_check(p):
     res_type = quad_controller.peek_res_type(ops)
     if res_type != -1:
         temp_address = memory_controller.get_temp_address(res_type)
-        quad_controller.finished_operand(temp_address, ops)
+        quad_controller.finished_operand(temp_address, ops, error_line(p))
 
 def p_after_term_check(p):
     '''
@@ -767,7 +767,7 @@ def p_after_term_check(p):
     res_type = quad_controller.peek_res_type(ops)
     if res_type != -1:
         temp_address = memory_controller.get_temp_address(res_type)
-        quad_controller.finished_operand(temp_address, ops)
+        quad_controller.finished_operand(temp_address, ops, error_line(p))
 
 # neuralgic point for factors
 def p_after_factor_check(p):
@@ -778,7 +778,7 @@ def p_after_factor_check(p):
     res_type = quad_controller.peek_res_type(ops)
     if res_type != -1:
         temp_address = memory_controller.get_temp_address(res_type)
-        quad_controller.finished_operand(temp_address, ops)
+        quad_controller.finished_operand(temp_address, ops, error_line(p))
 
 def p_push_operand(p):
     '''
@@ -803,7 +803,7 @@ def p_finished_expression(p):
     '''
     finished_expression :
     '''
-    quad_controller.finished_expression()
+    quad_controller.finished_expression(error_line(p))
 
 def p_finished_function(p):
     '''
@@ -822,6 +822,9 @@ def p_error(p):
     print "Syntax error in input line: " + str(p.lexer.lineno)
     print "Unexpected token: " + str(p.value)
     sys.exit(0)
+
+def error_line(p):
+    return p.lexer.lineno - 1
 
 # Build the parser
 log = logging.getLogger()

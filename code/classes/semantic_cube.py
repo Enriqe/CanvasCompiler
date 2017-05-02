@@ -22,7 +22,7 @@ for op in comp_opers:
 
 for t in type_dict:
     SemanticCube[type_dict[t]][type_dict[t]][operator_dict['=']] = t
-SemanticCube[type_dict['dec']][type_dict['int']] = 'dec'
+SemanticCube[type_dict['dec']][type_dict['int']][operator_dict['=']] = 'dec'
 
 # OPTIONAL
 SemanticCube[type_dict['string']][type_dict['string']][operator_dict['+']] = 'string'
