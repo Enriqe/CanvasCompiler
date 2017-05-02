@@ -19,7 +19,8 @@ function_dir = FunctionDirectory()
 temp_function = Function()
 quad_controller = QuadrupleController()
 memory_controller = MemoryController()
-temp_args = []
+temp_args_count = 0
+curr_calling_function = ''
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -99,6 +100,7 @@ def p_function(p):
     # todo: check what to return here
     global temp_function
     temp_function.name = p[2]
+    temp_function.type = p[7]
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
     function_dir.add_function(temp_function)
@@ -115,7 +117,7 @@ def p_function_arguments(p):
         virt_address = p[3]
         tempVar = Var(p[2], p[1], "", virt_address)
         temp_function.add_variable(tempVar)
-        temp_function.signature.append(virt_address)
+        temp_function.signature.insert(0, virt_address)
 
 def p_push_argument(p):
     '''
@@ -242,29 +244,6 @@ def p_statement(p):
               | read
     '''
 
-#TODO think of cleaner version
-def p_args_list(p):
-    '''
-    args_list : 
-    '''
-    global temp_args
-    temp_args = []
-
-def p_calling_args(p):
-    '''
-    calling_args : expression calling_args_a
-                 | null
-    '''
-    p[0] = p[1]
-    temp_args.insert(0, p[1])
-
-def p_calling_args_a(p):
-    '''
-    calling_args_a : COMMA calling_args
-                   | null
-    '''
-    if(p[1]):
-        p[0] = p[2]
 
 def p_assignment(p):
     '''
@@ -524,20 +503,60 @@ def p_factor_var(p):
 
 def p_function_call(p):
     '''
-    function_call : L_PAR args_list calling_args R_PAR
+    function_call : left_exp_par init_function_call calling_args right_exp_par function_gosub
                   | null
     '''
     if(p[1]):
-        func_name = p[-1]
-        if (func_name not in function_dir.functions):
-            #TODO throw error
-            print("ERROR: FUNCTION NOT DEFINED")
-        else:
-            aux_function = function_dir.functions[func_name]
-            res_type = aux_function.type
-            res_temp_address = memory_controller.get_temp_address(res_type)
-            quad_controller.function_call(temp_args, aux_function.virt_address, aux_function.counter, res_temp_address, res_type)
         p[0] = True
+
+def p_init_function_call(p):
+    '''
+    init_function_call :
+    '''
+    global curr_calling_function
+    curr_calling_function = p[-2]
+    func_name = curr_calling_function
+    if (func_name not in function_dir.functions):
+        #TODO throw error
+        print("ERROR: FUNCTION NOT DEFINED")
+    else :
+        aux_function = function_dir.functions[func_name]
+        quad_controller.function_call_init(aux_function.virt_address)
+
+def p_calling_args(p):
+    '''
+    calling_args : function_call_param calling_args_a
+                 | null
+    '''
+
+def p_function_call_param(p):
+    '''
+    function_call_param : expression
+    '''
+    global temp_args_count
+    aux_function = function_dir.functions[curr_calling_function]
+    if (temp_args_count > len(aux_function.signature)):
+        print("MORE ARGUMENTS THAN SHOULD BE")
+    param_address = aux_function.signature[temp_args_count]
+    quad_controller.function_call_param(param_address)
+    temp_args_count = temp_args_count + 1
+
+def p_calling_args_a(p):
+    '''
+    calling_args_a : COMMA calling_args
+                   | null
+    '''
+
+def p_function_gosub(p):
+    '''
+    function_gosub :
+    '''
+    global curr_calling_function
+    aux_function = function_dir.functions[curr_calling_function]
+    if (temp_args_count != len(aux_function.signature)):
+        print "YOU FUCKED UP"
+    quad_controller.function_gosub(aux_function.virt_address, aux_function.counter)
+    curr_calling_function = ''
 
 def p_factor_int(p):
     '''
@@ -667,18 +686,18 @@ def p_return(p):
     return : RETURN return_assign expression finished_expression
            | null
     '''
-    global temp_function
-    if p[2] not in temp_function.variables:
-        aux_function = function_dir.get_global_function()
-    else:
-        aux_function = temp_function
-    if p[2] not in aux_function.variables:
-        #TODO throw ERROR if var is not found in global or local scope
-        print "VAR NOT FOUND"
-    # TODO put this in a method /\/\/\/\/\
-    else:
-        temp_var = aux_function.variables[p[2]]
-        quad_controller.return_function(temp_var.virt_address)
+    #global temp_function
+    #if p[2] not in temp_function.variables:
+        #aux_function = function_dir.get_global_function()
+    #else:
+        #aux_function = temp_function
+    #if p[2] not in aux_function.variables:
+        ##TODO throw ERROR if var is not found in global or local scope
+        #print "VAR NOT FOUND"
+    ## TODO put this in a method /\/\/\/\/\
+    #else:
+        #temp_var = aux_function.variables[p[2]]
+        #quad_controller.return_function(temp_var.virt_address)
 
 def p_return_assign(p):
     '''

@@ -52,7 +52,7 @@ class QuadrupleController:
         self.quad_list[loc] = quad 
 
     def finished_expression(self):
-        if(len(self.operator_stack) > 0 and self.operator_stack[-1] == '='):
+        if(len(self.operator_stack) > 0 and self.operator_stack[-1] != '('):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
@@ -60,26 +60,29 @@ class QuadrupleController:
             # res = quad.eval_quad()
             self.add_quadruple(quad)
 
-    def return_function(self, return_address):
-        quad = Quadruple("RETURN", return_address)
-        self.add_quadruple(quad)
-
     def finished_function(self):
         #quad = self.quad_list[-1] # peek last quad before return
         quad = Quadruple("ENDPROC")
         self.add_quadruple(quad)
 
-    def function_call(self, args, virt_address, jump_to_function_index, res_temp_address, res_type):
-        num_args = len(args)
+    def function_call_init(self, virt_address):
         quad = Quadruple("ERA", virt_address)
         self.add_quadruple(quad)
-        for arg in args:
-            quad = Quadruple("PARAM", arg)
+
+    def function_call_param(self, param_address):
+        val_address = self.operand_stack.pop()
+        val_type = self.type_stack.pop()
+        param_type = semantic_helper.type_converter[param_address[1:3]]
+        if (val_type == param_type):
+            quad = Quadruple("PARAM", val_address, '', param_address)
             self.add_quadruple(quad)
-        quad = Quadruple("GOSUB", virt_address, res_temp_address, jump_to_function_index)
+
+    def function_gosub(self, virt_address, jump_to_function_index):
+
+        quad = Quadruple("GOSUB", virt_address, '', jump_to_function_index)
         self.add_quadruple(quad)
-        self.operand_stack.append(res_temp_address)
-        self.type_stack.append(res_type)
+        self.operand_stack.append(virt_address)
+        self.type_stack.append(semantic_helper.type_converter[virt_address[1:3]])
 
 ################### Canvas Custom Operations ###################
 
