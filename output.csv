@@ -1,31 +1,23 @@
-MAIN   8
+MAIN   5
 = cin0  gin0
-= cin1  lin2
-= lin2  gin1
++ lin0 cin1 tin0
+= tin0  gin1
 ENDPROC   
-= cin2  lin1
-= cin3  gin2
-ENDPROC   
-= cin4  lin0
-= cin5  lin1
+= cin2  lin0
 ERA gin1  
-+ cin6 cin7 tin0
-PARAM tin0  lin0
-PARAM lin1  lin1
+PARAM cin3  lin0
 GOSUB gin1  2
-= gin1  lin0
+= gin1  gin1
+PRINT   lin0
 BEGINFUNCTIONS
 globals int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 4, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-myfunc2 int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 1, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-myfunc1 int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-main int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+myfunc1 int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+main int
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['20', '1', '1', '10', '0', '1', '1', '2'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['3', '1', '1', '4'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

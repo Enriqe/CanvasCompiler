@@ -103,6 +103,11 @@ def p_function(p):
     temp_function.type = p[7]
     temp_function.local_map = memory_controller.get_local_map()
     temp_function.temp_map = memory_controller.get_temp_map()
+
+    globalfunc = function_dir.get_global_function()
+    func_var = Var(temp_function.name, temp_function.type, "", temp_function.virt_address)
+    globalfunc.add_variable(func_var)
+
     function_dir.add_function(temp_function)
     temp_function = Function()
 
@@ -493,7 +498,7 @@ def p_factor_var(p):
             aux_function = temp_function
         if p[1] not in aux_function.variables:
             #TODO throw ERROR if var is not found in global or local scope
-            print "VAR NOT FOUND"
+            print "VAR NOT FOUND - factorvar"
         # TODO put this in a method /\/\/\/\/\
         else:
             temp_var = aux_function.variables[p[1]]
