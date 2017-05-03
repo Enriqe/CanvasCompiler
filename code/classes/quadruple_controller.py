@@ -30,7 +30,6 @@ class QuadrupleController:
     def add_quadruple(self, quad):
         self.quad_list.append(quad)
         self.quad_counter = self.quad_counter + 1
-        #quad.print_quad()
 
     def read_operator(self, current_op):
         self.operator_stack.append(current_op)
@@ -62,10 +61,8 @@ class QuadrupleController:
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[equals_op]]
             if res_type != -1:
                 quad = Quadruple(equals_op, right_opnd, "", left_opnd)
-                # res = quad.eval_quad()
                 self.add_quadruple(quad)
             else:
-                #TODO add error handler, print line no. and two operand mismatches
                 print("ERROR: type mismatch, line " + str(lineno))
                 exit()
 
@@ -89,8 +86,6 @@ class QuadrupleController:
     def function_gosub(self, virt_address, jump_to_function_index):
         quad = Quadruple("GOSUB", virt_address, '', jump_to_function_index)
         self.add_quadruple(quad)
-        #self.operand_stack.append(virt_address)
-        #self.type_stack.append(semantic_helper.type_converter[virt_address[1:3]])
 
     def array_access(self, index, arr_size, base_address, next_temp):
         quad = Quadruple("VER", "", index, arr_size)

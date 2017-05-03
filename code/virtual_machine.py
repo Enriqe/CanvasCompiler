@@ -13,11 +13,11 @@ FUNC_BEGIN_FLAG = "BEGINFUNCTIONS"
 CONST_TABLE_BEGIN_FLAG = "BEGINCONSTTABLE"
 QUAD_BEGIN_FLAG = "BEGINQUADS"
 
-"""
+'''
 VMManager manages the quads and the instantiation of the FunctionDirectory
 from the obj code. As well as keep control of the call and current stack of
 ActivationRecords.
-"""
+'''
 class VMManager:
     quads = []
     func_dir = FunctionDirectory()
