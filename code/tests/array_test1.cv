@@ -1,9 +1,0 @@
-program hello_world2
-
-main [
-    int arr[3] = 0
-    int foo = 1
-    foo = arr[1 + 1]
-]
-
-finish

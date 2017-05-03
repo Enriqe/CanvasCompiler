@@ -106,8 +106,10 @@ class QuadrupleController:
 
 ################### Canvas Custom Operations ###################
 
-    def print_stmt(self, var_id):
-        quad = Quadruple("PRINT", "", "", var_id)
+    def print_stmt(self):
+        addr = self.operand_stack.pop()
+        self.type_stack.pop()
+        quad = Quadruple("PRINT", "", "", addr)
         self.add_quadruple(quad)
 
     def program_start(self):

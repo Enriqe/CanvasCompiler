@@ -272,7 +272,9 @@ def p_assignment_push_operand(p):
         aux_function = temp_function
     if p[-1] not in aux_function.variables:
         #TODO throw ERROR if var is not foudn in global or local scope
-        print "VAR NOT FOUND -- assign"
+        print "Error. variable not found: " + p[-1] +" at line " + str(error_line(p))
+        exit(1)
+
     # TODO put this in a method /\/\/\/\/\
     else:
         temp_var = aux_function.variables[p[-1]]
@@ -301,7 +303,17 @@ def p_list_index_exp(p):
     '''
     if p[1]:
         p[0] = p[2]
-        temp_var = temp_function.variables[p[-2]] 
+
+        global temp_function
+        if p[-2] not in temp_function.variables:
+            aux_function = function_dir.get_global_function()
+        else:
+            aux_function = temp_function
+        if p[-2] not in aux_function.variables:
+            #TODO throw ERROR if var is not foudn in global or local scope
+            print "Error. variable not found: " + str(p[-2]) +" at line " + str(error_line(p))
+            exit(1)
+        temp_var = aux_function.variables[p[-2]] 
         index = quad_controller.after_array_check()
         temp_address = memory_controller.get_temp_address(temp_var.type)
         temp_address = "*" + temp_address
@@ -492,7 +504,7 @@ def p_factor_num(p):
     factor_num : factor_sign factor_num_a
     '''
     if(p[1] == "-"):
-        p[0] = p[2] * -1
+        p[0] = int(p[2]) * -1
     else:
         p[0] = p[2]
 
@@ -597,6 +609,8 @@ def p_factor_int(p):
     factor_int : INT_VAL
     '''
     p[0] = p[1]
+    if (p[-1] == '-'):
+        p[1] = -1 * int(p[1])
     #TODO repeated code
     quad_controller.read_type('int')
     virt_address = memory_controller.generate_const_address('int', p[1])
@@ -676,35 +690,26 @@ def p_after_else(p):
 
 def p_print(p):
     '''
-    print : PRINT L_PAR print_b print_a R_PAR
+    print : PRINT left_exp_par expression print_a right_exp_par
     '''
-    # TODO put this in a method \/\/\/\/\/
-    global temp_function
-    if p[3] not in temp_function.variables:
-        aux_function = function_dir.get_global_function()
-    else:
-        aux_function = temp_function
-    if p[3] not in aux_function.variables:
-        #TODO throw ERROR if var is not found in global or local scope
-        print "Error: variable not found, line " + str(error_line(p))
-    # TODO put this in a method /\/\/\/\/\
-    else:
-        temp_var = aux_function.variables[p[3]]
-        quad_controller.print_stmt(temp_var.virt_address)
 
 def p_print_a(p):
     '''
-    print_a : COMMA print_b print_a
-            | null
+    print_a :
     '''
-    if(p[1]):
-        p[0] = p[2]
-
-def p_print_b(p):
-    '''
-    print_b : VAR_IDENTIFIER
-    '''
-    p[0] = p[1]
+    # TODO put this in a method \/\/\/\/\/
+    global temp_function
+    #if p[3] not in temp_function.variables:
+        #aux_function = function_dir.get_global_function()
+    #else:
+        #aux_function = temp_function
+    #if p[3] not in aux_function.variables:
+        ##TODO throw ERROR if var is not found in global or local scope
+        #print "Error: variable not found, line " + str(error_line(p))
+    ## TODO put this in a method /\/\/\/\/\
+    #else:
+        #temp_var = aux_function.variables[p[3]]
+    quad_controller.print_stmt()
 
 def p_read(p):
     '''

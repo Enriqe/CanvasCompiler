@@ -57,6 +57,9 @@ class VMManager:
         return self.quads[index]
 
     def set_val(self, address, val):
+        #print("manager.set_val: SETTING " + address + " WITH " + str(val))
+        if (address[0] == '*'):
+            address = self.get_val(address[1:])
         scope = address[0]
         #TODO TEST IF EXISTS (OR NOT)
         if (scope == 'g'):
@@ -69,9 +72,17 @@ class VMManager:
             else:
                 self.global_mem.set_val(address, val)
 
+    def get_real_address(self, address):
+        #print ("BEFORE CONVERT : " + address)
+        if (address[0] == '*'):
+            address = str(self.get_val(address[1:]))
+        #print ("AFTER CONVERT : " + address)
+        return address
 
     def get_val(self, address):
         #TODO TEST IF EXISTS (OR NOT)
+        if (address[0] == '*'):
+            address = str(self.get_val(address[1:]))
         scope = address[0]
         if (scope == 'g'):
             return self.global_mem.get_val(address)
@@ -88,7 +99,9 @@ class VMManager:
             return self.const_table.types[type1][addr]
 
     def convert_val(self, address):
+        address = self.get_real_address(address)
         val = self.get_val(address)
+        #print("VAL: " + str(val))
         type1 = type_converter[address[1:3]]
         if (type1 == 'int'):
             return int(val)
@@ -135,6 +148,10 @@ class VMManager:
         ar = self.curr_stack.pop()
         next_index = ar.get_return_index()
         return next_index
+
+    def sum_addr(self, base, num):
+        base_num = int(base[3:])
+        return base[:3] + str(base_num + int(num))
 
 manager = VMManager()
 
@@ -208,6 +225,22 @@ def run():
                 index += 1
         elif (oper == 'GOTO'):
             index = int(result)
+        elif (oper == 'VER'):
+            size = int(result)
+            if (right < 0 and right >= size):
+                print("Error: index out of bounds")
+                exit(1)
+            index += 1
+        elif (oper == 'ADDBASE'):
+            #addbase, index, baseaddr, nexttmp
+            num = manager.get_val(left)
+            base = right
+            new_addr = manager.sum_addr(base, num)
+            #print "NEW ADDR"
+            #print new_addr
+            next_addr = result
+            manager.set_val(str(next_addr[1:]), new_addr)
+            index += 1
 
         # Check if last quad
         if (index < len(manager.quads)):
