@@ -129,8 +129,11 @@ class QuadrupleController:
         quad = Quadruple("PAINT")
         self.add_quadruple(quad)
 
-    def create_circle(self, addr, x, y):
-        quad = Quadruple("CIRCLE", addr, x, y)
+    def create_shape(self, addr, x, y, shape_type):
+        if shape_type == "circle":
+            quad = Quadruple("CIRCLE", addr, x, y)
+        elif shape_type == "rectangle":
+            quad = Quadruple("RECTANGLE", addr, x, y)
         self.add_quadruple(quad)
 
 ################### Conditionals ###################

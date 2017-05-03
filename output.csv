@@ -2,14 +2,14 @@ MAIN   1
 CANVAS   
 + cin0 cin1 tin0
 + cin2 cin3 tin1
-CIRCLE lci0 tin0 tin1
+RECTANGLE lre0 tin0 tin1
 PAINT   
 BEGINFUNCTIONS
 globals int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 main int
-"{'color': 0, 'canvas': 1, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 1, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 1, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 1, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
 "{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['23', '1', '22', '1'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

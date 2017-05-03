@@ -202,7 +202,7 @@ def p_shape(p):
     addr = memory_controller.generate_var_address(ALLOC_SCOPE, shape_type)
     tempVar = Var(shape_id, shape_type, shape_values, addr)
     p[0] = tempVar
-    quad_controller.create_circle(addr, shape_x, shape_y )
+    quad_controller.create_shape(addr, shape_x, shape_y, shape_type)
 
 def p_shape_comma(p):
     '''
