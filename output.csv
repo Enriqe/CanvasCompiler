@@ -1,16 +1,12 @@
 MAIN   1
-= cin0  lin0
-= cin1  lin3
-VER  cin2 3
-ADDBASE cin2 lin0 *tin0
-+ cin3 cin4 tin1
-= tin1  *tin0
+CANVAS   
+PAINT   
 BEGINFUNCTIONS
 globals int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 main int
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 4, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 2, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 1, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['0', '1', '2', '3', '4'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': [], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

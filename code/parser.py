@@ -389,13 +389,13 @@ def p_point_assignment_b(p):
 
 def p_canvas(p):
     '''
-    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS expression
+    canvas : CANVAS VAR_IDENTIFIER 
     '''
-    val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
     #TODO add virt_address
     addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'canvas')
-    tempVar = Var(p[2], p[1], val, addr)
+    tempVar = Var(p[2], p[1], "", addr)
     p[0] = tempVar
+    quad_controller.create_canvas()
 
 def p_canvas_assignment(p):
     '''
@@ -720,6 +720,8 @@ def p_paint(p):
     '''
     paint : PAINT VAR_IDENTIFIER
     '''
+    quad_controller.paint_canvas()
+
 
 def p_return(p):
     '''

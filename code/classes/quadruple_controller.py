@@ -120,6 +120,15 @@ class QuadrupleController:
     def main_start(self):
         main_quad_index = self.jump_stack.pop()
         self.fill(main_quad_index, self.quad_counter)
+    
+    def create_canvas(self):
+        quad = Quadruple("CANVAS")
+        self.add_quadruple(quad)
+
+    def paint_canvas(self):
+        quad = Quadruple("PAINT")
+        self.add_quadruple(quad)
+
 
 ################### Conditionals ###################
 
