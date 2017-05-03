@@ -1,19 +1,23 @@
 program hello_world2
 
-function myfunc1 (int arg1) returns int [
-    int sol = 1
+function fib (int arg1) returns int [
+    int val1 = 1
+    int val2 = 0
+    int sol = 0
     if( arg1 == 1)[
         sol = 1
     ]elsif(arg1 == 0)[
         sol = 0
     ]else[
-        sol = myfunc1(arg1 - 1) + myfunc1(arg1 - 2)
+        val1 = fib(arg1 - 1)
+        val2 = 5fib(arg1 - 2)
+        sol = val1 + val2
     ]
     return sol
 ]
 
 main [
-    int myVar = myfunc1(5)
+    int myVar = fib(21)
     print(myVar)
 ]
 
