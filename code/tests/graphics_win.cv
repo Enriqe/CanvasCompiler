@@ -1,0 +1,8 @@
+program hello_world
+
+main [
+    canvas win width = 2 height = 2 color = "blue"
+    int b = 10 + 2
+]
+
+finish

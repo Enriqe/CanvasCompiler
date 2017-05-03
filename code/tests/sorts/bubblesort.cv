@@ -1,0 +1,50 @@
+program hello_world2
+
+int arr[10] = 1
+
+function bubbleSort() returns int [
+  yesno sorted = no
+  int elem = 0
+  int hold = -1
+  while (sorted == no) [
+    sorted = yes
+    while (elem < 9) [
+      if (arr[elem] > arr[elem + 1]) [
+        sorted = no
+        hold = arr[elem + 1]
+        arr[elem + 1] = arr[elem]
+        arr[elem] = hold
+      ]
+      elem = elem + 1
+    ]
+    elem = 0
+  ]
+  return 0
+]
+
+main [
+    int foo = 0
+    string str = "--------"
+    arr[0] = 3
+    arr[1] = 1
+    arr[2] = 5
+    arr[3] = 3
+    arr[4] = 9
+    arr[5] = 7
+    arr[6] = 1
+    arr[7] = 2
+    arr[8] = 8
+    arr[9] = 4
+    while (foo < 10) [
+      print(arr[foo])
+      foo = foo + 1
+    ]
+    print(str)
+    foo = bubbleSort()
+    while (foo < 10) [
+      print(arr[foo])
+      foo = foo + 1
+    ]
+]
+
+finish
