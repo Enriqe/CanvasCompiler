@@ -1,0 +1,9 @@
+program hello_world2
+
+main [
+    canvas myCanvas
+    rectangle myRect(23+1, 22 + 1)
+    paint myCanvas
+]
+
+finish
