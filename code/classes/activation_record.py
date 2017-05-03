@@ -8,7 +8,7 @@ It contains a local and temporal memory, both which are filled during initializa
 """
 class ActivationRecord:
 
-    # 
+    #Inicializa los tamaños de las memorias locales y temporales de la funcion
     def __init__(self, local_map, temp_map):
         self.local_mem = {}
         self.temp_mem = {}
@@ -19,7 +19,6 @@ class ActivationRecord:
             self.temp_mem[key] = [None] * temp_map[key]
 
     def get_val(self, address):
-        #print "GETTING " + address
         scope = address[0]
         type1 = type_converter[address[1:3]]
         addr = int(address[3:])
