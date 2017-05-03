@@ -291,23 +291,36 @@ def p_assignment_a(p):
 
 def p_var_assignment(p):
     '''
-    var_assignment : list_index array_check EQUALS push_operator expression
+    var_assignment : list_index_exp EQUALS push_operator expression
+    '''
+
+def p_list_index_exp(p):
+    '''
+    list_index_exp : l_index_bracket expression r_index_bracket
+                   | null
     '''
     if p[1]:
-        quad_controller.after_array_check()
-
-def p_array_check(p):
-    '''
-    array_check :
-    '''
-    if p[-1]:
-        temp_var = temp_function.variables[p[-3]]
-        index = int(p[-1])
+        p[0] = p[2]
+        temp_var = temp_function.variables[p[-2]] 
+        index = quad_controller.after_array_check()
         temp_address = memory_controller.get_temp_address(temp_var.type)
         temp_address = "*" + temp_address
         quad_controller.array_access(index, temp_var.size, temp_var.virt_address, temp_address)
         quad_controller.read_operand(temp_address)
         quad_controller.read_type(temp_var.type)
+
+def p_l_index_bracket(p):
+    '''
+    l_index_bracket : L_BRACKET
+    '''
+    p[0] = p[1]
+    quad_controller.read_fake_bottom()
+
+def p_r_index_bracket(p):
+    '''
+    r_index_bracket : R_BRACKET
+    '''
+    quad_controller.pop_fake_bottom()
 
 def p_shape_or_canvas_assignment(p):
     '''
@@ -442,7 +455,7 @@ def p_term_loop(p):
 def p_factor(p):
     '''
     factor : factor_id
-           | factor_exp
+           | factor_value
     '''
     p[0] = p[1]
 
@@ -463,11 +476,6 @@ def p_right_exp_par(p):
     '''
     quad_controller.pop_fake_bottom()
 
-def p_factor_exp(p):
-    '''
-    factor_exp : factor_value list_index
-    '''
-    p[0] = p[1]
 
 #since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
 def p_factor_value(p):
@@ -505,33 +513,32 @@ def p_factor_sign(p):
 
 def p_factor_var(p):
     '''
-    factor_var : VAR_IDENTIFIER function_call
+    factor_var : VAR_IDENTIFIER function_call list_index_exp 
     '''
-    if(not p[2]):
-        p[0] = p[1]
-        # TODO put this in a method \/\/\/\/\/
-        global temp_function
-        if p[1] not in temp_function.variables:
-            aux_function = function_dir.get_global_function()
-        else:
-            aux_function = temp_function
-        if p[1] not in aux_function.variables:
-            raise NameError("Var not defined: ", p[1])
-            print "VAR NOT FOUND - factorvar"
-        # TODO put this in a method /\/\/\/\/\
-        else:
-            temp_var = aux_function.variables[p[1]]
-            var_type = temp_var.type
-            quad_controller.read_type(var_type)
-            quad_controller.read_operand(temp_var.virt_address)
 
 def p_function_call(p):
     '''
     function_call : left_exp_par init_function_call calling_args right_exp_par function_gosub
                   | null
     '''
-    if(p[1]):
-        p[0] = True
+    if(not p[1]):
+        # p[0] = p[1]
+        # TODO put this in a method \/\/\/\/\/
+        global temp_function
+        if p[-1] not in temp_function.variables:
+            aux_function = function_dir.get_global_function()
+        else:
+            aux_function = temp_function
+        if p[-1] not in aux_function.variables:
+            raise NameError("Var not defined: ", p[-1])
+            print "VAR NOT FOUND - factorvar"
+        # TODO put this in a method /\/\/\/\/\
+        else:
+            temp_var = aux_function.variables[p[-1]]
+            var_type = temp_var.type
+            quad_controller.read_type(var_type)
+            quad_controller.read_operand(temp_var.virt_address)
+
 
 def p_init_function_call(p):
     '''

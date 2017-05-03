@@ -96,10 +96,13 @@ class QuadrupleController:
         quad = Quadruple("VER", "", index, arr_size)
         self.add_quadruple(quad)
         quad = Quadruple("ADDBASE", index, base_address, next_temp)
+        self.operand_stack.pop()
+        self.type_stack.pop()
         self.add_quadruple(quad)
 
     def after_array_check(self):
-        self.operand_stack.pop()
+        self.type_stack.pop()
+        return self.operand_stack.pop()
 
 ################### Canvas Custom Operations ###################
 
