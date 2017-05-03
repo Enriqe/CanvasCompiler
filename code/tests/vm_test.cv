@@ -1,0 +1,11 @@
+program hello_world2
+
+int varB = 5
+int varA = varB * 5
+int varC = varA + varB
+
+main [
+    
+]
+
+finish

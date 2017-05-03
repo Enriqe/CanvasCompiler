@@ -1,6 +1,12 @@
+import csv
 from quadruple import Quadruple
+from memory_map import MemoryMap
+from memory_controller import MemoryController
 from semantic_cube import SemanticCube
 import semantic_helper
+from memory_controller import MemoryController
+
+TEMP_SEGMENT = "3" # flag used to segment memory between scopes
 
 def debug(right, right_type, left, left_type, op):
         print("DEBUGGING")
@@ -19,10 +25,12 @@ class QuadrupleController:
     avail = 0
     fake_bottom = '('
     quad_counter = 0
+    memory_controller = MemoryController()
 
     def add_quadruple(self, quad):
         self.quad_list.append(quad)
         self.quad_counter = self.quad_counter + 1
+        #quad.print_quad()
 
     def read_operator(self, current_op):
         self.operator_stack.append(current_op)
@@ -42,35 +50,74 @@ class QuadrupleController:
     def fill(self, loc, quad_num):
         quad = self.quad_list[loc]
         quad.add_location(quad_num)
-        self.quad_list[loc] = quad # faltaba actualizar el quad en la lista
+        self.quad_list[loc] = quad
 
-    def finished_expression(self):
-        if(len(self.operator_stack) > 0 and self.operator_stack[-1] == '='):
+    def finished_expression(self, lineno):
+        print "STACKS"
+        print self.operator_stack
+        print self.operand_stack
+        if(len(self.operator_stack) > 0 and self.operator_stack[-1] != '('):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
-            quad = Quadruple(equals_op, right_opnd, "", left_opnd)
-            res = quad.eval_quad()
-            self.add_quadruple(quad)
+            right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
+            left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
+            res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[equals_op]]
+            if res_type != -1:
+                quad = Quadruple(equals_op, right_opnd, "", left_opnd)
+                # res = quad.eval_quad()
+                self.add_quadruple(quad)
+            else:
+                #TODO add error handler, print line no. and two operand mismatches
+                print("ERROR: type mismatch, line " + str(lineno))
+                exit()
 
     def finished_function(self):
+        #quad = self.quad_list[-1] # peek last quad before return
         quad = Quadruple("ENDPROC")
         self.add_quadruple(quad)
 
-    def function_call(self, args, name, original_signature, count):
-        #TODO check types of args in function call against original_signature
+    def function_call_init(self, virt_address):
+        quad = Quadruple("ERA", virt_address)
+        self.add_quadruple(quad)
 
-        # print("ARGS", args)
-        # print("name", name)
-        # print("og", original_signature)
-        num_args = len(args)
-        quad = Quadruple("ERA", num_args, name)
-        self.add_quadruple(quad)
-        for arg in args:
-            quad = Quadruple("PARAM", arg)
+    def function_call_param(self, param_address):
+        val_address = self.operand_stack.pop()
+        val_type = self.type_stack.pop()
+        param_type = semantic_helper.type_converter[param_address[1:3]]
+        if (val_type == param_type):
+            quad = Quadruple("PARAM", val_address, '', param_address)
             self.add_quadruple(quad)
-        quad = Quadruple("GOSUB", name, count)
+
+    def function_gosub(self, virt_address, jump_to_function_index):
+        quad = Quadruple("GOSUB", virt_address, '', jump_to_function_index)
         self.add_quadruple(quad)
+        #self.operand_stack.append(virt_address)
+        #self.type_stack.append(semantic_helper.type_converter[virt_address[1:3]])
+
+    def array_access(self, index, arr_size, base_address, next_temp):
+        quad = Quadruple("VER", "", index, arr_size)
+        self.add_quadruple(quad)
+        quad = Quadruple("ADDBASE", index, base_address, next_temp)
+        self.add_quadruple(quad)
+
+    def after_array_check(self):
+        self.operand_stack.pop()
+
+################### Canvas Custom Operations ###################
+
+    def print_stmt(self, var_id):
+        quad = Quadruple("PRINT", "", "", var_id)
+        self.add_quadruple(quad)
+
+    def program_start(self):
+        quad = Quadruple("MAIN")
+        self.add_quadruple(quad)
+        self.jump_stack.append(self.quad_counter - 1)
+
+    def main_start(self):
+        main_quad_index = self.jump_stack.pop()
+        self.fill(main_quad_index, self.quad_counter)
 
 ################### Conditionals ###################
 
@@ -80,6 +127,7 @@ class QuadrupleController:
 
     def after_cond_expression(self):
         res = self.operand_stack.pop()
+        self.type_stack.pop()
         quad = Quadruple("GOTOF", res)
         self.add_quadruple(quad)
         self.jump_stack.append(self.quad_counter - 1)
@@ -121,26 +169,36 @@ class QuadrupleController:
     operator is in the same priority level and genereates quad
     @param operators: List of operators of the priority level we are at
     '''
-    def finished_operand(self, operators):
+    def finished_operand(self, temp_address, operators, lineno):
         # checks if operator_stack is not empty and top operator is in current priority level
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
-            # Pops from stacks and evals quad
-            self.avail += 1
-            result = 't' + str(self.avail)
             curr_op = self.operator_stack.pop()
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
-            # debug(right_opnd, right_opnd_type, left_opnd, left_opnd_type, curr_op)
-
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
             if res_type != -1:
-                quad = Quadruple(curr_op, left_opnd, right_opnd, result)
-                result = quad.eval_quad()
-                self.operand_stack.append(result)
+                self.operand_stack.append(temp_address)
                 self.type_stack.append(res_type)
+                quad = Quadruple(curr_op, left_opnd, right_opnd, temp_address)
                 self.add_quadruple(quad)
             else:
                 #TODO add error handler, print line no. and two operand mismatches
-                print("ERROR, type mismatch")
+                print("ERROR: type mismatch, line " + str(lineno))
+                exit()
+
+    def finish(self):
+        with open("../output.csv", "w+") as file1:
+            writer = csv.writer(file1, delimiter=' ', quotechar='|')
+            for q in self.quad_list:
+                writer.writerow([q.operator, q.left_operand, q.right_operand, q.result])
+
+    # Used in parser for temp vars
+    def peek_res_type(self, operators):
+        if(len(self.operator_stack) > 0 and self.operator_stack[-1] in operators):
+            curr_op = self.operator_stack[-1]
+            left_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
+            right_opnd_type = semantic_helper.type_dict[self.type_stack[-1]]
+            return SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[curr_op]]
+        return -1

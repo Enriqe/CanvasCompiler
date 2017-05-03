@@ -1,0 +1,24 @@
+program hello_world2
+
+function fib (int arg1) returns int [
+    int val1 = 1
+    int val2 = 0
+    int sol = 0
+    if( arg1 == 1)[
+        sol = 1
+    ]elsif(arg1 == 0)[
+        sol = 0
+    ]else[
+        val1 = fib(arg1 - 1)
+        val2 = 5fib(arg1 - 2)
+        sol = val1 + val2
+    ]
+    return sol
+]
+
+main [
+    int myVar = fib(21)
+    print(myVar)
+]
+
+finish

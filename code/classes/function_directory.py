@@ -1,4 +1,7 @@
+import csv
 from function import Function
+
+FUNC_BEGIN_FLAG = "BEGINFUNCTIONS"
 
 class FunctionDirectory:
 
@@ -7,6 +10,7 @@ class FunctionDirectory:
     def __init__(self):
         self.__dict__ = self.__shared_state
         self.global_function = Function("globals")
+        self.global_function.type = "int"
         self.functions = {}
         self.current_function = 0
 
@@ -22,6 +26,10 @@ class FunctionDirectory:
             self.current_function = self.current_function + 1
             self.functions[function.name] = function
 
+    def get_function(self, func_name):
+        if func_name in self.functions:
+            return self.functions[func_name]
+
     def add_var_to_FunctionDirectory(self, var):
         if (self.current_function == var.function):
             print "todo"
@@ -30,3 +38,15 @@ class FunctionDirectory:
         self.global_function.print_function()
         for key, val in self.functions.iteritems():
             val.print_function()
+
+    def finish(self):
+        with open("../output.csv", "a") as file1:
+            writer = csv.writer(file1, delimiter=' ')
+            writer.writerow([FUNC_BEGIN_FLAG])
+            writer.writerow([self.global_function.name, self.global_function.type])
+            writer.writerow([self.global_function.local_map.types])
+            writer.writerow([self.global_function.temp_map.types])
+            for key, function in self.functions.iteritems():
+                writer.writerow([function.name, function.type])
+                writer.writerow([function.local_map.types])
+                writer.writerow([function.temp_map.types])

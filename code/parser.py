@@ -2,21 +2,25 @@ import scanner as scanner
 import ply.yacc as yacc
 import sys
 import logging
-# Get the token map from the lexer.  This is required.
+# Get the token map from the lexer.
 from scanner import tokens
 from classes.var import Var
 from classes.function import Function
 from classes.function_directory import FunctionDirectory
 from classes.quadruple_controller import QuadrupleController
+from classes.memory_controller import MemoryController
 from classes.semantic_helper import type_dict
 from classes.semantic_helper import operator_dict
+from classes.memory_map import MemoryMap
 
-
+ALLOC_SCOPE = "g" # flag used to segment memory between scopes
 
 function_dir = FunctionDirectory()
 temp_function = Function()
 quad_controller = QuadrupleController()
-temp_args = []
+memory_controller = MemoryController()
+temp_args_count = 0
+curr_calling_function = ''
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -31,10 +35,26 @@ logging.basicConfig(
 
 def p_program_syntax(p):
     '''
-    program : PROGRAM VAR_IDENTIFIER globals globals_finished functions MAIN main_block FINISH
+    program : PROGRAM VAR_IDENTIFIER program_start globals globals_finished functions MAIN main_start main_block FINISH
     '''
     function_dir.print_dir()
+    #TODO DELETE
     quad_controller.print_quads()
+    quad_controller.finish()
+    function_dir.finish()
+    memory_controller.print_const_memory()
+
+def p_program_start(p):
+    '''
+    program_start :
+    '''
+    quad_controller.program_start()
+
+def p_main_start(p):
+    '''
+    main_start :
+    '''
+    quad_controller.main_start()
 
 def p_globals(p):
     '''
@@ -51,36 +71,72 @@ def p_globals_finished(p):
     '''
     globals_finished :
     '''
-    global temp_function
+    global temp_function, ALLOC_SCOPE
+    temp_function.local_map = memory_controller.get_global_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
     temp_function = Function()
+    memory_controller.clear_local_map()
+    memory_controller.clear_temp_map()
+    ALLOC_SCOPE = "l" #change to local scope
 
 def p_functions(p):
     '''
-    functions : function functions
+    functions : function clear_function_memory functions
               | null
     '''
+
+def p_clear_function_memory(p):
+    '''
+    clear_function_memory :
+    '''
+    memory_controller.clear_local_map()
+    memory_controller.clear_temp_map()
 
 #TODO add semantic logic to p_function
 def p_function(p):
     '''
-    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type L_BRACKET count_function block_declarations block_statements R_BRACKET finished_function
+    function : FUNCTION VAR_IDENTIFIER L_PAR function_arguments R_PAR RETURNS type function_return_address L_BRACKET count_function block_declarations block_statements return R_BRACKET finished_function
     '''
     # todo: check what to return here
     global temp_function
-    temp_function.name = p[2]
-    function_dir.add_function(temp_function)
     temp_function = Function()
 
+#TODO CHECK IF AMBIGIOUS
 def p_function_arguments(p):
     '''
-    function_arguments : type VAR_IDENTIFIER
-                       | type VAR_IDENTIFIER COMMA function_arguments
+    function_arguments : type VAR_IDENTIFIER push_argument
+                       | type VAR_IDENTIFIER push_argument COMMA function_arguments
                        | null
     '''
     if(p[1]):
-        tempVar = Var(p[2], p[1], "")
+        virt_address = p[3]
+        tempVar = Var(p[2], p[1], "", virt_address)
         temp_function.add_variable(tempVar)
-        temp_function.signature.append(type_dict[p[1]])
+        temp_function.signature.insert(0, virt_address)
+
+def p_push_argument(p):
+    '''
+    push_argument :
+    '''
+    virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[-2])
+    p[0] = virt_address
+
+def p_function_return_address(p):
+    '''
+    function_return_address :
+    '''
+    global temp_function
+    temp_function.name = p[-6]
+    temp_function.type = p[-1]
+    temp_function.local_map = memory_controller.get_local_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
+    temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type) # this is ugly
+    globalfunc = function_dir.get_global_function()
+    func_var = Var(temp_function.name, temp_function.type, "", temp_function.virt_address)
+    globalfunc.add_variable(func_var)
+    globalfunc.local_map.types[temp_function.type] += 1
+
+    function_dir.add_function(temp_function)
 
 def p_type(p):
     '''
@@ -92,10 +148,15 @@ def p_type(p):
     p[0] = p[1]
 
 def p_var(p):
+    #  WHEN MODYFING RULE : check that p[i] index still calls corresponding argument 
     '''
-    var : type VAR_IDENTIFIER push_operand list_index EQUALS push_operator expression
+    var : type VAR_IDENTIFIER list_index push_operand EQUALS push_operator expression
     '''
-    tempVar = Var(p[2], p[1], p[7]) #check that p[i] index still calls corresponding argument when modyifying rule
+    # virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, p[1], p[2])
+    virt_address = p[4]
+    tempVar = Var(p[2], p[1], p[7], virt_address) 
+    if p[3]:
+        tempVar.size = int(p[3])
     p[0] = tempVar
 
 def p_list_index(p):
@@ -103,6 +164,9 @@ def p_list_index(p):
     list_index : L_BRACKET INT_VAL R_BRACKET
                | null
     '''
+    if p[1]:
+        p[0] = p[2]
+
 def p_null(p):
     '''
     null :
@@ -118,7 +182,9 @@ def p_shape(p):
     shape_type = p[1]
     shape_id = p[2]
     shape_values = {"center" : p[5], "width" : p[8], "height" : p[11], "color" : p[14]} 
-    tempVar = Var(shape_id, shape_type, shape_values)
+    #TODO add virt_address
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, shape_type)
+    tempVar = Var(shape_id, shape_type, shape_values, addr)
     p[0] = tempVar
 
 def p_shape_type(p):
@@ -134,7 +200,10 @@ def p_main_block(p):
     main_block : L_BRACKET block_declarations block_statements R_BRACKET
     '''
     temp_function.name = "main"
-    # temp_function.add_variable(p[1])
+    temp_function.type = "int"
+    temp_function.local_map = memory_controller.get_local_map()
+    temp_function.temp_map = memory_controller.get_temp_map()
+    temp_function.virt_address = memory_controller.generate_var_address('g', temp_function.type)
     function_dir.add_function(temp_function)
 
 # def p_block_with_declaration(p):
@@ -183,65 +252,62 @@ def p_statement(p):
               | while_loop
               | paint
               | read
-              | function_call
-              | return
     '''
 
-def p_function_call(p):
+
+def p_assignment(p): # WARNING: MOVING ORDER OF RULES HERE AFFECTS VAR_ASSIGNMENT from assignment_a
     '''
-    function_call : VAR_IDENTIFIER L_PAR args_list calling_args R_PAR
+    assignment : VAR_IDENTIFIER assignment_push_operand assignment_a finished_expression
     '''
-    func_name = p[1]
-    if (func_name not in function_dir.functions):
-        #TODO throw error
-        print("ERROR: FUNCTION NOT DEFINED")
+
+def p_assignment_push_operand(p):
+    '''
+    assignment_push_operand :
+    '''
+    # TODO put this in a method \/\/\/\/\/
+    global temp_function
+    if p[-1] not in temp_function.variables:
+        aux_function = function_dir.get_global_function()
     else:
-        aux_function = function_dir.functions[func_name]
-        quad_controller.function_call(temp_args, func_name, aux_function.signature, aux_function.counter)
-
-#TODO think of cleaner version
-def p_args_list(p):
-    '''
-    args_list : 
-    '''
-    global temp_args
-    temp_args = []
-
-def p_calling_args(p):
-    '''
-    calling_args : expression calling_args_a
-                 | null
-    '''
-    p[0] = p[1]
-    temp_args.insert(0, p[1])
-
-def p_calling_args_a(p):
-    '''
-    calling_args_a : COMMA calling_args
-                   | null
-    '''
-    if(p[1]):
-        p[0] = p[2]
-
-def p_assignment(p):
-    '''
-    assignment : VAR_IDENTIFIER assignment_a
-    '''
+        aux_function = temp_function
+    if p[-1] not in aux_function.variables:
+        #TODO throw ERROR if var is not foudn in global or local scope
+        print "VAR NOT FOUND -- assign"
+    # TODO put this in a method /\/\/\/\/\
+    else:
+        temp_var = aux_function.variables[p[-1]]
+        var_type = temp_var.type
+        quad_controller.read_type(var_type)
+        quad_controller.read_operand(temp_var.virt_address)
 
 def p_assignment_a(p):
     #TODO CHECK IF FIXABLE
     '''
-    assignment_a : EQUALS expression
+    assignment_a : EQUALS push_operator expression
                  | var_assignment
                  | point_assignment
                  | shape_or_canvas_assignment
-                 | canvas_assignment
     '''
 
 def p_var_assignment(p):
     '''
-    var_assignment : list_index EQUALS expression
+    var_assignment : list_index array_check EQUALS push_operator expression
     '''
+    if p[1]:
+        quad_controller.after_array_check()
+
+def p_array_check(p):
+    '''
+    array_check :
+    '''
+    if p[-1]:
+        temp_var = temp_function.variables[p[-3]]
+        index = int(p[-1])
+        temp_address = memory_controller.get_temp_address(temp_var.type)
+        temp_address = "*" + temp_address
+        quad_controller.array_access(index, temp_var.size, temp_var.virt_address, temp_address)
+        quad_controller.read_operand(temp_address)
+        quad_controller.read_type(temp_var.type)
 
 def p_shape_or_canvas_assignment(p):
     '''
@@ -280,7 +346,9 @@ def p_point(p):
     var_type = p[1]
     point_id = p[2]
     point_values = {"x" : p[5], "y" : p[8]}
-    tempVar = Var(point_id, var_type, point_values)
+    #TODO add virt_address
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'point')
+    tempVar = Var(point_id, var_type, point_values, addr)
     p[0] = tempVar
 
 def p_point_assignment(p):
@@ -300,7 +368,9 @@ def p_canvas(p):
     canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
     '''
     val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
-    tempVar = Var(p[2], p[1], val)
+    #TODO add virt_address
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'canvas')
+    tempVar = Var(p[2], p[1], val, addr)
     p[0] = tempVar
 
 def p_canvas_assignment(p):
@@ -314,11 +384,17 @@ def p_expression(p):
     '''
     p[0] = p[1]
 
+# def p_debug(p):
+#     '''
+#     debug :
+#     '''
+#     print "DEBUGG"
+#     print len(quad_controller.operand_stack)
+
 # ADDED so finished_expression only executes once per expression
 def p_expression_a(p):
     '''
     expression_a : exp after_exp_check expression_b
-                 | null
     '''
     p[0] = p[1]
 
@@ -390,14 +466,35 @@ def p_right_exp_par(p):
 
 def p_factor_exp(p):
     '''
-    factor_exp : factor_sign factor_value list_index
+    factor_exp : factor_value list_index
     '''
-    if(p[1] == None):
-        p[0] = p[2]
-    else:
-        print "in"
-        p[0] = p[2] * -1
+    p[0] = p[1]
 
+#since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
+def p_factor_value(p):
+    '''
+    factor_value : factor_var
+                 | factor_num
+                 | factor_yesno
+                 | factor_string
+    '''
+    p[0] = p[1]
+
+def p_factor_num(p):
+    '''
+    factor_num : factor_sign factor_num_a
+    '''
+    if(p[1] == "-"):
+        p[0] = p[2] * -1
+    else:
+        p[0] = p[2]
+
+def p_factor_num_a(p):
+    '''
+    factor_num_a : factor_int
+                 | factor_dec
+    '''
+    p[0] = p[1]
 
 def p_factor_sign(p):
     '''
@@ -407,56 +504,128 @@ def p_factor_sign(p):
     '''
     p[0] = p[1]
 
-#since parser pushes everything in p[..] as a string, we have to retrieve type somehow (type_stack in quad_controller)
-def p_factor_value(p):
-    '''
-    factor_value : factor_var
-                 | factor_int
-                 | factor_dec
-                 | factor_yesno
-                 | factor_string
-    '''
-    p[0] = p[1]
-    #TODO check if able to integrate to p_push_operand helper function
-    quad_controller.read_operand(p[1])
-
 def p_factor_var(p):
     '''
-    factor_var : VAR_IDENTIFIER
+    factor_var : VAR_IDENTIFIER function_call
     '''
-    p[0] = p[1]
-    temp_var = temp_function.variables[p[1]]
-    var_type = temp_var.type
-    quad_controller.read_type(var_type)
+    if(not p[2]):
+        p[0] = p[1]
+        # TODO put this in a method \/\/\/\/\/
+        global temp_function
+        if p[1] not in temp_function.variables:
+            aux_function = function_dir.get_global_function()
+        else:
+            aux_function = temp_function
+        if p[1] not in aux_function.variables:
+            raise NameError("Var not defined: ", p[1])
+            print "VAR NOT FOUND - factorvar"
+        # TODO put this in a method /\/\/\/\/\
+        else:
+            temp_var = aux_function.variables[p[1]]
+            var_type = temp_var.type
+            quad_controller.read_type(var_type)
+            quad_controller.read_operand(temp_var.virt_address)
+
+def p_function_call(p):
+    '''
+    function_call : left_exp_par init_function_call calling_args right_exp_par function_gosub
+                  | null
+    '''
+    if(p[1]):
+        p[0] = True
+
+def p_init_function_call(p):
+    '''
+    init_function_call :
+    '''
+    global curr_calling_function
+    curr_calling_function = p[-2]
+    func_name = curr_calling_function
+    if (func_name not in function_dir.functions):
+        #TODO throw error
+        print("ERROR: FUNCTION NOT DEFINED")
+    else :
+        quad_controller.function_call_init(func_name)
+
+def p_calling_args(p):
+    '''
+    calling_args : function_call_param calling_args_a
+                 | null
+    '''
+
+def p_function_call_param(p):
+    '''
+    function_call_param : expression
+    '''
+    global temp_args_count
+    aux_function = function_dir.functions[curr_calling_function]
+    if (temp_args_count >= len(aux_function.signature)):
+        raise AttributeError("Wrong number of arguments in function: ", curr_calling_function) 
+    else:
+        param_address = aux_function.signature[temp_args_count]
+        quad_controller.function_call_param(param_address)
+        temp_args_count = temp_args_count + 1
+
+def p_calling_args_a(p):
+    '''
+    calling_args_a : COMMA calling_args
+                   | null
+    '''
+
+def p_function_gosub(p):
+    '''
+    function_gosub :
+    '''
+    global curr_calling_function
+    global temp_args_count
+    aux_function = function_dir.functions[curr_calling_function]
+    if (temp_args_count != len(aux_function.signature)):
+        raise AttributeError("Wrong number of arguments in function: ", curr_calling_function) 
+    else:
+        quad_controller.function_gosub(aux_function.virt_address, aux_function.counter)
+        curr_calling_function = ''
+        temp_args_count = 0
 
 def p_factor_int(p):
     '''
     factor_int : INT_VAL
     '''
     p[0] = p[1]
-    #TODO make it cleaner if possible
+    #TODO repeated code
     quad_controller.read_type('int')
+    virt_address = memory_controller.generate_const_address('int', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_factor_dec(p):
     '''
     factor_dec : DEC_VAL
     '''
     p[0] = p[1]
+    #TODO repeated code
     quad_controller.read_type('dec')
+    virt_address = memory_controller.generate_const_address('dec', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_factor_yesno(p):
     '''
     factor_yesno : YESNO_VAL
     '''
     p[0] = p[1]
+    #TODO repeated code
     quad_controller.read_type('yesno')
+    virt_address = memory_controller.generate_const_address('yesno', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_factor_string(p):
     '''
     factor_string : STRING_VAL
     '''
-    p[0] = p[1]
+    st1 = p[1]
+    p[0] = st1[1:-1]
+    #TODO repeated code
     quad_controller.read_type('string')
+    virt_address = memory_controller.generate_const_address('string', p[1])
+    quad_controller.read_operand(virt_address)
 
 def p_conditional(p):
     '''
@@ -503,18 +672,33 @@ def p_print(p):
     '''
     print : PRINT L_PAR print_b print_a R_PAR
     '''
+    # TODO put this in a method \/\/\/\/\/
+    global temp_function
+    if p[3] not in temp_function.variables:
+        aux_function = function_dir.get_global_function()
+    else:
+        aux_function = temp_function
+    if p[3] not in aux_function.variables:
+        #TODO throw ERROR if var is not found in global or local scope
+        print "Error: variable not found, line " + str(error_line(p))
+    # TODO put this in a method /\/\/\/\/\
+    else:
+        temp_var = aux_function.variables[p[3]]
+        quad_controller.print_stmt(temp_var.virt_address)
 
 def p_print_a(p):
     '''
     print_a : COMMA print_b print_a
             | null
     '''
+    if(p[1]):
+        p[0] = p[2]
 
 def p_print_b(p):
     '''
-    print_b : expression
-            | VAR_IDENTIFIER
+    print_b : VAR_IDENTIFIER
     '''
+    p[0] = p[1]
 
 def p_read(p):
     '''
@@ -528,8 +712,30 @@ def p_paint(p):
 
 def p_return(p):
     '''
-    return : RETURN expression
+    return : RETURN return_assign expression
+           | null
     '''
+    #global temp_function
+    #if p[2] not in temp_function.variables:
+        #aux_function = function_dir.get_global_function()
+    #else:
+        #aux_function = temp_function
+    #if p[2] not in aux_function.variables:
+        ##TODO throw ERROR if var is not found in global or local scope
+        #print "VAR NOT FOUND"
+    ## TODO put this in a method /\/\/\/\/\
+    #else:
+        #temp_var = aux_function.variables[p[2]]
+        #quad_controller.return_function(temp_var.virt_address)
+
+def p_return_assign(p):
+    '''
+    return_assign :
+    '''
+    #TODO CMON GUYS
+    quad_controller.read_operand(temp_function.virt_address)
+    quad_controller.read_type(temp_function.type)
+    quad_controller.read_operator('=')
 
 def p_for_loop(p):
     '''
@@ -554,7 +760,9 @@ def p_color(p):
     '''
     #todo: add type, name, and value of var to var table
     val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
-    tempVar = Var(p[2], p[1], val)
+    #TODO add virt_address
+    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'color')
+    tempVar = Var(p[2], p[1], val, addr)
     p[0] = tempVar
 
 ##############################################
@@ -567,27 +775,49 @@ def p_after_exp_check(p):
     '''
     after_exp_check :
     '''
-    quad_controller.finished_operand(["<", ">", "<=", ">=", "==", "!="])
+    ops = ["<", ">", "<=", ">=", "==", "!="] 
+    res_type = quad_controller.peek_res_type(ops)
+    if res_type != -1:
+        temp_address = memory_controller.get_temp_address(res_type)
+        quad_controller.finished_operand(temp_address, ops, error_line(p))
 
 def p_after_term_check(p):
     '''
     after_term_check :
     '''
-    quad_controller.finished_operand(["+", "-"])
+    ops = ["+", "-"]
+    res_type = quad_controller.peek_res_type(ops)
+    if res_type != -1:
+        temp_address = memory_controller.get_temp_address(res_type)
+        quad_controller.finished_operand(temp_address, ops, error_line(p))
 
 # neuralgic point for factors
 def p_after_factor_check(p):
     '''
     after_factor_check :
     '''
-    quad_controller.finished_operand(["*", "/"])
+    ops = ["*", "/"]
+    res_type = quad_controller.peek_res_type(ops)
+    if res_type != -1:
+        temp_address = memory_controller.get_temp_address(res_type)
+        quad_controller.finished_operand(temp_address, ops, error_line(p))
 
 def p_push_operand(p):
     '''
     push_operand :
     '''
-    quad_controller.read_operand(p[-1])
-    quad_controller.read_type(p[-2])
+    var_name = p[-2]
+    var_type = p[-3]
+    if var_name in function_dir.global_function.variables:
+        raise NameError("Name already defined", var_name)
+    else:
+        if p[-1]: #array definition
+            virt_address = memory_controller.generate_arr_address(ALLOC_SCOPE, var_type, p[-1])
+        else:
+            virt_address = memory_controller.generate_var_address(ALLOC_SCOPE, var_type)
+        quad_controller.read_operand(virt_address)
+        quad_controller.read_type(var_type)
+        p[0] = virt_address
 
 def p_push_operator(p):
     '''
@@ -599,7 +829,7 @@ def p_finished_expression(p):
     '''
     finished_expression :
     '''
-    quad_controller.finished_expression()
+    quad_controller.finished_expression(error_line(p))
 
 def p_finished_function(p):
     '''
@@ -618,6 +848,9 @@ def p_error(p):
     print "Syntax error in input line: " + str(p.lexer.lineno)
     print "Unexpected token: " + str(p.value)
     sys.exit(0)
+
+def error_line(p):
+    return p.lexer.lineno - 1
 
 # Build the parser
 log = logging.getLogger()
