@@ -1,6 +1,7 @@
 import sys
 import csv
 import ast
+from graphics import *
 from classes.function_directory import FunctionDirectory
 from classes.function import Function
 from classes.constants_table import ConstantsTable
@@ -16,9 +17,11 @@ class VMManager:
     quads = []
     func_dir = FunctionDirectory()
     global_mem = None
+    canvas = None
     const_table = ConstantsTable()
     curr_stack = []
     call_stack = []
+    instructions = None
 
     def init_obj_file(self, file_name):
         row_type = QUAD_BEGIN_FLAG # file always starts with quads
@@ -153,6 +156,26 @@ class VMManager:
         base_num = int(base[3:])
         return base[:3] + str(base_num + int(num))
 
+    def create_canvas(self):
+        self.canvas = GraphWin('CANVAS', 500, 500)
+        self.canvas.yUp()
+        self.instructions = Text(Point(self.canvas.getWidth()/2, 40),
+                         "Click to Exit")
+        self.instructions.draw(self.canvas)
+
+    def create_circle(self, x_cord, y_cord):
+        x_cord = int(x_cord)
+        y_cord = int(y_cord)
+
+        cords = Point(x_cord, y_cord)
+        circ = Circle(cords, 5)
+        circ.setOutline("red")
+        circ.setFill("red")
+        circ.draw(self.canvas)
+
+    def paint_canvas(self):
+        self.canvas.promptClose(self.instructions)
+
 manager = VMManager()
 
 def run():
@@ -236,10 +259,22 @@ def run():
             num = manager.get_val(left)
             base = right
             new_addr = manager.sum_addr(base, num)
-            #print "NEW ADDR"
-            #print new_addr
             next_addr = result
             manager.set_val(str(next_addr[1:]), new_addr)
+            index += 1
+        elif (oper == 'CANVAS'):
+            manager.create_canvas()
+            index += 1
+        elif (oper == 'PAINT'):
+            manager.paint_canvas()
+            index += 1
+        elif (oper == 'CIRCLE'):
+            # circle, dir, x, y
+            x_cord = manager.get_val(right)
+            y_cord = manager.get_val(result)
+            manager.create_circle(x_cord, y_cord)
+            index += 1
+        else :
             index += 1
 
         # Check if last quad
