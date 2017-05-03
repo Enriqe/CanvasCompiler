@@ -268,6 +268,7 @@ def p_statement(p):
               | for_loop
               | while_loop
               | paint
+              | shape
               | read
     '''
 
@@ -372,7 +373,6 @@ def p_shape_assignment(p):
 def p_declaration(p):
     '''
     declaration : var
-                | shape
                 | point
                 | canvas
     '''
