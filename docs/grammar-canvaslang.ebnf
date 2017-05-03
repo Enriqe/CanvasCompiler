@@ -1,30 +1,28 @@
-PROGRAM::= 'program' 'id' GLOBALS FUNCTIONS 'main' BLOCK_WITH_DECLARATION 'finish'
-GLOBALS::= (DECLARATION)*
-FUNCTIONS::= (FUNCTIONS)*
-FUNCTION::='function' 'id' '(' (TYPE 'id' (',' TYPE 'id')*)? ')' 'returns' TYPE BLOCK_WITH_DECLARATION
-VAR::= TYPE 'id' ('[' [0-9]+ ']')? '=' EXPRESSION
-SHAPE::= ('circle' | 'rectangle' | 'triangle') 'id' 'center' '=' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION 'color' '=' 'id' /*center must be assigned a point*/
-BLOCK_WITH_DECLARATION::= '[' (DECLARATION | STATEMENT)* ']'
+PROGRAM::= 'program' 'id' 'PRO1' GLOBALS 'PRO2' FUNCTIONS 'main' 'PRO3' BLOCK_WITH_DECLARATION 'finish'
+GLOBALS::= (DECLARATION 'GLO1')*
+FUNCTIONS::= (FUNCTIONS 'FUN1')*
+FUNCTION::='function' 'id' '(' (TYPE 'id' (',' TYPE 'id')*)? 'FNC0' ')' 'returns' TYPE 'FNC1' BLOCK_WITH_DECLARATION
+VAR::= TYPE 'id' LIST_INDEX '=' EXPRESSION
+SHAPE::= ('circle' | 'rectangle') 'id' '(' EXPRESSION ',' EXPRESSION ')'
+BLOCK_WITH_DECLARATION::= '[' (DECLARATION 'BWD1')+  (STATEMENT)* ']'
 BLOCK::= '[' STATEMENT* ']'
-STATEMENT::= (ASSIGNMENT  | CONDITIONAL | PRINT | LOOP | PAINT | READ | COMMENTS | RETURN)
-ASSIGNMENT::= (VAR_ASSIGNMENT | SHAPE_ASSIGNMENT | POINT_ASSIGNMENT | CANVAS_ASSIGNMENT)
-VAR_ASSIGNMENT::= 'id' ('[' [0-9]+ ']')? '=' (EXPRESSION | 'id')
-SHAPE_ASSIGNMENT::= 'id' '=' 'id' | 'id' (('center' '=' POINT) | ('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | 'color' '=' 'id')+
-DECLARATION::= VAR | SHAPE | POINT | CANVAS | COLOR
-POINT::= 'point' 'id' 'x' '=' EXPRESSION 'y' '=' EXPRESSION
-POINT_ASSIGNMENT::= 'id' '=' 'id' | 'id' (('x' | 'y') '=' EXPRESSION)+
-CANVAS::= 'canvas' 'id' 'width' '=' EXPRESSION 'height' '=' EXPRESSION 'color' '=' 'id'
-CANVAS_ASSIGNMENT::= 'id' ('add' | '=') 'id'  | 'id' (('width' '=' EXPRESSION) | ('height' '=' EXPRESSION) | ('color' '=' EXPRESSION))+
+STATEMENT::= (ASSIGNMENT  | CONDITIONAL | PRINT | LOOP | SHAPE | PAINT | RETURN)
+ASSIGNMENT::= (VAR_ASSIGNMENT | POINT_ASSIGNMENT | CANVAS_ASSIGNMENT)
+VAR_ASSIGNMENT::= 'id' LIST_INDEX '=' (EXPRESSION | 'id')
+DECLARATION::= VAR | SHAPE | CANVAS 
+CANVAS::= 'canvas' 'id'
 EXPRESSION::= (EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP) | EXP
 EXP::= (TERM (('+' | '-') TERM)*)?
 TERM::= FACTOR (('*' | '/') FACTOR)*
 TYPE::= 'int' | 'dec' | 'string' | 'yesno'
-FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* ('id' ('[' [0-9]+ ']')?  | 'int_val' | 'dec_val' | 'yesno_val' )
-CONDITIONAL::= 'if' '(' EXPRESSION ')' BLOCK ('elsif' '(' EXPRESSION ')' BLOCK)* ('else' BLOCK)?
+FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* (FACTOR_VAR   | 'int_val' | 'dec_val' | 'yesno_val' | 'string_val' ) 'FTR1'
+FACTOR_VAR::= 'id' LIST_INDEX_EXP FUNCTION_CALL
+LIST_INDEX::= ('[' [0-9]+ ']' 'LIN1' )?
+LIST_INDEX_EXP::= ('[' 'LIE1' EXPRESSION ']' 'LIE2' )?
+FUNCTION_CALL::= ( '(' 'FTC1' 'id' (',' 'id')* 'FTC2' ')' 'FTC3' )?
+CONDITIONAL::= 'if' '(' EXPRESSION ')' 'CND1' BLOCK ('elsif' '(' EXPRESSION ')' 'CND2' BLOCK)* ('else' 'CND3' BLOCK)? 'CND4'
 PRINT::= 'print' '(' (EXPRESSION | 'id') (',' (EXPRESSION | 'id') )* ')' 
-READ::= 'read' 'id'
 PAINT::= 'paint' 'id'
 RETURN::= 'return' EXPRESSION
 FOR_LOOP::= 'for' 'each' 'id' 'in' 'id' BLOCK
 WHILE_LOOP::= 'while' '(' EXPRESSION ')' BLOCK
-COLOR::= 'color' 'id' 'red' '=' EXPRESSION 'green' '=' EXPRESSION 'blue' '=' EXPRESSION
