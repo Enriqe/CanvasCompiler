@@ -2,8 +2,13 @@ from semantic_helper import type_dict
 
 from classes.semantic_helper import type_converter
 
+"""
+ActivationRecords manages the memory of th functions calls during execution.
+It contains a local and temporal memory, both which are filled during initialization
+"""
 class ActivationRecord:
 
+    # 
     def __init__(self, local_map, temp_map):
         self.local_mem = {}
         self.temp_mem = {}
@@ -32,9 +37,6 @@ class ActivationRecord:
             self.local_mem[type1][addr] = value
         elif (scope == 't'):
             self.temp_mem[type1][addr] = value
-        #print "SETTING " + address + " WITH " + str(value)
-        #print self.local_mem
-        #print self.temp_mem
 
     def set_return_address(self, address):
         self.return_address = address
@@ -47,10 +49,3 @@ class ActivationRecord:
 
     def get_return_index(self):
         return self.return_index
-
-
-    #while (foo < 3) [
-      #re = arr[foo]
-      #foo = foo + 1
-      #print(re)
-    #]

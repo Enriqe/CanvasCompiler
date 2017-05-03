@@ -28,6 +28,7 @@ class VMManager:
     curr_stack = []
     call_stack = []
 
+    # Initializes th quad list, function directory, and constant_tableº:w
     def init_obj_file(self, file_name):
         row_type = QUAD_BEGIN_FLAG # file always starts with quads
         with open(file_name, 'r') as csvfile:
@@ -64,12 +65,11 @@ class VMManager:
     def get_quad(self, index):
         return self.quads[index]
 
+    # Sets the value of the var at address by separating values into important components
     def set_val(self, address, val):
-        #print("manager.set_val: SETTING " + address + " WITH " + str(val))
         if (address[0] == '*'):
             address = self.get_val(address[1:])
         scope = address[0]
-        #TODO TEST IF EXISTS (OR NOT)
         if (scope == 'g'):
             self.global_mem.set_val(address, val)
         elif (scope == 'l'):
@@ -110,7 +110,6 @@ class VMManager:
     def convert_val(self, address):
         address = self.get_real_address(address)
         val = self.get_val(address)
-        #print("VAL: " + str(val))
         type1 = type_converter[address[1:3]]
         if (type1 == 'int'):
             return int(val)
