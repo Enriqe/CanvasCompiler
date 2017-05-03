@@ -10,7 +10,7 @@ function fib (int arg1) returns int [
         sol = 0
     ]else[
         val1 = fib(arg1 - 1)
-        val2 = 5fib(arg1 - 2)
+        val2 = fib(arg1 - 2)
         sol = val1 + val2
     ]
     return sol

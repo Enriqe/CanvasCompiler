@@ -1,0 +1,8 @@
+program hello_world
+
+main [
+    canvas win
+    paint win
+]
+
+finish

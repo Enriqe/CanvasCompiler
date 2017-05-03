@@ -1,0 +1,19 @@
+program hello_world2
+
+main [
+    canvas myCanvas
+    int x_cord = 0
+    while (x_cord < 500) [
+      circle myCirc (x_cord, x_cord)
+      circle myCirc (x_cord - (x_cord/4), x_cord+ (x_cord/16))
+      circle myCirc (x_cord + (x_cord/4), x_cord- (x_cord/16))
+      circle myCirc (x_cord - (x_cord/8), x_cord+ (x_cord/8))
+      circle myCirc (x_cord + (x_cord/8), x_cord- (x_cord/8))
+      circle myCirc (x_cord - (x_cord/16), x_cord+ (x_cord/4))
+      circle myCirc (x_cord + (x_cord/16), x_cord- (x_cord/4))
+      x_cord = x_cord + 40
+    ]
+    paint myCanvas
+]
+
+finish
