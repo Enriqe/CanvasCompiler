@@ -60,7 +60,6 @@ class QuadrupleController:
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()
             equals_op = self.operator_stack.pop()
-            print(self.type_stack)
             right_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             left_opnd_type = semantic_helper.type_dict[self.type_stack.pop()]
             res_type = SemanticCube[left_opnd_type][right_opnd_type][semantic_helper.operator_dict[equals_op]]
@@ -128,6 +127,7 @@ class QuadrupleController:
 
     def after_cond_expression(self):
         res = self.operand_stack.pop()
+        self.type_stack.pop()
         quad = Quadruple("GOTOF", res)
         self.add_quadruple(quad)
         self.jump_stack.append(self.quad_counter - 1)
