@@ -2,7 +2,7 @@ program hello_world2
 
 main [
     canvas myCanvas
-    rectangle myRect(23+1, 22 + 1)
+    circle myCirc(250, 250)
     paint myCanvas
 ]
 

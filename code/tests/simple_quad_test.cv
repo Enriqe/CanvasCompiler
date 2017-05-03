@@ -6,21 +6,16 @@ main [
   int bc = 2
   int cd = 1
   print(bc)
-  if (cd == bc) [
+  if (cd > bc) [
     bc = 10 + 1
     print(bc)
-  ] elsif (bc < cd) [
+  ] elsif(cd < bc) [
     bc = 20 + 20
-    print(bc)
-  ] else [
-    bc = 5 + 10
     while ( bc < 100 ) [
       bc = bc + 10
       print(bc)
     ]
   ]
-  cd = 1
-
 ]
 
 finish

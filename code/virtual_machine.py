@@ -13,6 +13,11 @@ FUNC_BEGIN_FLAG = "BEGINFUNCTIONS"
 CONST_TABLE_BEGIN_FLAG = "BEGINCONSTTABLE"
 QUAD_BEGIN_FLAG = "BEGINQUADS"
 
+"""
+VMManager manages the quads and the instantiation of the FunctionDirectory
+from the obj code. As well as keep control of the call and current stack of
+ActivationRecords.
+"""
 class VMManager:
     quads = []
     func_dir = FunctionDirectory()
@@ -101,6 +106,7 @@ class VMManager:
             addr = int(address[3:])
             return self.const_table.types[type1][addr]
 
+    # Returns the real value of the obj at the address
     def convert_val(self, address):
         address = self.get_real_address(address)
         val = self.get_val(address)
@@ -118,7 +124,7 @@ class VMManager:
             print ("Error: Unconvertable value")
             exit(1)
 
-
+    # Generates the functions ActivationRecord
     def gen_ar(self, func_name):
         func = self.func_dir.get_function(func_name)
         ltypes = func.get_local_map().get_types()
@@ -126,6 +132,7 @@ class VMManager:
         ar = ActivationRecord(ltypes, ttypes)
         self.call_stack.append(ar)
 
+    # Generates the MAIN function ActivationRecord
     def gen_main_ar(self):
         func = self.func_dir.get_function('main')
         ltypes = func.get_local_map().get_types()
@@ -133,13 +140,14 @@ class VMManager:
         ar = ActivationRecord(ltypes, ttypes)
         self.curr_stack.append(ar)
 
+    # Manages the stacks to add parameters
     def add_param(self, var_address, param_address):
-        #TODO Como saber el address del param
         var_val = self.get_val(var_address)
         self.curr_stack.append(self.call_stack[-1])
         self.set_val(param_address, var_val)
         self.curr_stack.pop()
 
+    # Jump pointer to function and updates stacks
     def go_sub(self, ret_index):
         ar = self.call_stack[-1]
         ar.set_return_index(ret_index)
@@ -155,6 +163,8 @@ class VMManager:
     def sum_addr(self, base, num):
         base_num = int(base[3:])
         return base[:3] + str(base_num + int(num))
+
+####################### GRAPHIC OUTPUT ########################
 
     def create_canvas(self):
         self.canvas = GraphWin('CANVAS', 500, 500)
@@ -173,8 +183,19 @@ class VMManager:
         circ.setFill("red")
         circ.draw(self.canvas)
 
+    def create_rectangle(self, x_cord, y_cord):
+        x_cord = int(x_cord)
+        y_cord = int(y_cord)
+        cords = Point(x_cord, y_cord)
+        rect = Rectangle(cords, 30)
+        rect.setOutline("red")
+        rect.setFill("red")
+        rect.draw(self.canvas)
+
     def paint_canvas(self):
         self.canvas.promptClose(self.instructions)
+
+##############################################################
 
 manager = VMManager()
 
