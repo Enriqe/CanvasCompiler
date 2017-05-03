@@ -18,10 +18,10 @@ class VMManager:
     func_dir = FunctionDirectory()
     global_mem = None
     canvas = None
+    instructions = None
     const_table = ConstantsTable()
     curr_stack = []
     call_stack = []
-    instructions = None
 
     def init_obj_file(self, file_name):
         row_type = QUAD_BEGIN_FLAG # file always starts with quads
