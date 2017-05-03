@@ -129,6 +129,9 @@ class QuadrupleController:
         quad = Quadruple("PAINT")
         self.add_quadruple(quad)
 
+    def create_circle(self, addr, x, y):
+        quad = Quadruple("CIRCLE", addr, x, y)
+        self.add_quadruple(quad)
 
 ################### Conditionals ###################
 
