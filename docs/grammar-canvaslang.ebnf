@@ -8,12 +8,12 @@ BLOCK_WITH_DECLARATION::= '[' (DECLARATION 'BWD1')+  (STATEMENT)* ']'
 BLOCK::= '[' STATEMENT* ']'
 STATEMENT::= (ASSIGNMENT  | CONDITIONAL | PRINT | LOOP | SHAPE | PAINT | RETURN)
 ASSIGNMENT::= (VAR_ASSIGNMENT | POINT_ASSIGNMENT | CANVAS_ASSIGNMENT)
-VAR_ASSIGNMENT::= 'id' LIST_INDEX '=' (EXPRESSION | 'id')
+VAR_ASSIGNMENT::= 'id' LIST_INDEX '=' 'OPS1' (EXPRESSION | 'id')
 DECLARATION::= VAR | SHAPE | CANVAS 
 CANVAS::= 'canvas' 'id'
-EXPRESSION::= (EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') EXP) | EXP
-EXP::= (TERM (('+' | '-') TERM)*)?
-TERM::= FACTOR (('*' | '/') FACTOR)*
+EXPRESSION::= (EXP ( '>' | '<' | '!=' | '==' | '>=' | '<=') 'OPS1' EXP) | EXP
+EXP::= (TERM (('+' | '-') 'OPS1' TERM)*)?
+TERM::= FACTOR (('*' | '/') 'OPS1' FACTOR)*
 TYPE::= 'int' | 'dec' | 'string' | 'yesno'
 FACTOR::= ('(' EXPRESSION ')') | ('+' | '-')* (FACTOR_VAR   | 'int_val' | 'dec_val' | 'yesno_val' | 'string_val' ) 'FTR1'
 FACTOR_VAR::= 'id' LIST_INDEX_EXP FUNCTION_CALL
@@ -21,8 +21,8 @@ LIST_INDEX::= ('[' [0-9]+ ']' 'LIN1' )?
 LIST_INDEX_EXP::= ('[' 'LIE1' EXPRESSION ']' 'LIE2' )?
 FUNCTION_CALL::= ( '(' 'FTC1' 'id' (',' 'id')* 'FTC2' ')' 'FTC3' )?
 CONDITIONAL::= 'if' '(' EXPRESSION ')' 'CND1' BLOCK ('elsif' '(' EXPRESSION ')' 'CND2' BLOCK)* ('else' 'CND3' BLOCK)? 'CND4'
-PRINT::= 'print' '(' (EXPRESSION | 'id') (',' (EXPRESSION | 'id') )* ')' 
+PRINT::= 'print' '(' EXPRESSION ')' 
 PAINT::= 'paint' 'id'
 RETURN::= 'return' EXPRESSION
-FOR_LOOP::= 'for' 'each' 'id' 'in' 'id' BLOCK
-WHILE_LOOP::= 'while' '(' EXPRESSION ')' BLOCK
+FOR_LOOP::= 'for' 'each' 'id' 'in' 'id' BLOCK 'CND4'
+WHILE_LOOP::= 'while' 'WHI1' '(' EXPRESSION ')' 'WHI2' BLOCK 'CND4'
