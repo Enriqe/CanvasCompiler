@@ -53,9 +53,6 @@ class QuadrupleController:
         self.quad_list[loc] = quad
 
     def finished_expression(self, lineno):
-        print "STACKS"
-        print self.operator_stack
-        print self.operand_stack
         if(len(self.operator_stack) > 0 and self.operator_stack[-1] != '('):
             right_opnd = self.operand_stack.pop()
             left_opnd = self.operand_stack.pop()

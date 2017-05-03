@@ -175,7 +175,7 @@ def p_null(p):
 
 def p_shape(p):
     '''
-    shape : shape_type VAR_IDENTIFIER CENTER EQUALS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
+    shape : shape_type VAR_IDENTIFIER CENTER EQUALS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS expression
     '''
     # ^         ^           ^          ^      ^          ^          ^     ^       ^         ^       ^        ^       ^     ^          ^          
     #p[0]      p[1]        p[2]       p[3]   p[4]       p[5]      p[6]   p[7]    p[8]      p[9]   p[10]     p[11]   p[12] p[13]      p[14]
@@ -319,7 +319,7 @@ def p_shape_or_canvas_assignment_a(p):
     '''
     shape_or_canvas_assignment_a : WIDTH EQUALS expression
                                  | HEIGHT EQUALS expression
-                                 | COLOR EQUALS VAR_IDENTIFIER
+                                 | COLOR EQUALS expression
     '''
 
 def p_shape_assignment(p):
@@ -333,7 +333,6 @@ def p_declaration(p):
                 | shape
                 | point
                 | canvas
-                | color
     '''
     p[0] =  p[1]
 
@@ -365,7 +364,7 @@ def p_point_assignment_b(p):
 
 def p_canvas(p):
     '''
-    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS VAR_IDENTIFIER
+    canvas : CANVAS VAR_IDENTIFIER WIDTH EQUALS expression HEIGHT EQUALS expression COLOR EQUALS expression
     '''
     val = { 'width' : p[5], 'height' : p[8], 'color' : p[11] }
     #TODO add virt_address
@@ -753,17 +752,6 @@ def p_while(p):
     while : WHILE
     '''
     quad_controller.before_while()
-
-def p_color(p):
-    '''
-    color : COLOR VAR_IDENTIFIER RED EQUALS expression GREEN EQUALS expression BLUE EQUALS expression
-    '''
-    #todo: add type, name, and value of var to var table
-    val = { 'red' : p[5], 'green' : p[8], 'blue' : p[11] }
-    #TODO add virt_address
-    addr = memory_controller.generate_var_address(ALLOC_SCOPE, 'color')
-    tempVar = Var(p[2], p[1], val, addr)
-    p[0] = tempVar
 
 ##############################################
 ############# HELPER FUNCTIONS ###############
