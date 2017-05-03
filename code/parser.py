@@ -189,19 +189,26 @@ def p_null(p):
 
 def p_shape(p):
     '''
-    shape : shape_type VAR_IDENTIFIER INT_VAL INT_VAL
+    shape : shape_type VAR_IDENTIFIER left_exp_par expression shape_comma expression right_exp_par
     '''
     # ^         ^           ^          ^      ^     
     #p[0]      p[1]        p[2]       p[3]   p[4]   
     shape_type = p[1]
     shape_id = p[2]
-    shape_x = int(p[3])
-    shape_y = int(p[4])
+    shape_y = quad_controller.after_array_check()
+    shape_x = quad_controller.after_array_check()
+    quad_controller.pop_fake_bottom()
     shape_values = [shape_x, shape_y]
     addr = memory_controller.generate_var_address(ALLOC_SCOPE, shape_type)
     tempVar = Var(shape_id, shape_type, shape_values, addr)
     p[0] = tempVar
     quad_controller.create_circle(addr, shape_x, shape_y )
+
+def p_shape_comma(p):
+    '''
+    shape_comma : COMMA
+    '''
+    quad_controller.read_fake_bottom()
 
 
 def p_shape_type(p):
