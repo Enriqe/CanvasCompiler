@@ -18,6 +18,7 @@ class ActivationRecord:
             self.local_mem[key] = [None] * local_map[key]
             self.temp_mem[key] = [None] * temp_map[key]
 
+    #Returns the value of the address from the correct memory
     def get_val(self, address):
         scope = address[0]
         type1 = type_converter[address[1:3]]
@@ -28,6 +29,7 @@ class ActivationRecord:
             return self.temp_mem[type1][addr]
         return 1
 
+    #Decomposes de address and set its content to value
     def set_val(self, address, value):
         scope = address[0]
         type1 = type_converter[address[1:3]]
