@@ -20,7 +20,7 @@ class MemoryController:
     string which maps our virtual addresses:
 
     ADDRESS = MEM_SEGMENT + VAR_TYPE_CODE + SUBINDEX
-    e.g. "1int23" is global int at index 23
+    e.g. "gin23" is global int at index 23
     '''
     def generate_var_address(self, var_segment, var_type):
         next_avail = 0
