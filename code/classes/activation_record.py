@@ -8,7 +8,7 @@ It contains a local and temporal memory, both which are filled during initializa
 """
 class ActivationRecord:
 
-    #Inicializa los tamaños de las memorias locales y temporales de la funcion
+    #Inicializa los tamanos de las memorias locales y temporales de la funcion
     def __init__(self, local_map, temp_map):
         self.local_mem = {}
         self.temp_mem = {}
