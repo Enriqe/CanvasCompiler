@@ -17,7 +17,7 @@ function fib (int arg1) returns int [
 ]
 
 main [
-    int myVar = fib(21)
+    int myVar = fib(20)
     print(myVar)
 ]
 

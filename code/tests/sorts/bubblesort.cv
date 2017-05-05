@@ -31,7 +31,7 @@ main [
     string str = "Unsorted"
     print(str)
     while (foo < 10) [
-      arr[foo] = modulo(45 * foo, 7)
+      arr[foo] = modulo(45 * foo, 14)
       print(arr[foo])
       foo = foo + 1
     ]

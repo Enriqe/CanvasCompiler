@@ -1,49 +1,14 @@
 MAIN   1
 CANVAS   
-= cin0  lin0
-< lin0 cin1 tye0
-GOTOF tye0  39
-CIRCLE lci0 lin0 lin0
-/ lin0 cin2 tin0
-- lin0 tin0 tin1
-/ lin0 cin3 tin2
-+ lin0 tin2 tin3
-CIRCLE lci1 tin1 tin3
-/ lin0 cin4 tin4
-+ lin0 tin4 tin5
-/ lin0 cin5 tin6
-- lin0 tin6 tin7
-CIRCLE lci2 tin5 tin7
-/ lin0 cin6 tin8
-- lin0 tin8 tin9
-/ lin0 cin7 tin10
-+ lin0 tin10 tin11
-CIRCLE lci3 tin9 tin11
-/ lin0 cin8 tin12
-+ lin0 tin12 tin13
-/ lin0 cin9 tin14
-- lin0 tin14 tin15
-CIRCLE lci4 tin13 tin15
-/ lin0 cin10 tin16
-- lin0 tin16 tin17
-/ lin0 cin11 tin18
-+ lin0 tin18 tin19
-CIRCLE lci5 tin17 tin19
-/ lin0 cin12 tin20
-+ lin0 tin20 tin21
-/ lin0 cin13 tin22
-- lin0 tin22 tin23
-CIRCLE lci6 tin21 tin23
-+ lin0 cin14 tin24
-= tin24  lin0
-GOTO   3
+RECTANGLE lre0 cin0 cin1
+RECT2 lre0 cin2 cin3
 PAINT   
 BEGINFUNCTIONS
 globals int
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 main int
-"{'color': 0, 'canvas': 1, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 7, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 25, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 1}"
+"{'color': 0, 'canvas': 1, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 1, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['0', '500', '4', '16', '4', '16', '8', '8', '8', '8', '16', '4', '16', '4', '40'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['50', '50', '20', '20'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

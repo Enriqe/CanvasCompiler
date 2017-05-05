@@ -1,0 +1,22 @@
+program hello_world2
+
+main [
+    canvas myCanvas
+    int size = 5
+    int i = size * -1
+    int j = size * -1
+    while( i <= size)[
+      while( j <= size)[
+        if( i * i + j * j <= size * size)[
+          circle cir(i, j)
+          print(i)
+          print(j)
+        ]
+        j = j + 1
+      ]
+      i = i + 1
+    ]
+    paint myCanvas
+]
+
+finish

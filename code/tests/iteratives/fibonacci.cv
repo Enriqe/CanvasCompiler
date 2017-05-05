@@ -13,7 +13,7 @@ function fib (int n) returns int [
 ]
 
 main [
-    int fibonacci_n = fib(15)
+    int fibonacci_n = fib(20)
     print(fibonacci_n)
 ]
 
