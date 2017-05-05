@@ -194,6 +194,7 @@ def p_colors(p):
           | GREEN
           | BLUE
           | BROWN
+          | YELLOW
     '''
     p[0] = p[1]
 

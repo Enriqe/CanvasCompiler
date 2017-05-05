@@ -2,7 +2,7 @@ MAIN   1
 CANVAS   
 RECTANGLE lre0 cin0 cin1
 RECT2 lre0 cin2 cin3
-RECT3 brown  
+RECT3 yellow  
 PAINT   
 BEGINFUNCTIONS
 globals int
