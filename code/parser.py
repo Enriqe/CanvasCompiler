@@ -168,7 +168,7 @@ def p_null(p):
 
 def p_shape(p):
     '''
-    shape : shape_type VAR_IDENTIFIER left_exp_par expression shape_comma expression shape_comma expression shape_comma expression right_exp_par 
+    shape : shape_type VAR_IDENTIFIER left_exp_par expression shape_comma expression shape_comma expression shape_comma expression right_exp_par colors
     '''
     # ^         ^           ^          ^      ^     
     #p[0]      p[1]        p[2]       p[3]   p[4]   
@@ -182,10 +182,20 @@ def p_shape(p):
     quad_controller.pop_fake_bottom()
     quad_controller.pop_fake_bottom()
     shape_values = [shape_x, shape_y]
+    shape_color = p[12]
     addr = memory_controller.generate_var_address(ALLOC_SCOPE, shape_type)
     tempVar = Var(shape_id, shape_type, shape_values, addr)
     p[0] = tempVar
-    quad_controller.create_shape(addr, shape_x, shape_y, shape_w, shape_h, shape_type)
+    quad_controller.create_shape(addr, shape_x, shape_y, shape_w, shape_h, shape_type, shape_color)
+
+def p_colors(p):
+    '''
+    colors : RED
+          | GREEN
+          | BLUE
+          | BROWN
+    '''
+    p[0] = p[1]
 
 def p_shape_comma(p):
     '''

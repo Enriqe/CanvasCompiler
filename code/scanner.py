@@ -48,6 +48,7 @@ reserved_words = {
     'red'       : 'RED',
     'green'     : 'GREEN',
     'blue'      : 'BLUE',
+    'brown'     : 'BROWN',
     'x'         : 'X',
     'y'         : 'Y',
 }

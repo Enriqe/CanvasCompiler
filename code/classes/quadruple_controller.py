@@ -148,15 +148,18 @@ class QuadrupleController:
         self.add_quadruple(quad)
 
     # generates quad for shapes
-    def create_shape(self, addr, x, y, width, height, shape_type):
+    def create_shape(self, addr, x, y, width, height, shape_type, shape_color):
         if shape_type == "circle":
             quad = Quadruple("CIRCLE", addr, x, y)
             quad2 = Quadruple("CIRC2", addr, width, height)
+            quad3 = Quadruple("CIRC3", shape_color)
         elif shape_type == "rectangle":
             quad = Quadruple("RECTANGLE", addr, x, y)
             quad2 = Quadruple("RECT2", addr, width, height)
+            quad3 = Quadruple("RECT3", shape_color)
         self.add_quadruple(quad)
         self.add_quadruple(quad2)
+        self.add_quadruple(quad3)
 
 
 ################### Conditionals ###################

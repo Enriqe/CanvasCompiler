@@ -3,7 +3,7 @@ program hello_world2
 main [
     canvas myCanvas
 
-    rectangle circ(50, 50, 20, 20)
+    rectangle circ(50, 50, 20, 20) brown
 
     paint myCanvas
 ]
