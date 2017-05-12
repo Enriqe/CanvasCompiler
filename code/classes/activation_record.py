@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 from semantic_helper import type_dict
-
 from classes.semantic_helper import type_converter
 
 """

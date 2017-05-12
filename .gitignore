@@ -4,6 +4,7 @@ code/parsetab.*
 code/parselog.*
 code/*.pyc
 code/*.out
+code/graph/*
 *.un~
 *.un
 .vscode/*

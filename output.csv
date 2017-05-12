@@ -1,15 +1,43 @@
-MAIN   1
-CANVAS   
-RECTANGLE lre0 cin0 cin1
-RECT2 lre0 cin2 cin3
-RECT3 yellow  
-PAINT   
+MAIN   26
+= cin0  lin1
+= cin1  lin2
+= cin2  lin3
+== lin0 cin3 tye0
+GOTOF tye0  8
+= cin4  lin3
+GOTO   11
+== lin0 cin5 tye1
+GOTOF tye1  12
+= cin6  lin3
+GOTO   24
+ERA fib  
+- lin0 cin7 tin0
+PARAM tin0  lin0
+GOSUB gin0  1
+= gin0  lin1
+ERA fib  
+- lin0 cin8 tin1
+PARAM tin1  lin0
+GOSUB gin0  1
+= gin0  lin2
++ lin1 lin2 tin2
+= tin2  lin3
+= lin3  gin0
+ENDPROC   
+ERA fib  
+PARAM cin9  lin0
+GOSUB gin0  1
+= gin0  lin0
+PRINT   lin0
 BEGINFUNCTIONS
 globals int
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
-"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+fib int
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 4, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 3, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 2}"
 main int
-"{'color': 0, 'canvas': 1, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 1, 'yesno': 0}"
+"{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 1, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 "{'color': 0, 'canvas': 0, 'triangle': 0, 'string': 0, 'point': 0, 'int': 0, 'circle': 0, 'dec': 0, 'rectangle': 0, 'yesno': 0}"
 BEGINCONSTTABLE
-"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['50', '50', '20', '20'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"
+"{'color': [], 'canvas': [], 'triangle': [], 'string': [], 'point': [], 'int': ['1', '0', '0', '1', '1', '0', '0', '1', '2', '20'], 'circle': [], 'dec': [], 'rectangle': [], 'yesno': []}"

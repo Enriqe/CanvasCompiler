@@ -1,0 +1,78 @@
+program mergesort
+
+int size = 10
+int arr[10] = 0
+int merged[10] = 0
+
+function merge(int low, int high) returns int [
+  int i = 0
+  int j = 0
+  int xo = 0
+  while(i < low) [
+    while(j < high) [
+      if (arr[i] < arr[j]) [
+        merged[xo] = arr[i]
+        i = i + 1
+      ] else [
+        merged[xo] = arr[j]
+        j = j + 1
+      ]
+      xo = xo + 1
+    ]
+  ]
+
+  while(i < low) [
+   merged[xo] = arr[i]
+   i = i + 1
+   xo = xo + 1
+  ]
+
+  while(j < high) [
+   merged[xo] = arr[j]
+   j = j + 1
+   xo = xo + 1
+  ]
+  return 0
+]
+
+function mergeSort(int low, int high) returns int [
+  int mid = high/2
+  int ms1 = 0
+  int ms2 = 0
+  if (high < 2) [
+    ms1 = merge(mid, high - mid)
+  ] else [
+    ms1 = mergeSort(low, mid)
+    ms2 = mergeSort(mid + 1, high)
+  ]
+  while(ms1 < size)[
+    arr[ms1] = merged[ms1]
+  ]
+  return 0
+]
+
+function modulo(int a, int b) returns int [
+  return a - (b * (a/b))
+]
+
+main [
+  int num = 0
+  string str = "Unsorted"
+  string str2 = "------"
+  print(str)
+  while (num < size) [
+    print(str2)
+    arr[num] = modulo(num + 1, 9)
+    print(arr[num])
+    num = num + 1
+  ]
+  str = "Sorted"
+  print(str)
+  num = mergeSort(0, size)
+  while (num < size) [
+    print(arr[num])
+    num = num + 1
+  ]
+]
+
+finish

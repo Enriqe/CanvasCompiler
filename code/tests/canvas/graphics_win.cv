@@ -1,8 +1,36 @@
 program hello_world
 
+function modulo(int a, int b) returns int [
+  return a - (b * (a/b))
+]
+
 main [
-    canvas win
-    paint win
+    int top_grass = 150
+    int loc_x = 0
+    canvas myCanvas
+    circle sun (480, 470, 100, 100) yellow
+
+    while (loc_x < 600) [
+      rectangle trunk (loc_x, 150, 20, 100) brown
+      circle tree (15 + loc_x, 260, 100, 100) green
+      loc_x = loc_x + 40
+    ]
+    loc_x = 0
+
+    while (top_grass > -60) [
+      loc_x = 0
+      while (loc_x < 600) [
+        if (modulo(loc_x, 20) == 0) [
+          circle grs (loc_x, top_grass, 10, 20) green
+        ] else [
+          rectangle grs (loc_x + 5, top_grass, 10, 20) green
+          rectangle grs (loc_x - 5, top_grass, 10, 20) green
+        ]
+        loc_x = loc_x + 10
+      ]
+      top_grass = top_grass - 10
+    ]
+    paint myCanvas
 ]
 
 finish

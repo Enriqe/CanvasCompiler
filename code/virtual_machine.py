@@ -168,27 +168,30 @@ class VMManager:
     def create_canvas(self):
         self.canvas = GraphWin('CANVAS', 500, 500)
         self.canvas.yUp()
+        self.canvas.setBackground(color_rgb(176, 224, 230))
         self.instructions = Text(Point(self.canvas.getWidth()/2, 40),
                          "Click to Exit")
         self.instructions.draw(self.canvas)
 
-    def create_circle(self, x_cord, y_cord):
+    def create_circle(self, x_cord, y_cord, width, height, color):
+        print (color)
         x_cord = int(x_cord)
         y_cord = int(y_cord)
 
         cords = Point(x_cord, y_cord)
-        circ = Circle(cords, 5)
-        circ.setOutline("red")
-        circ.setFill("red")
+        circ = Circle(cords, int(width)/2)
+        circ.setOutline('brown')
+        circ.setFill(color)
         circ.draw(self.canvas)
 
-    def create_rectangle(self, x_cord, y_cord):
+    def create_rectangle(self, x_cord, y_cord, width, height, color):
         x_cord = int(x_cord)
         y_cord = int(y_cord)
         cords = Point(x_cord, y_cord)
-        rect = Rectangle(cords, 30)
-        rect.setOutline("red")
-        rect.setFill("red")
+        cords2 = Point(x_cord + int(width), y_cord + int(height))
+        rect = Rectangle(cords, cords2)
+        rect.setOutline("brown")
+        rect.setFill(color)
         rect.draw(self.canvas)
 
     def paint_canvas(self):
@@ -292,7 +295,30 @@ def run():
             # circle, dir, x, y
             x_cord = manager.get_val(right)
             y_cord = manager.get_val(result)
-            manager.create_circle(x_cord, y_cord)
+            index += 1
+            quad = manager.get_quad(index)
+            right = quad.right_operand
+            result = quad.result
+            width = manager.get_val(right)
+            height = manager.get_val(result)
+            index += 1
+            quad = manager.get_quad(index)
+            left = quad.left_operand
+            manager.create_circle(x_cord, y_cord, width, height, left)
+            index += 1
+        elif (oper == 'RECTANGLE'):
+            x_cord = manager.get_val(right)
+            y_cord = manager.get_val(result)
+            index += 1
+            quad = manager.get_quad(index)
+            right = quad.right_operand
+            result = quad.result
+            width = manager.get_val(right)
+            height = manager.get_val(result)
+            index += 1
+            quad = manager.get_quad(index)
+            left = quad.left_operand
+            manager.create_rectangle(x_cord, y_cord, width, height, left)
             index += 1
         else :
             index += 1
